@@ -1,16 +1,14 @@
-package com.EasyO.pairalarm
+package com.EasyO.pairalarm.ui.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.animation.Animator
+import com.EasyO.pairalarm.MainActivity
 import com.EasyO.pairalarm.databinding.ActivityInitialBinding
-import com.EasyO.pairalarm.databinding.ActivityMainBinding
-import java.lang.Exception
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class InitialActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInitialBinding
     override fun onCreate(savedInstanceState: Bundle?) {
