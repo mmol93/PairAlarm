@@ -11,16 +11,30 @@ data class AlarmDB (
     val id: Int,
     @ColumnInfo(name = "switch")
     val switch: Boolean,
-    @ColumnInfo(name = "week")
-    val week: Int,
+    @ColumnInfo(name = "Sun")
+    val Sun: Boolean,
+    @ColumnInfo(name = "Mon")
+    val Mon: Boolean,
+    @ColumnInfo(name = "Tue")
+    val Tue: Boolean,
+    @ColumnInfo(name = "Wed")
+    val Wed: Boolean,
+    @ColumnInfo(name = "Thu")
+    val Thu: Boolean,
+    @ColumnInfo(name = "Fri")
+    val Fri: Boolean,
+    @ColumnInfo(name = "Sat")
+    val Sat: Boolean,
     @ColumnInfo(name = "hour")
     val hour: Int,
     @ColumnInfo(name = "minute")
     val minute: Int,
     @ColumnInfo(name = "volume")
     val volume: Int,
+    @ColumnInfo(name = "vibration")
+    val vibration: Boolean,
     @ColumnInfo(name = "quick")
-    val quick: Int,
+    val quick: Boolean,
     @ColumnInfo(name = "bell")
     val bell: Int,
     @ColumnInfo(name = "mode")
