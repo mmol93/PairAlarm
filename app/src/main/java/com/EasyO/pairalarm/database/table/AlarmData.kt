@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "alarm_data")
-data class AlarmDB (
+data class AlarmData (
     @PrimaryKey()
     @ColumnInfo(name = "id")
     val id: Int,
