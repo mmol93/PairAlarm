@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PairAlarm</string>
+    <string name="progressFinish">Done!</string>
+    <string name="progressInit">Initialize Local Database</string>
 </resources>

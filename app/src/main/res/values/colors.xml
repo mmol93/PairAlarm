@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="subColor">#FFD700</color>
+    <color name="mainColor">#B39DDB</color>
+
+    // mainColor와 잘 어울리는 색
+    <color name="main_pink">#ff66cc</color>
+    <color name="main_blue">#3366FF</color>
+    <color name="main_orange">#FF3300</color>
+    <color name="main_deepPurple">#9900FF</color>
+    <color name="main_deepBlue">#0066cc</color>
 </resources>
