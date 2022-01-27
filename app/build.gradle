@@ -37,6 +37,8 @@ android {
     }
 }
 
+
+
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -59,8 +61,6 @@ dependencies {
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
     // Hilt With WorkManager - https://developer.android.com/training/dependency-injection/hilt-jetpack?hl=ko#viewmodels
     implementation 'androidx.hilt:hilt-work:1.0.0'
-    // When using Kotlin.
-    kapt 'androidx.hilt:hilt-compiler:1.0.0'
     // When using Java.
     annotationProcessor 'androidx.hilt:hilt-compiler:1.0.0'
 
@@ -76,4 +76,8 @@ dependencies {
     // WorkManager - https://developer.android.com/topic/libraries/architecture/workmanager/basics?hl=ko
     // Kotlin + coroutines
     implementation("androidx.work:work-runtime-ktx:$work_version")
+
+    // Coroutine -https://github.com/Kotlin/kotlinx.coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
 }

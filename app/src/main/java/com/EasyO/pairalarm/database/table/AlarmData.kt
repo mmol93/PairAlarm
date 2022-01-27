@@ -5,38 +5,22 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "alarm_data")
-data class AlarmData (
-    @PrimaryKey()
-    @ColumnInfo(name = "id")
-    val id: Int,
-    @ColumnInfo(name = "switch")
-    val switch: Boolean,
-    @ColumnInfo(name = "Sun")
-    val Sun: Boolean,
-    @ColumnInfo(name = "Mon")
-    val Mon: Boolean,
-    @ColumnInfo(name = "Tue")
-    val Tue: Boolean,
-    @ColumnInfo(name = "Wed")
-    val Wed: Boolean,
-    @ColumnInfo(name = "Thu")
-    val Thu: Boolean,
-    @ColumnInfo(name = "Fri")
-    val Fri: Boolean,
-    @ColumnInfo(name = "Sat")
-    val Sat: Boolean,
-    @ColumnInfo(name = "hour")
-    val hour: Int,
-    @ColumnInfo(name = "minute")
-    val minute: Int,
-    @ColumnInfo(name = "volume")
-    val volume: Int,
-    @ColumnInfo(name = "vibration")
-    val vibration: Boolean,
-    @ColumnInfo(name = "quick")
-    val quick: Boolean,
-    @ColumnInfo(name = "bell")
-    val bell: Int,
-    @ColumnInfo(name = "mode")
-    val mode: Int,
+data class AlarmData(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id") var id: Int,
+    @ColumnInfo(name = "button") var button: Boolean,
+    @ColumnInfo(name = "Sun") var Sun: Boolean,
+    @ColumnInfo(name = "Mon") var Mon: Boolean,
+    @ColumnInfo(name = "Tue") var Tue: Boolean,
+    @ColumnInfo(name = "Wed") var Wed: Boolean,
+    @ColumnInfo(name = "Thu") var Thu: Boolean,
+    @ColumnInfo(name = "Fri") var Fri: Boolean,
+    @ColumnInfo(name = "Sat") var Sat: Boolean,
+    @ColumnInfo(name = "hour") var hour: Int,
+    @ColumnInfo(name = "minute") var minute: Int,
+    @ColumnInfo(name = "volume") var volume: Int,
+    @ColumnInfo(name = "vibration") var vibration: Boolean,
+    @ColumnInfo(name = "quick") var quick: Boolean,
+    @ColumnInfo(name = "bell") var bell: Int,
+    @ColumnInfo(name = "mode") var mode: Int
 )

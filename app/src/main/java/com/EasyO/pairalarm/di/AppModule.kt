@@ -15,8 +15,12 @@ import javax.inject.Singleton
 @Module
 class AppModule {
     @Provides
+    fun provideContext(@ApplicationContext context: Context): Context {
+        return context
+    }
+    @Provides
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
-        return Room.databaseBuilder(context, AppDatabase::class.java, "lol-db").build()
+        return Room.databaseBuilder(context, AppDatabase::class.java, "alarm_data_database").build()
     }
 
     @Provides

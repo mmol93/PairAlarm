@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.EasyO.pairalarm">
+    package="com.EasyO.pairalarm"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:name=".AppClass"
@@ -23,6 +24,10 @@
             android:name=".MainActivity"
             android:exported="false">
         </activity>
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="remove" />
     </application>
 
 </manifest>

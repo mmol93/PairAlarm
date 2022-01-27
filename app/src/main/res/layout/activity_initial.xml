@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.InitialActivity">
+    tools:context=".ui.activity.InitialActivity"
+    android:layout_margin="20dp">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieView"
@@ -21,7 +22,7 @@
         app:lottie_rawRes="@raw/clock_lottie" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/lottieView"
@@ -30,4 +31,25 @@
         android:textSize="20sp"
         android:text="TextView" />
 
+    <TextView
+        android:id="@+id/progressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/progressHorizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progress="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        app:layout_constraintVertical_bias="0.283"
+        tools:layout_editor_absoluteX="16dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
