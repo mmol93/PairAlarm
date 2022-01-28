@@ -1,7 +1,7 @@
-package com.EasyO.pairalarm.database.dao
+package com.easyo.pairalarm.database.dao
 
 import androidx.room.*
-import com.EasyO.pairalarm.database.table.AlarmData
+import com.easyo.pairalarm.database.table.AlarmData
 import kotlinx.coroutines.flow.Flow
 
 @Dao

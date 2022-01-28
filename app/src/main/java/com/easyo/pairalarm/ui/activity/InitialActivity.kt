@@ -1,4 +1,4 @@
-package com.EasyO.pairalarm.ui.activity
+package com.easyo.pairalarm.ui.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -12,13 +12,12 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
-import com.EasyO.pairalarm.MainActivity
-import com.EasyO.pairalarm.R
-import com.EasyO.pairalarm.database.table.AlarmData
-import com.EasyO.pairalarm.databinding.ActivityInitialBinding
-import com.EasyO.pairalarm.eventbus.EventBus
-import com.EasyO.pairalarm.eventbus.InitDataEvent
-import com.EasyO.pairalarm.worker.InitAlarmDataWorker
+import com.easyo.pairalarm.MainActivity
+import com.easyo.pairalarm.R
+import com.easyo.pairalarm.databinding.ActivityInitialBinding
+import com.easyo.pairalarm.eventbus.EventBus
+import com.easyo.pairalarm.eventbus.InitDataEvent
+import com.easyo.pairalarm.worker.InitAlarmDataWorker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

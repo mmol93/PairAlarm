@@ -1,4 +1,4 @@
-package com.EasyO.pairalarm.extensions
+package com.easyo.pairalarm.extensions
 
 import android.view.View
 

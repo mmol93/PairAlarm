@@ -1,9 +1,9 @@
-package com.EasyO.pairalarm.di
+package com.easyo.pairalarm.di
 
 import android.content.Context
 import androidx.room.Room
-import com.EasyO.pairalarm.database.AppDatabase
-import com.EasyO.pairalarm.database.dao.AlarmDAO
+import com.easyo.pairalarm.database.AppDatabase
+import com.easyo.pairalarm.database.dao.AlarmDAO
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

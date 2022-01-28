@@ -1,4 +1,4 @@
-package com.EasyO.pairalarm.database.table
+package com.easyo.pairalarm.database.table
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

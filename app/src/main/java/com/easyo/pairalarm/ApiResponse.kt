@@ -1,4 +1,4 @@
-package com.EasyO.pairalarm
+package com.easyo.pairalarm
 
 sealed class ApiResponse<out T> {
     data class Success<T>(val value: T) : ApiResponse<T>()

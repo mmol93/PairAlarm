@@ -1,4 +1,4 @@
-package com.EasyO.pairalarm.eventbus
+package com.easyo.pairalarm.eventbus
 
 import kotlinx.coroutines.flow.*
 

@@ -1,15 +1,15 @@
-package com.EasyO.pairalarm.worker
+package com.easyo.pairalarm.worker
 
 import android.content.Context
 import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.EasyO.pairalarm.AppClass
-import com.EasyO.pairalarm.R
-import com.EasyO.pairalarm.database.dao.AlarmDAO
-import com.EasyO.pairalarm.eventbus.EventBus
-import com.EasyO.pairalarm.eventbus.InitDataEvent
+import com.easyo.pairalarm.AppClass
+import com.easyo.pairalarm.R
+import com.easyo.pairalarm.database.dao.AlarmDAO
+import com.easyo.pairalarm.eventbus.EventBus
+import com.easyo.pairalarm.eventbus.InitDataEvent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 

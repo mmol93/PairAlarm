@@ -1,4 +1,4 @@
-package com.EasyO.pairalarm
+package com.easyo.pairalarm
 
 import org.junit.Test
 

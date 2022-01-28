@@ -1,9 +1,9 @@
-package com.EasyO.pairalarm
+package com.easyo.pairalarm
 
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.EasyO.pairalarm.database.table.AlarmData
+import com.easyo.pairalarm.database.table.AlarmData
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
