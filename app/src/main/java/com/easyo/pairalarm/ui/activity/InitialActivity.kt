@@ -67,7 +67,8 @@ class InitialActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // InitDataEvent를 subscribe하여 EventBus를 사용하여 Post로 InitDataEvent
+        // InitDataEvent를 subscribe하여 EventBus를 사용하여 Post로 InitDataEvent에 값을 넣을 경우
+        // 발동되게 한다
         lifecycleScope.launch {
 
             EventBus.subscribe<InitDataEvent>().collectLatest {
