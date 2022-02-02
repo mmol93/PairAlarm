@@ -19,8 +19,9 @@ data class AlarmData(
     @ColumnInfo(name = "hour") var hour: Int,
     @ColumnInfo(name = "minute") var minute: Int,
     @ColumnInfo(name = "volume") var volume: Int,
-    @ColumnInfo(name = "vibration") var vibration: Boolean,
+    @ColumnInfo(name = "vibration") var vibration: Int,
     @ColumnInfo(name = "quick") var quick: Boolean,
     @ColumnInfo(name = "bell") var bell: Int,
-    @ColumnInfo(name = "mode") var mode: Int
+    @ColumnInfo(name = "mode") var mode: Int,
+    @ColumnInfo(name = "name") var name: String,
 )
