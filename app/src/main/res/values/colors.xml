@@ -7,8 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="subColor">#FFD700</color>
-    <color name="mainColor">#B39DDB</color>
+    <color name="subColor">#F0F757</color>
+    <color name="mainColor">#FFBB86FC</color>
+    <color name="background">#1D1D23</color>
+    <color name="itemBackground">#34344A</color>
 
     // mainColor와 잘 어울리는 색
     <color name="main_pink">#ff66cc</color>

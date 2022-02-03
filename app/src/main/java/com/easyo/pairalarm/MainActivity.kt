@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             if (i == 0) {
                 tab.icon = getDrawable(R.drawable.ic_baseline_alarm)
             } else if (i == 1) {
-                tab.icon = getDrawable(R.drawable.ic_baseline_community)
+                tab.icon = getDrawable(R.drawable.ic_baseline_people)
             } else if (i == 2) {
                 tab.icon = getDrawable(R.drawable.ic_baseline_weather)
             } else if (i == 3) {

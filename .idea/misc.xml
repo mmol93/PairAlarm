@@ -3,7 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/ijiu/Desktop/work/Git/myGit/PairAlarm/app/src/main/res/drawable/ic_baseline_alarm.xml" value="0.26979166666666665" />
+        <entry key="..\:/Users/ijiu/Desktop/work/Git/myGit/PairAlarm/app/src/main/res/drawable/ic_baseline_people.xml" value="0.26979166666666665" />
+        <entry key="..\:/Users/ijiu/Desktop/work/Git/myGit/PairAlarm/app/src/main/res/drawable/tabbar_background.xml" value="0.26979166666666665" />
+        <entry key="..\:/Users/ijiu/Desktop/work/Git/myGit/PairAlarm/app/src/main/res/drawable/tabbar_custom.xml" value="0.26979166666666665" />
+        <entry key="..\:/Users/ijiu/Desktop/work/Git/myGit/PairAlarm/app/src/main/res/drawable/tabbar_icon_custom.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/ijiu/Desktop/work/Git/myGit/PairAlarm/app/src/main/res/layout/activity_initial.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/ijiu/Desktop/work/Git/myGit/PairAlarm/app/src/main/res/layout/activity_main.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/ijiu/Desktop/work/Git/myGit/PairAlarm/app/src/main/res/layout/fragment_alarm.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/ljws9/Documents/Git/PairAlarm/app/src/main/res/layout/activity_initial.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/ljws9/Documents/Git/PairAlarm/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/ljws9/Documents/Git/PairAlarm/app/src/main/res/layout/fragment_setting.xml" value="0.14947916666666666" />
