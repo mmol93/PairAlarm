@@ -1,4 +1,4 @@
-package com.EasyO.pairalarm.ui.activity
+package com.easyO.pairalarm.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

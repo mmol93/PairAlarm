@@ -2,6 +2,10 @@
     <string name="app_name">PairAlarm</string>
     <string name="progressFinish">Done!</string>
     <string name="progressInit">Initialize Local Database</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="dialog_permission_overlay_no">Overlay permission is needed to show alarm on the background</string>
+    <string name="dialog_yes">Yes</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
