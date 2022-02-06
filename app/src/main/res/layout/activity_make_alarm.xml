@@ -1,9 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.EasyO.pairalarm.ui.activity.MakeAlarmActivity">
+    tools:context="com.easyo.pairalarm.ui.activity.NormalAlarmActivity"
+    android:background="@color/background"
+    >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        android:id="@+id/rootLayout"
+        android:clickable="true"
+        >
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/alarmName_editTextLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/ic_clock"
+            app:startIconTint="@color/white"
+            app:hintTextColor="@color/subColor"
+            android:textColorHint="@color/white"
+            android:hint="@string/alarm">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/alarmName_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:background="@android:color/transparent"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <NumberPicker
+                android:id="@+id/numberPickerHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:theme="@style/numberPickerCustomTheme" />
+
+            <TextView
+                android:id="@+id/textView_nothing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/naver_bold"
+                android:text=":"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+            <NumberPicker
+                android:id="@+id/numberPickerMin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:theme="@style/numberPickerCustomTheme" />
+
+            <NumberPicker
+                android:id="@+id/numberPickerAMPM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:theme="@style/numberPickerCustomTheme" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/monButton"
+                android:layout_width="48dp"
+                android:layout_height="58dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@android:color/transparent"
+                android:fontFamily="@font/naver_bold"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:text="@string/monday_short"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                app:cornerRadius="60dp"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/white"
+                android:layout_weight="1"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tueButton"
+                android:layout_width="48dp"
+                android:layout_height="58dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@android:color/transparent"
+                android:fontFamily="@font/naver_bold"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:text="@string/tuesday_short"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                app:cornerRadius="60dp"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/white"
+                android:layout_weight="1"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/wedButton"
+                android:layout_width="48dp"
+                android:layout_height="58dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@android:color/transparent"
+                android:fontFamily="@font/naver_bold"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:text="@string/wednesday_short"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                app:cornerRadius="60dp"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/white"
+                android:layout_weight="1"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/thurButton"
+                android:layout_width="48dp"
+                android:layout_height="58dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@android:color/transparent"
+                android:fontFamily="@font/naver_bold"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:text="@string/thursday_short"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                app:cornerRadius="60dp"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/white"
+                android:layout_weight="1"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/friButton"
+                android:layout_width="48dp"
+                android:layout_height="58dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@android:color/transparent"
+                android:fontFamily="@font/naver_bold"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:text="@string/friday_short"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                app:cornerRadius="60dp"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/white"
+                android:layout_weight="1"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/satButton"
+                android:layout_width="48dp"
+                android:layout_height="58dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@android:color/transparent"
+                android:fontFamily="@font/naver_bold"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:text="@string/saturday_short"
+                android:textColor="@color/main_deepBlue"
+                android:textSize="20dp"
+                app:cornerRadius="60dp"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/main_deepBlue"
+                android:layout_weight="1"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sunButton"
+                android:layout_width="48dp"
+                android:layout_height="58dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@android:color/transparent"
+                android:fontFamily="@font/naver_bold"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:text="@string/sunday_short"
+                android:textColor="@color/red"
+                android:textSize="20dp"
+                app:cornerRadius="60dp"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/red"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+</ScrollView>

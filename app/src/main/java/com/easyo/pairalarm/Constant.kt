@@ -1,4 +1,4 @@
-package com.easyO.pairalarm
+package com.easyo.pairalarm
 
 object Constant {
     const val OVERLAYCODE = 300

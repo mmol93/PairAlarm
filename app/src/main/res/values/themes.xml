@@ -14,6 +14,19 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!-- numberPickerCustomTheme -->
+    <style name="numberPickerCustomTheme">
+        <item name="android:textSize">
+            20sp
+        </item>
+        <item name="fontFamily">
+            @font/naver_bold
+        </item>
+        <item name="android:editTextColor">
+            @color/white
+        </item>
+    </style>
+
     <style name="Theme.PairAlarm.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

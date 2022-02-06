@@ -5,7 +5,7 @@ import android.view.View
 var lastClickTime = 0L
 fun View.setOnSingleClickExt(onClick: (view: View) -> Unit) {
     setOnClickListener {
-        if (lastClickTime < System.currentTimeMillis() - 1000) {
+        if (lastClickTime < System.currentTimeMillis() - 700) {
             lastClickTime = System.currentTimeMillis()
             onClick(this)
         }

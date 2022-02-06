@@ -11,6 +11,8 @@
     <color name="mainColor">#FFBB86FC</color>
     <color name="background">#1D1D23</color>
     <color name="itemBackground">#34344A</color>
+    <color name="red">#990011</color>
+    <color name="deep_yellow">#F5D042</color>
 
     // mainColor와 잘 어울리는 색
     <color name="main_pink">#ff66cc</color>

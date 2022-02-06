@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         // tab과 viewPager2를 연결시킨다
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab: TabLayout.Tab, i: Int ->
             if (i == 0) {
-                tab.icon = getDrawable(R.drawable.ic_baseline_alarm)
+                tab.icon = getDrawable(R.drawable.ic_clock)
             } else if (i == 1) {
                 tab.icon = getDrawable(R.drawable.ic_baseline_people)
             } else if (i == 2) {

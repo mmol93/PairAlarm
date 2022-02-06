@@ -9,8 +9,8 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".AppClass"
@@ -22,7 +22,7 @@
         android:theme="@style/Theme.PairAlarm"
         tools:replace="android:theme">
         <activity
-            android:name="com.EasyO.pairalarm.ui.activity.MakeAlarmActivity"
+            android:name="com.easyo.pairalarm.ui.activity.NormalAlarmActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.InitialActivity"
