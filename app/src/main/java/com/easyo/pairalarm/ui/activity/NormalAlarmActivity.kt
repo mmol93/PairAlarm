@@ -61,7 +61,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                     setStrokeColorResource(R.color.deep_yellow)
                 }else{
                     mon = false
-                    setStrokeColorResource(R.color.white)
+                    setStrokeColorResource(R.color.background)
                 }
             }
         }
@@ -74,7 +74,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                     setStrokeColorResource(R.color.deep_yellow)
                 }else{
                     tue = false
-                    setStrokeColorResource(R.color.white)
+                    setStrokeColorResource(R.color.background)
                 }
             }
         }
@@ -87,7 +87,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                     setStrokeColorResource(R.color.deep_yellow)
                 }else{
                     wed = false
-                    setStrokeColorResource(R.color.white)
+                    setStrokeColorResource(R.color.background)
                 }
             }
         }
@@ -100,7 +100,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                     setStrokeColorResource(R.color.deep_yellow)
                 }else{
                     thu = false
-                    setStrokeColorResource(R.color.white)
+                    setStrokeColorResource(R.color.background)
                 }
             }
         }
@@ -113,7 +113,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                     setStrokeColorResource(R.color.deep_yellow)
                 }else{
                     fri = false
-                    setStrokeColorResource(R.color.white)
+                    setStrokeColorResource(R.color.background)
                 }
             }
         }
@@ -123,10 +123,10 @@ class NormalAlarmActivity : AppCompatActivity() {
             setOnClickListener {
                 if (!sat){
                     sat = true
-                    setStrokeColorResource(R.color.deep_yellow)
+                    setStrokeColorResource(R.color.main_deepBlue)
                 }else{
                     sat = false
-                    setStrokeColorResource(R.color.main_deepBlue)
+                    setStrokeColorResource(R.color.background)
                 }
             }
         }
@@ -136,10 +136,10 @@ class NormalAlarmActivity : AppCompatActivity() {
             setOnClickListener {
                 if (!sun){
                     sun = true
-                    setStrokeColorResource(R.color.deep_yellow)
+                    setStrokeColorResource(R.color.red)
                 }else{
                     sun = false
-                    setStrokeColorResource(R.color.red)
+                    setStrokeColorResource(R.color.background)
                 }
             }
         }

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.easyo.pairalarm.ui.activity.NormalAlarmActivity"
     android:background="@color/background"
+    android:id="@+id/scrollLayout"
     >
 
     <LinearLayout
@@ -82,7 +83,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/monButton"
-                android:layout_width="48dp"
+                android:layout_width="50dp"
                 android:layout_height="58dp"
                 android:layout_margin="5dp"
                 android:backgroundTint="@android:color/transparent"
@@ -94,13 +95,13 @@
                 android:textSize="20dp"
                 app:cornerRadius="60dp"
                 app:strokeWidth="2dp"
-                app:strokeColor="@color/white"
+                app:strokeColor="@color/background"
                 android:layout_weight="1"
                 />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tueButton"
-                android:layout_width="48dp"
+                android:layout_width="50dp"
                 android:layout_height="58dp"
                 android:layout_margin="5dp"
                 android:backgroundTint="@android:color/transparent"
@@ -112,13 +113,13 @@
                 android:textSize="20dp"
                 app:cornerRadius="60dp"
                 app:strokeWidth="2dp"
-                app:strokeColor="@color/white"
+                app:strokeColor="@color/background"
                 android:layout_weight="1"
                 />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/wedButton"
-                android:layout_width="48dp"
+                android:layout_width="50dp"
                 android:layout_height="58dp"
                 android:layout_margin="5dp"
                 android:backgroundTint="@android:color/transparent"
@@ -130,13 +131,13 @@
                 android:textSize="20dp"
                 app:cornerRadius="60dp"
                 app:strokeWidth="2dp"
-                app:strokeColor="@color/white"
+                app:strokeColor="@color/background"
                 android:layout_weight="1"
                 />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/thurButton"
-                android:layout_width="48dp"
+                android:layout_width="50dp"
                 android:layout_height="58dp"
                 android:layout_margin="5dp"
                 android:backgroundTint="@android:color/transparent"
@@ -148,13 +149,13 @@
                 android:textSize="20dp"
                 app:cornerRadius="60dp"
                 app:strokeWidth="2dp"
-                app:strokeColor="@color/white"
+                app:strokeColor="@color/background"
                 android:layout_weight="1"
                 />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/friButton"
-                android:layout_width="48dp"
+                android:layout_width="50dp"
                 android:layout_height="58dp"
                 android:layout_margin="5dp"
                 android:backgroundTint="@android:color/transparent"
@@ -166,13 +167,13 @@
                 android:textSize="20dp"
                 app:cornerRadius="60dp"
                 app:strokeWidth="2dp"
-                app:strokeColor="@color/white"
+                app:strokeColor="@color/background"
                 android:layout_weight="1"
                 />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/satButton"
-                android:layout_width="48dp"
+                android:layout_width="50dp"
                 android:layout_height="58dp"
                 android:layout_margin="5dp"
                 android:backgroundTint="@android:color/transparent"
@@ -184,13 +185,13 @@
                 android:textSize="20dp"
                 app:cornerRadius="60dp"
                 app:strokeWidth="2dp"
-                app:strokeColor="@color/main_deepBlue"
+                app:strokeColor="@color/background"
                 android:layout_weight="1"
                 />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/sunButton"
-                android:layout_width="48dp"
+                android:layout_width="50dp"
                 android:layout_height="58dp"
                 android:layout_margin="5dp"
                 android:backgroundTint="@android:color/transparent"
@@ -202,7 +203,7 @@
                 android:textSize="20dp"
                 app:cornerRadius="60dp"
                 app:strokeWidth="2dp"
-                app:strokeColor="@color/red"
+                app:strokeColor="@color/background"
                 android:layout_weight="1"
                 />
         </LinearLayout>

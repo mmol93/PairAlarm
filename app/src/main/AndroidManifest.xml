@@ -23,9 +23,11 @@
         tools:replace="android:theme">
         <activity
             android:name="com.easyo.pairalarm.ui.activity.NormalAlarmActivity"
+            android:theme="@style/Theme.PairAlarm.NoActionBar"
             android:exported="false" />
         <activity
             android:name=".ui.activity.InitialActivity"
+            android:theme="@style/Theme.PairAlarm.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
