@@ -1,5 +1,8 @@
 package com.easyo.pairalarm.ui.activity
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +15,7 @@ import android.widget.EditText
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.easyo.pairalarm.util.MakeAnimation
 import com.easyo.pairalarm.util.setOnSingleClickExt
 
 
@@ -44,6 +48,7 @@ class NormalAlarmActivity : AppCompatActivity() {
         var sat = false
         var sun = false
 
+        val makeAnimation = MakeAnimation()
         // editText의 외부를 클릭했을 때는 키보드랑 Focus 제거하기
         binding.rootLayout.setOnClickListener {
             val imm =
@@ -54,14 +59,19 @@ class NormalAlarmActivity : AppCompatActivity() {
         }
 
         // 월
-        binding.monButton.apply { 
-            setOnClickListener { 
+        binding.monButton.apply {
+            setOnClickListener {
+//                // 애니메이션 시작
+//                animatorSet.start()
                 if (!mon){
                     mon = true
                     setStrokeColorResource(R.color.deep_yellow)
+                    makeAnimation.jump(this).start()
                 }else{
                     mon = false
                     setStrokeColorResource(R.color.background)
+                    // 털어내는 애니메이션
+                    makeAnimation.swing(this).start()
                 }
             }
         }
@@ -72,9 +82,11 @@ class NormalAlarmActivity : AppCompatActivity() {
                 if (!tue){
                     tue = true
                     setStrokeColorResource(R.color.deep_yellow)
+                    makeAnimation.jump(this).start()
                 }else{
                     tue = false
                     setStrokeColorResource(R.color.background)
+                    makeAnimation.swing(this).start()
                 }
             }
         }
@@ -85,9 +97,11 @@ class NormalAlarmActivity : AppCompatActivity() {
                 if (!wed){
                     wed = true
                     setStrokeColorResource(R.color.deep_yellow)
+                    makeAnimation.jump(this).start()
                 }else{
                     wed = false
                     setStrokeColorResource(R.color.background)
+                    makeAnimation.swing(this).start()
                 }
             }
         }
@@ -98,9 +112,11 @@ class NormalAlarmActivity : AppCompatActivity() {
                 if (!thu){
                     thu = true
                     setStrokeColorResource(R.color.deep_yellow)
+                    makeAnimation.jump(this).start()
                 }else{
                     thu = false
                     setStrokeColorResource(R.color.background)
+                    makeAnimation.swing(this).start()
                 }
             }
         }
@@ -111,9 +127,11 @@ class NormalAlarmActivity : AppCompatActivity() {
                 if (!fri){
                     fri = true
                     setStrokeColorResource(R.color.deep_yellow)
+                    makeAnimation.jump(this).start()
                 }else{
                     fri = false
                     setStrokeColorResource(R.color.background)
+                    makeAnimation.swing(this).start()
                 }
             }
         }
@@ -124,9 +142,11 @@ class NormalAlarmActivity : AppCompatActivity() {
                 if (!sat){
                     sat = true
                     setStrokeColorResource(R.color.main_deepBlue)
+                    makeAnimation.jump(this).start()
                 }else{
                     sat = false
                     setStrokeColorResource(R.color.background)
+                    makeAnimation.swing(this).start()
                 }
             }
         }
@@ -137,9 +157,11 @@ class NormalAlarmActivity : AppCompatActivity() {
                 if (!sun){
                     sun = true
                     setStrokeColorResource(R.color.red)
+                    makeAnimation.jump(this).start()
                 }else{
                     sun = false
                     setStrokeColorResource(R.color.background)
+                    makeAnimation.swing(this).start()
                 }
             }
         }
