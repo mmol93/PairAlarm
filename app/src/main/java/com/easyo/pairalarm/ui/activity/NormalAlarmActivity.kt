@@ -21,6 +21,7 @@ import com.easyo.pairalarm.util.setOnSingleClickExt
 
 class NormalAlarmActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMakeAlarmBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMakeAlarmBinding.inflate(layoutInflater)
@@ -48,6 +49,8 @@ class NormalAlarmActivity : AppCompatActivity() {
         var sat = false
         var sun = false
 
+        var vibration = 0
+
         val makeAnimation = MakeAnimation()
         // editText의 외부를 클릭했을 때는 키보드랑 Focus 제거하기
         binding.rootLayout.setOnClickListener {
@@ -56,6 +59,43 @@ class NormalAlarmActivity : AppCompatActivity() {
             imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 
             binding.alarmNameEditTextLayout.clearFocus()
+        }
+
+        // cancel 버튼 눌렀을 때
+        binding.cancelButton.setOnSingleClickExt {
+            finish()
+        }
+
+        // 진동 버튼을 눌렀을 때때
+        binding.imageVibration.apply {
+            setOnClickListener {
+                when (vibration){
+                    0 -> {
+                        this.setImageDrawable(getDrawable(R.drawable.ic_vib_1))
+                        vibration = 1
+                    }
+                    1 ->{
+                        this.setImageDrawable(getDrawable(R.drawable.ic_vib_2))
+                        vibration = 2
+                        makeAnimation.swing(this).start()
+                    }
+                    2 ->{
+                        this.setImageDrawable(getDrawable(R.drawable.ic_no_vib))
+                        vibration = 0
+                    }
+                }
+            }
+        }
+
+        // 볼륨 이미지를 클릭했을 때
+        binding.imageVolume.setOnClickListener {
+            if (binding.volumeSeekBar.progress > 0){
+                binding.volumeSeekBar.progress = 0
+                binding.imageVolume.setImageResource(R.drawable.volume_mute)
+            }else{
+                binding.volumeSeekBar.progress = 100
+                binding.imageVolume.setImageResource(R.drawable.volume_icon)
+            }
         }
 
         // 월

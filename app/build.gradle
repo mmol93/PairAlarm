@@ -102,4 +102,7 @@ dependencies {
 
     // 커스텀 FAB
     implementation(files("libs/customFloating-release.aar"))
+
+    // FitButton - https://github.com/nikartm/FitButton
+    implementation 'io.github.nikartm:fit-button:2.0.0'
 }

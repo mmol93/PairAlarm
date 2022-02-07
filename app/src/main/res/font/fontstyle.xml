@@ -5,4 +5,19 @@
         android:fontWeight="400"
         android:font="@font/naver_bold"
         />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/nanumgothic"
+        />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/nanumgothicbold"
+        />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/nanumgothicextrabold"
+        />
 </font-family>

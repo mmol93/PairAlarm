@@ -9,6 +9,8 @@
     <string name="alarm">Alarm name</string>
     <string name="alarmSet_AM">AM</string>
     <string name="alarmSet_PM">PM</string>
+    <string name="save">save</string>
+    <string name="cancel">cancel</string>
 
     <!-- Weekend -->
     <string name="monday_short">M</string>
@@ -26,6 +28,15 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
+
+    <!-- Alarm Set -->
+    <string name="alarmSet_selectBell">Alarm Bell</string>
+    <string name="alarmSet_selectMode">Alarm Mode</string>
+    <string name="alarmSet_selectBellTextTitle">Current Bell</string>
+    <string name="alarmSet_selectModeTextTitle">Current Mode</string>
+    <string name="alarmSet_selectModeNormal">Normal</string>
+    <string name="alarmSet_selectModeCAL">Calculation</string>
+
 
 
     <!-- about Dialog -->
