@@ -1,26 +1,22 @@
 package com.easyo.pairalarm.ui.activity
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityMakeAlarmBinding
-import android.widget.EditText
-
-import android.view.MotionEvent
-import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
+import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.util.MakeAnimation
 import com.easyo.pairalarm.util.setOnSingleClickExt
+import com.easyo.pairalarm.viewModel.AlarmViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class NormalAlarmActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMakeAlarmBinding
+    private val alarmViewModel: AlarmViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +55,54 @@ class NormalAlarmActivity : AppCompatActivity() {
             imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 
             binding.alarmNameEditTextLayout.clearFocus()
+        }
+        // save 버튼 눌렀을 때
+        binding.saveButton.setOnSingleClickExt {
+            var hour = 0
+
+            // 오전, 오후에 따라 hour의 값에 12를 더해주기
+            if (binding.numberPickerAMPM.value == 0){
+                hour = binding.numberPickerHour.value
+            }else{
+                hour = binding.numberPickerHour.value + 12
+                // 24시는 0시로 설정되게 한다
+                if (hour == 24){
+                    hour = 0
+                }
+            }
+
+            // DB의 requestCode에 넣을 unique 수 생성
+            val requestCode = System.currentTimeMillis()
+
+            // DB에 넣을 Data set
+            val alarmData = AlarmData(
+                // autoGenerate가 true이기 때문에 null을 넣으면 알아서 값이 들어간다
+                id = null,
+                button = true,
+                Sun = sun,
+                Mon = mon,
+                Tue = tue,
+                Wed = wed,
+                Thu = thu,
+                Fri = fri,
+                Sat = sat,
+                hour = hour,
+                minute = binding.numberPickerMin.value,
+                volume = binding.volumeSeekBar.progress,
+                // 지금은 임시로 bell을 0로 설정한다
+                bell = 0,
+                quick = false,
+                // 지금은 임시로 mode를 0로 설정한다
+                mode = 0,
+                vibration = vibration,
+                name = binding.alarmNameEditText.text.toString(),
+                requestCode = requestCode
+                )
+
+            // DB에 데이터 삽입
+            alarmViewModel.insert(alarmData)
+
+            finish()
         }
 
         // cancel 버튼 눌렀을 때
@@ -101,11 +145,10 @@ class NormalAlarmActivity : AppCompatActivity() {
         // 월
         binding.monButton.apply {
             setOnClickListener {
-//                // 애니메이션 시작
-//                animatorSet.start()
                 if (!mon){
                     mon = true
                     setStrokeColorResource(R.color.deep_yellow)
+                    // 점프 애니메이션
                     makeAnimation.jump(this).start()
                 }else{
                     mon = false

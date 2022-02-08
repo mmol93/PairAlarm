@@ -93,6 +93,9 @@ dependencies {
     def fragment_version = "1.4.0"
     implementation("androidx.fragment:fragment-ktx:$fragment_version")
 
+    // androidx.activity - https://developer.android.com/jetpack/androidx/releases/activity?hl=ko
+    implementation 'androidx.activity:activity-ktx:1.4.0'
+
     // Lifecycle - https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=ko
     def lifecycle_version = "2.4.0"
     // ViewModel
