@@ -17,7 +17,12 @@ class AppClass:Application(), Configuration.Provider {
 
     companion object{
         lateinit var context : AppClass
-        var alarmData: Flow<List<AlarmData>>? = null
+        var alarmDataList: Flow<List<AlarmData>>? = null
+
+        // current가 붙은 것은 모두 alarm setting에서 사용되는 것들임
+        var currentAlarmData: AlarmData? = null
+        var currentAlarmBell: Int? = null
+        var currentAlarmMode: Int = 0   // 0 : 일반 모드 / 1 : 계산 문제 모드
     }
 
     override fun onCreate() {

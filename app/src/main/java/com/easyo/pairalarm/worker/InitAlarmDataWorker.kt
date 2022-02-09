@@ -20,7 +20,7 @@ class InitAlarmDataWorker @AssistedInject constructor(
     private val alarmDao: AlarmDAO
 ): CoroutineWorker(appContext, workerParams){
     override suspend fun doWork(): Result {
-        AppClass.alarmData =  alarmDao.getAllAlarms()
+        AppClass.alarmDataList =  alarmDao.getAllAlarms()
         EventBus.post(InitDataEvent(Int.MAX_VALUE, applicationContext.getString(R.string.progressInit)))
         Log.d("InitWorker", "run")
         return Result.success()

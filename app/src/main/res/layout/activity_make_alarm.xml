@@ -248,7 +248,7 @@
             >
 
             <com.github.nikartm.button.FitButton
-                android:id="@+id/button_selectBell"
+                android:id="@+id/selectBell_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -274,7 +274,7 @@
                 app:fb_textPaddingStart="16dp" />
 
             <com.github.nikartm.button.FitButton
-                android:id="@+id/button_selectMode"
+                android:id="@+id/selectMode_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -308,7 +308,7 @@
             >
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -317,7 +317,7 @@
                 android:text="@string/alarmSet_selectBellTextTitle" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -335,7 +335,7 @@
 
             <TextView
                 android:id="@+id/text_currentBell"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -346,7 +346,7 @@
 
             <TextView
                 android:id="@+id/text_currentMode"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"

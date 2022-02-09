@@ -1,14 +1,19 @@
 package com.easyo.pairalarm.ui.activity
 
 import android.content.Context
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityMakeAlarmBinding
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
+import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.util.MakeAnimation
+import com.easyo.pairalarm.util.makeToast
 import com.easyo.pairalarm.util.setOnSingleClickExt
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,6 +52,15 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         var vibration = 0
 
+        // 수정하기 위해 이 Activity를 열었는지 확인
+        val isModify = intent.getBooleanExtra("modify", false)
+
+        // todo 수정하기 위해 들어왔다면 각 view에 데이터를 넣어줘야한다
+        // todo 각각의 데이터는 AppClass에 들어있음
+        if (isModify && AppClass.currentAlarmData != null){
+
+        }
+
         val makeAnimation = MakeAnimation()
         // editText의 외부를 클릭했을 때는 키보드랑 Focus 제거하기
         binding.rootLayout.setOnClickListener {
@@ -56,53 +70,99 @@ class NormalAlarmActivity : AppCompatActivity() {
 
             binding.alarmNameEditTextLayout.clearFocus()
         }
-        // save 버튼 눌렀을 때
-        binding.saveButton.setOnSingleClickExt {
-            var hour = 0
 
-            // 오전, 오후에 따라 hour의 값에 12를 더해주기
-            if (binding.numberPickerAMPM.value == 0){
-                hour = binding.numberPickerHour.value
-            }else{
-                hour = binding.numberPickerHour.value + 12
-                // 24시는 0시로 설정되게 한다
-                if (hour == 24){
-                    hour = 0
+        // AlarmBell 설정 버튼 눌렀을 때
+        binding.selectBellButton.setOnSingleClickExt {
+
+        }
+
+        // AlarmMode 설정 버튼 눌렀을 때
+        binding.selectModeButton.setOnSingleClickExt {
+            // ** 항목 선택 Dialog 설정
+            val modeItem = arrayOf(getString(R.string.alarmSet_alarmModeItem1), getString(R.string.alarmSet_alarmModeItem2))
+            val builder = AlertDialog.Builder(this)
+
+            builder.setTitle(getString(R.string.alarmSet_selectBellDialogTitle))
+            builder.setSingleChoiceItems(modeItem, AppClass.currentAlarmMode , null)
+            builder.setNeutralButton(getString(R.string.cancel), null)
+
+            builder.setPositiveButton(getString(R.string.ok)){ dialogInterface: DialogInterface, i: Int ->
+                val alert = dialogInterface as AlertDialog
+                val idx = alert.listView.checkedItemPosition
+                // * 선택된 아이템의 position에 따라 행동 조건 넣기
+                when(idx){
+                    // Normal 클릭 시
+                    0 -> {
+                        AppClass.currentAlarmMode = 0
+                        binding.textCurrentMode.text = getString(R.string.alarmSet_selectModeNormal)
+                    }
+                    // Calculate 클릭 시
+                    1 -> {
+                        AppClass.currentAlarmMode = 1
+                        binding.textCurrentMode.text = getString(R.string.alarmSet_selectModeCAL)
+                    }
                 }
             }
+            builder.show()
+        }
 
-            // DB의 requestCode에 넣을 unique 수 생성
-            val requestCode = System.currentTimeMillis()
+        // save 버튼 눌렀을 때
+        binding.saveButton.setOnSingleClickExt {
+            // 요일을 하나라도 선택해야한다
+            if (sun || mon || tue || wed || thu || fri || sat){
+                var hour = 0
 
-            // DB에 넣을 Data set
-            val alarmData = AlarmData(
-                // autoGenerate가 true이기 때문에 null을 넣으면 알아서 값이 들어간다
-                id = null,
-                button = true,
-                Sun = sun,
-                Mon = mon,
-                Tue = tue,
-                Wed = wed,
-                Thu = thu,
-                Fri = fri,
-                Sat = sat,
-                hour = hour,
-                minute = binding.numberPickerMin.value,
-                volume = binding.volumeSeekBar.progress,
-                // 지금은 임시로 bell을 0로 설정한다
-                bell = 0,
-                quick = false,
-                // 지금은 임시로 mode를 0로 설정한다
-                mode = 0,
-                vibration = vibration,
-                name = binding.alarmNameEditText.text.toString(),
-                requestCode = requestCode
+                // 오전, 오후에 따라 hour의 값에 12를 더해주기
+                if (binding.numberPickerAMPM.value == 0){
+                    hour = binding.numberPickerHour.value
+                }else{
+                    hour = binding.numberPickerHour.value + 12
+                    // 24시는 0시로 설정되게 한다
+                    if (hour == 24){
+                        hour = 0
+                    }
+                }
+
+                // DB의 requestCode에 넣을 unique 수 생성
+                val requestCode = System.currentTimeMillis()
+
+                // DB에 넣을 Data set
+                val alarmData = AlarmData(
+                    // autoGenerate가 true이기 때문에 null을 넣으면 알아서 값이 들어간다
+                    id = null,
+                    button = true,
+                    Sun = sun,
+                    Mon = mon,
+                    Tue = tue,
+                    Wed = wed,
+                    Thu = thu,
+                    Fri = fri,
+                    Sat = sat,
+                    hour = hour,
+                    minute = binding.numberPickerMin.value,
+                    volume = binding.volumeSeekBar.progress,
+                    // 지금은 임시로 bell을 0로 설정한다
+                    bell = 0,
+                    quick = false,
+                    // 지금은 임시로 mode를 0로 설정한다
+                    mode = 0,
+                    vibration = vibration,
+                    name = binding.alarmNameEditText.text.toString(),
+                    requestCode = requestCode
                 )
 
-            // DB에 데이터 삽입
-            alarmViewModel.insert(alarmData)
+                // DB에 데이터 삽입
+                alarmViewModel.insert(alarmData)
 
-            finish()
+                // setting에 사용된 AppClass들은 모두 초기화해야한다다
+                AppClass.currentAlarmData = null
+                AppClass.currentAlarmBell = null
+                AppClass.currentAlarmMode = 0
+
+                finish()
+            }else{
+                makeToast(this, getString(R.string.alarmSet_Toast))
+            }
         }
 
         // cancel 버튼 눌렀을 때
