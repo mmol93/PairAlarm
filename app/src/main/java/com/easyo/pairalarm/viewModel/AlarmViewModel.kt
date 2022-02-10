@@ -7,11 +7,18 @@ import androidx.lifecycle.viewModelScope
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.repository.AlarmRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepository): ViewModel() {
+    val currentAlarmData = MutableStateFlow<String?>(null)
+    val currentAlarmBell = MutableStateFlow<Int?>(null)
+    val currentAlarmMode = MutableStateFlow(0)
+    val playStopTextView = MutableStateFlow<String>("")
+
+    // DB에 관한 것들
     fun insert(alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.insert(alarmData)
         Log.d("AlarmViewModel", "inserted: $alarmData")

@@ -1,6 +1,7 @@
 package com.easyo.pairalarm
 
 import android.app.Application
+import android.media.MediaPlayer
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.easyo.pairalarm.database.table.AlarmData
@@ -18,11 +19,7 @@ class AppClass:Application(), Configuration.Provider {
     companion object{
         lateinit var context : AppClass
         var alarmDataList: Flow<List<AlarmData>>? = null
-
-        // current가 붙은 것은 모두 alarm setting에서 사용되는 것들임
-        var currentAlarmData: AlarmData? = null
-        var currentAlarmBell: Int? = null
-        var currentAlarmMode: Int = 0   // 0 : 일반 모드 / 1 : 계산 문제 모드
+        var mediaPlayer: MediaPlayer? = null
     }
 
     override fun onCreate() {
