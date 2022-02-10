@@ -10,7 +10,7 @@ import com.easyo.pairalarm.databinding.ActivityMakeAlarmBinding
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import com.easyo.pairalarm.AppClass
+import com.EasyO.pairalarm.ui.dialog.BellSelect
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.util.MakeAnimation
 import com.easyo.pairalarm.util.makeToast
@@ -57,7 +57,7 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         // todo 수정하기 위해 들어왔다면 각 view에 데이터를 넣어줘야한다
         // todo 각각의 데이터는 AppClass에 들어있음
-        if (isModify && AppClass.currentAlarmData != null){
+        if (isModify && alarmViewModel.currentAlarmData != null){
 
         }
 
@@ -73,7 +73,8 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         // AlarmBell 설정 버튼 눌렀을 때
         binding.selectBellButton.setOnSingleClickExt {
-
+            val bellSelectDialog = BellSelect(this, alarmViewModel)
+            bellSelectDialog.show()
         }
 
         // AlarmMode 설정 버튼 눌렀을 때
@@ -83,7 +84,7 @@ class NormalAlarmActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
 
             builder.setTitle(getString(R.string.alarmSet_selectBellDialogTitle))
-            builder.setSingleChoiceItems(modeItem, AppClass.currentAlarmMode , null)
+            builder.setSingleChoiceItems(modeItem, alarmViewModel.currentAlarmMode.value, null)
             builder.setNeutralButton(getString(R.string.cancel), null)
 
             builder.setPositiveButton(getString(R.string.ok)){ dialogInterface: DialogInterface, i: Int ->
@@ -93,12 +94,12 @@ class NormalAlarmActivity : AppCompatActivity() {
                 when(idx){
                     // Normal 클릭 시
                     0 -> {
-                        AppClass.currentAlarmMode = 0
+                        alarmViewModel.currentAlarmMode.value = 0
                         binding.textCurrentMode.text = getString(R.string.alarmSet_selectModeNormal)
                     }
                     // Calculate 클릭 시
                     1 -> {
-                        AppClass.currentAlarmMode = 1
+                        alarmViewModel.currentAlarmMode.value = 1
                         binding.textCurrentMode.text = getString(R.string.alarmSet_selectModeCAL)
                     }
                 }
@@ -145,7 +146,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                     bell = 0,
                     quick = false,
                     // 지금은 임시로 mode를 0로 설정한다
-                    mode = 0,
+                    mode = alarmViewModel.currentAlarmMode.value,
                     vibration = vibration,
                     name = binding.alarmNameEditText.text.toString(),
                     requestCode = requestCode
@@ -154,10 +155,10 @@ class NormalAlarmActivity : AppCompatActivity() {
                 // DB에 데이터 삽입
                 alarmViewModel.insert(alarmData)
 
-                // setting에 사용된 AppClass들은 모두 초기화해야한다다
-                AppClass.currentAlarmData = null
-                AppClass.currentAlarmBell = null
-                AppClass.currentAlarmMode = 0
+                // setting에 사용된 viewModel 변수들은 모두 초기화해야한다다
+                alarmViewModel.currentAlarmData.value = null
+                alarmViewModel.currentAlarmBell.value = null
+                alarmViewModel.currentAlarmMode.value = 0
 
                 finish()
             }else{
