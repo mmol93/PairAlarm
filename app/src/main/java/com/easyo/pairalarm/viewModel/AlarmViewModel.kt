@@ -49,10 +49,8 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
     val currentAlarmMode = MutableStateFlow(0)
     val currenAlarmVolume = MutableStateFlow(100)
     val currentAlarmRequestCode = MutableStateFlow<Long?>(null)
+    val currenAlarmAmPm = MutableStateFlow(0)
     val playStopTextView = MutableStateFlow("play")
-    val saveUpdateTextView = MutableStateFlow("")
-
-
 
     // DB에 관한 것들
     fun insert(alarmData: AlarmData) = viewModelScope.launch {

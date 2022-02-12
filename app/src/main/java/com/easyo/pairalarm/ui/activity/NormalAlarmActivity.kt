@@ -171,6 +171,12 @@ class NormalAlarmActivity : AppCompatActivity() {
                         binding.sunButton.setStrokeColorInButton("Sun", it)
                     }
                 }
+                launch {
+                    // Am PM
+                    alarmViewModel.currenAlarmAmPm.collectLatest {
+                        binding.numberPickerAMPM.value = alarmViewModel.currenAlarmAmPm.value
+                    }
+                }
             }
         }
 
@@ -193,13 +199,7 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         // todo 데이터 저장 시 의도한대로 시간 데이터가 들어가는지 확인(recyclerView 만들고 나서)
         binding.numberPickerHour.setOnValueChangedListener { numberPicker, i, i2 ->
-            if (amPm == 0){
-                alarmViewModel.currentAlarmHour.value = numberPicker.value
-            }else if (amPm == 1 && alarmViewModel.currentAlarmHour.value == 12){
-                alarmViewModel.currentAlarmHour.value = 0
-            }else{
-                alarmViewModel.currentAlarmHour.value = numberPicker.value + 12
-            }
+            alarmViewModel.currentAlarmHour.value = numberPicker.value
         }
 
         binding.numberPickerMin.setOnValueChangedListener { numberPicker, i, i2 ->
@@ -208,13 +208,7 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         // todo 데이터 저장 시 의도한대로 시간 데이터가 들어가는지 확인(recyclerView 만들고 나서)
         binding.numberPickerAMPM.setOnValueChangedListener { numberPicker, i, i2 ->
-            if (numberPicker.value == 0){
-                amPm = 0
-            }else if (numberPicker.value == 1 && alarmViewModel.currentAlarmHour.value == 12){
-                alarmViewModel.currentAlarmHour.value = 0
-            }else{
-                alarmViewModel.currentAlarmHour.value += 12
-            }
+            alarmViewModel.currenAlarmAmPm.value = numberPicker.value
         }
 
         // AlarmMode 설정 버튼 눌렀을 때
@@ -261,10 +255,10 @@ class NormalAlarmActivity : AppCompatActivity() {
                 var hour = 0
 
                 // 오전, 오후에 따라 hour의 값에 12를 더해주기
-                if (binding.numberPickerAMPM.value == 0) {
-                    hour = binding.numberPickerHour.value
+                if (alarmViewModel.currenAlarmAmPm.value == 0) {
+                    hour = alarmViewModel.currentAlarmHour.value
                 } else {
-                    hour = binding.numberPickerHour.value + 12
+                    hour = alarmViewModel.currentAlarmHour.value + 12
                     // 24시는 0시로 설정되게 한다
                     if (hour == 24) {
                         hour = 0
