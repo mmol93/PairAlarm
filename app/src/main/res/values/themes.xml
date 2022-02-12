@@ -27,6 +27,15 @@
         </item>
     </style>
 
+    <style name="Widget.App.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Switch</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Switch" parent="">
+        <item name="colorOnSurface">@color/background</item>
+        <item name="colorSecondary">@color/deep_yellow</item>
+    </style>
+
     <!-- seekbar style -->
     <style name="seekbarTheme" parent="Theme.AppCompat.Light">
         <item name="android:progressBackgroundTint">@color/white</item>
