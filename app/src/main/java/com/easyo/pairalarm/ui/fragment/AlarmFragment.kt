@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
 import com.easyo.pairalarm.Constant.OVERLAYCODE
 import com.easyo.pairalarm.R
@@ -16,9 +17,13 @@ import com.easyo.pairalarm.ui.activity.SimpleAlarmActivity
 import com.easyo.pairalarm.util.ControlDialog
 import com.easyo.pairalarm.util.makeToast
 import com.easyo.pairalarm.util.setOnSingleClickExt
+import com.easyo.pairalarm.viewModel.AlarmViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AlarmFragment : Fragment(R.layout.fragment_alarm) {
     private lateinit var binding: FragmentAlarmBinding
+    private val alarmViewModel: AlarmViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,6 +53,24 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         // 일반 알람 설정
         binding.fab2.setOnSingleClickExt {
             if (checkOverlayPermission()){
+
+                // todo 밑에 내용은 나중에 recyclerView에서 각 항목을 클릭했을 때 실시하게 한다
+//                alarmViewModel.currentAlarmMon.value = alarmViewModel.currentAlarmData.value.Mon
+//                alarmViewModel.currentAlarmTue.value = alarmViewModel.currentAlarmData.value.Tue
+//                alarmViewModel.currentAlarmWed.value = alarmViewModel.currentAlarmData.value.Wed
+//                alarmViewModel.currentAlarmThu.value = alarmViewModel.currentAlarmData.value.Thu
+//                alarmViewModel.currentAlarmFri.value = alarmViewModel.currentAlarmData.value.Fri
+//                alarmViewModel.currentAlarmSat.value = alarmViewModel.currentAlarmData.value.Sat
+//                alarmViewModel.currentAlarmSun.value = alarmViewModel.currentAlarmData.value.Sun
+//                alarmViewModel.currentAlarmVibration.value = alarmViewModel.currentAlarmData.value.vibration
+//                alarmViewModel.currentAlarmRequestCode.value = alarmViewModel.currentAlarmData.value.requestCode
+//                alarmViewModel.currentAlarmMode.value = alarmViewModel.currentAlarmData.value.mode
+//                alarmViewModel.currentAlarmHour.value = alarmViewModel.currentAlarmData.value.hour
+//                alarmViewModel.currentAlarmMin.value = alarmViewModel.currentAlarmData.value.minute
+//                alarmViewModel.currenAlarmVolume.value = alarmViewModel.currentAlarmData.value.volume
+//                alarmViewModel.currentAlarmBell.value = alarmViewModel.currentAlarmData.value.bell
+//                alarmViewModel.currentAlarmName.value = alarmViewModel.currentAlarmData.value.name
+
                 val makeNormalAlarmIntent = Intent(activity, NormalAlarmActivity::class.java)
                 startActivity(makeNormalAlarmIntent)
             }

@@ -1,5 +1,6 @@
-package com.EasyO.pairalarm.ui.dialog
+package com.easyo.pairalarm.ui.dialog
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -14,11 +15,14 @@ import com.easyo.pairalarm.util.setOnSingleClickExt
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class BellSelect(context: Context, val alarmViewModel: AlarmViewModel):Dialog(context) {
     private lateinit var binding: DialogBellSetBinding
+    private lateinit var uiJob: Job
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DialogBellSetBinding.inflate(layoutInflater)
@@ -27,11 +31,21 @@ class BellSelect(context: Context, val alarmViewModel: AlarmViewModel):Dialog(co
         var bellIndex = 0
 
         // UI 값 세팅하기
-        binding.playButton.text = alarmViewModel.playStopTextView.value
-        CoroutineScope(Dispatchers.IO).launch {
-            alarmViewModel.playStopTextView.collectLatest {
-                launch(Dispatchers.Main) {
+        uiJob = CoroutineScope(Dispatchers.Main).launch {
+            launch {
+                alarmViewModel.playStopTextView.collectLatest {
                     binding.playButton.text = it
+                }
+            }
+            launch {
+                alarmViewModel.currentAlarmBell.collectLatest {
+                    when(it){
+                        0 -> binding.RadioGroup.check(R.id.radioButton_N1)
+                        1 -> binding.RadioGroup.check(R.id.radioButton_N2)
+                        2 -> binding.RadioGroup.check(R.id.radioButton_N3)
+                        3 -> binding.RadioGroup.check(R.id.radioButton_N4)
+                    }
+
                 }
             }
         }
@@ -50,6 +64,7 @@ class BellSelect(context: Context, val alarmViewModel: AlarmViewModel):Dialog(co
             mediaStop(false)
         }
 
+        // Play 버튼
         binding.playButton.setOnSingleClickExt {
             if (AppClass.mediaPlayer == null){
                 AppClass.mediaPlayer = selectMusic(context, bellIndex)
@@ -71,19 +86,19 @@ class BellSelect(context: Context, val alarmViewModel: AlarmViewModel):Dialog(co
                 }
                 alarmViewModel.playStopTextView.value = context.getString(R.string.stop)
             }
-            Log.d("BellSelect", "---------------")
-            Log.d("BellSelect", "isPlaying: ${AppClass.mediaPlayer!!.isPlaying}")
-
         }
 
+        // Save 버튼
         binding.saveButton.setOnSingleClickExt {
-            alarmViewModel.currentAlarmMode.value = bellIndex
+            alarmViewModel.currentAlarmBell.value = bellIndex
+            dismiss()
         }
     }
 
     override fun onStop() {
         super.onStop()
         mediaStop(true)
+        uiJob.cancel()
     }
     private fun mediaStop(dialogClose: Boolean){
         if (AppClass.mediaPlayer != null){
