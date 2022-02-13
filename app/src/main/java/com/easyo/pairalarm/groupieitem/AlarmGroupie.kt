@@ -67,10 +67,10 @@ class AlarmGroupie(val context: Context, val alarmDataList: AlarmData): Bindable
         }
 
         // 볼륨 표기
-        if (alarmDataList.vibration == 100) binding.volumeImageView.setImageDrawable(context.getDrawable(R.drawable.vol4))
-        else if (alarmDataList.vibration in 61..99) binding.volumeImageView.setImageDrawable(context.getDrawable(R.drawable.vol3))
-        else if (alarmDataList.vibration in 31..60) binding.volumeImageView.setImageDrawable(context.getDrawable(R.drawable.vol2))
-        else if (alarmDataList.vibration in 1..30) binding.volumeImageView.setImageDrawable(context.getDrawable(R.drawable.vol1))
+        if (alarmDataList.volume == 100) binding.volumeImageView.setImageDrawable(context.getDrawable(R.drawable.vol4))
+        else if (alarmDataList.volume in 61..99) binding.volumeImageView.setImageDrawable(context.getDrawable(R.drawable.vol3))
+        else if (alarmDataList.volume in 31..60) binding.volumeImageView.setImageDrawable(context.getDrawable(R.drawable.vol2))
+        else if (alarmDataList.volume in 1..30) binding.volumeImageView.setImageDrawable(context.getDrawable(R.drawable.vol1))
         else binding.volumeImageView.setImageDrawable(context.getDrawable(R.drawable.vol0))
 
         // 스위치
