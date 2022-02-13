@@ -8,7 +8,7 @@ import android.util.Log
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityMakeAlarmBinding
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
+import android.widget.SeekBar
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,9 +17,9 @@ import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.ui.dialog.BellSelect
 import com.easyo.pairalarm.util.MakeAnimation
+import com.easyo.pairalarm.util.initCurrentAlarmData
 import com.easyo.pairalarm.util.makeToast
 import com.easyo.pairalarm.util.setOnSingleClickExt
-import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -28,7 +28,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class NormalAlarmActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMakeAlarmBinding
-    private val alarmViewModel: AlarmViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,9 +50,11 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         var amPm = 0
 
+        Log.d("NormalAlarmActivity", "alarmRequestCode: ${AppClass.alarmViewModel.currentAlarmRequestCode.value} ")
+
         // alarmData의 requestCode 값이 0이면 새로운 알람 생성
-        if (alarmViewModel.currentAlarmRequestCode.value == 0L){
-            binding.saveButton.text = "update"
+        if (AppClass.alarmViewModel.currentAlarmRequestCode.value == null || AppClass.alarmViewModel.currentAlarmRequestCode.value == 0L ) {
+            binding.saveButton.text = "save"
         }
 
         // UI 초기화
@@ -62,13 +63,13 @@ class NormalAlarmActivity : AppCompatActivity() {
 
                 launch {
                     // 알람 이름
-                    alarmViewModel.currentAlarmName.collectLatest {
+                    AppClass.alarmViewModel.currentAlarmName.collectLatest {
                         binding.alarmNameEditText.setText(it)
                     }
                 }
                 launch {
                     // 시간
-                    alarmViewModel.currentAlarmHour.collectLatest {
+                    AppClass.alarmViewModel.currentAlarmHour.collectLatest {
                         if (it > 12) {
                             binding.numberPickerHour.value = (it - 12)
                         } else {
@@ -78,13 +79,13 @@ class NormalAlarmActivity : AppCompatActivity() {
                 }
                 launch {
                     // 분
-                    alarmViewModel.currentAlarmMin.collectLatest {
+                    AppClass.alarmViewModel.currentAlarmMin.collectLatest {
                         binding.numberPickerMin.value = it
                     }
                 }
                 launch {
                     // 볼륨
-                    alarmViewModel.currenAlarmVolume.collectLatest {
+                    AppClass.alarmViewModel.currentAlarmVolume.collectLatest {
                         when (it) {
                             0 -> binding.imageVolume.setImageDrawable(getDrawable(R.drawable.volume_mute))
                             else -> binding.imageVolume.setImageDrawable(getDrawable(R.drawable.volume_icon))
@@ -94,7 +95,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                 }
                 launch {
                     // 벨
-                    alarmViewModel.currentAlarmBell.collectLatest {
+                    AppClass.alarmViewModel.currentAlarmBell.collectLatest {
                         when (it) {
                             0 -> binding.textCurrentBell.text =
                                 getString(R.string.bellType_Normal_Walking)
@@ -109,7 +110,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                 }
                 launch {
                     // 알람 모드
-                    alarmViewModel.currentAlarmMode.collectLatest {
+                    AppClass.alarmViewModel.currentAlarmMode.collectLatest {
                         when (it) {
                             0 -> binding.textCurrentMode.text =
                                 getString(R.string.alarmSet_alarmModeItem1)
@@ -120,8 +121,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                 }
                 launch {
                     // 진동
-                    alarmViewModel.currentAlarmVibration.collectLatest {
-                        Log.d("NormalAlarmActivity", "vibration changed")
+                    AppClass.alarmViewModel.currentAlarmVibration.collectLatest {
                         when (it) {
                             0 -> binding.imageVibration.setImageDrawable(getDrawable(R.drawable.ic_no_vib))
                             1 -> binding.imageVibration.setImageDrawable(getDrawable(R.drawable.ic_vib_1))
@@ -131,50 +131,51 @@ class NormalAlarmActivity : AppCompatActivity() {
                 }
                 launch {
                     // 월
-                    alarmViewModel.currentAlarmMon.collectLatest {
+                    AppClass.alarmViewModel.currentAlarmMon.collectLatest {
                         binding.monButton.setStrokeColorInButton(null, it)
                     }
                 }
                 launch {
                     // 화
-                    alarmViewModel.currentAlarmTue.collectLatest {
+                    AppClass.alarmViewModel.currentAlarmTue.collectLatest {
                         binding.tueButton.setStrokeColorInButton(null, it)
                     }
                 }
                 launch {
                     // 수
-                    alarmViewModel.currentAlarmWed.collectLatest {
+                    AppClass.alarmViewModel.currentAlarmWed.collectLatest {
                         binding.wedButton.setStrokeColorInButton(null, it)
                     }
                 }
                 launch {
                     // 목
-                    alarmViewModel.currentAlarmThu.collectLatest {
+                    AppClass.alarmViewModel.currentAlarmThu.collectLatest {
                         binding.thurButton.setStrokeColorInButton(null, it)
                     }
                 }
                 launch {
                     // 금
-                    alarmViewModel.currentAlarmFri.collectLatest {
+                    AppClass.alarmViewModel.currentAlarmFri.collectLatest {
                         binding.friButton.setStrokeColorInButton(null, it)
                     }
                 }
                 launch {
                     // 토
-                    alarmViewModel.currentAlarmSat.collectLatest {
+                    AppClass.alarmViewModel.currentAlarmSat.collectLatest {
                         binding.satButton.setStrokeColorInButton("Sat", it)
                     }
                 }
                 launch {
                     // 일
-                    alarmViewModel.currentAlarmSun.collectLatest {
+                    AppClass.alarmViewModel.currentAlarmSun.collectLatest {
                         binding.sunButton.setStrokeColorInButton("Sun", it)
                     }
                 }
                 launch {
                     // Am PM
-                    alarmViewModel.currenAlarmAmPm.collectLatest {
-                        binding.numberPickerAMPM.value = alarmViewModel.currenAlarmAmPm.value
+                    AppClass.alarmViewModel.currentAlarmAmPm.collectLatest {
+                        binding.numberPickerAMPM.value =
+                            AppClass.alarmViewModel.currentAlarmAmPm.value
                     }
                 }
             }
@@ -193,23 +194,35 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         // AlarmBell 설정 버튼 눌렀을 때
         binding.selectBellButton.setOnSingleClickExt {
-            val bellSelectDialog = BellSelect(this, alarmViewModel)
+            val bellSelectDialog = BellSelect(this, AppClass.alarmViewModel)
             bellSelectDialog.show()
         }
 
-        // todo 데이터 저장 시 의도한대로 시간 데이터가 들어가는지 확인(recyclerView 만들고 나서)
         binding.numberPickerHour.setOnValueChangedListener { numberPicker, i, i2 ->
-            alarmViewModel.currentAlarmHour.value = numberPicker.value
+            AppClass.alarmViewModel.currentAlarmHour.value = numberPicker.value
         }
 
         binding.numberPickerMin.setOnValueChangedListener { numberPicker, i, i2 ->
-            alarmViewModel.currentAlarmMin.value = numberPicker.value
+            AppClass.alarmViewModel.currentAlarmMin.value = numberPicker.value
         }
 
-        // todo 데이터 저장 시 의도한대로 시간 데이터가 들어가는지 확인(recyclerView 만들고 나서)
         binding.numberPickerAMPM.setOnValueChangedListener { numberPicker, i, i2 ->
-            alarmViewModel.currenAlarmAmPm.value = numberPicker.value
+            AppClass.alarmViewModel.currentAlarmAmPm.value = numberPicker.value
         }
+
+        binding.volumeSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, p1: Int, p2: Boolean) {
+
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                AppClass.alarmViewModel.currentAlarmVolume.value = seekBar!!.progress
+            }
+        })
 
         // AlarmMode 설정 버튼 눌렀을 때
         binding.selectModeButton.setOnSingleClickExt {
@@ -221,7 +234,11 @@ class NormalAlarmActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
 
             builder.setTitle(getString(R.string.alarmSet_selectBellDialogTitle))
-            builder.setSingleChoiceItems(modeItem, alarmViewModel.currentAlarmMode.value, null)
+            builder.setSingleChoiceItems(
+                modeItem,
+                AppClass.alarmViewModel.currentAlarmMode.value,
+                null
+            )
             builder.setNeutralButton(getString(R.string.cancel), null)
 
             builder.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, i: Int ->
@@ -231,11 +248,11 @@ class NormalAlarmActivity : AppCompatActivity() {
                 when (idx) {
                     // Normal 클릭 시
                     0 -> {
-                        alarmViewModel.currentAlarmMode.value = 0
+                        AppClass.alarmViewModel.currentAlarmMode.value = 0
                     }
                     // Calculate 클릭 시
                     1 -> {
-                        alarmViewModel.currentAlarmMode.value = 1
+                        AppClass.alarmViewModel.currentAlarmMode.value = 1
                     }
                 }
             }
@@ -245,63 +262,91 @@ class NormalAlarmActivity : AppCompatActivity() {
         // save 버튼 눌렀을 때
         binding.saveButton.setOnSingleClickExt {
             // 요일을 하나라도 선택해야한다
-            if (alarmViewModel.currentAlarmMon.value ||
-                alarmViewModel.currentAlarmTue.value ||
-                alarmViewModel.currentAlarmWed.value ||
-                alarmViewModel.currentAlarmThu.value ||
-                alarmViewModel.currentAlarmFri.value ||
-                alarmViewModel.currentAlarmSat.value ||
-                alarmViewModel.currentAlarmSun.value) {
+            if (AppClass.alarmViewModel.currentAlarmMon.value ||
+                AppClass.alarmViewModel.currentAlarmTue.value ||
+                AppClass.alarmViewModel.currentAlarmWed.value ||
+                AppClass.alarmViewModel.currentAlarmThu.value ||
+                AppClass.alarmViewModel.currentAlarmFri.value ||
+                AppClass.alarmViewModel.currentAlarmSat.value ||
+                AppClass.alarmViewModel.currentAlarmSun.value
+            ) {
                 var hour = 0
 
                 // 오전, 오후에 따라 hour의 값에 12를 더해주기
-                if (alarmViewModel.currenAlarmAmPm.value == 0) {
-                    hour = alarmViewModel.currentAlarmHour.value
-                } else {
-                    hour = alarmViewModel.currentAlarmHour.value + 12
+                if (AppClass.alarmViewModel.currentAlarmAmPm.value == 1 && AppClass.alarmViewModel.currentAlarmHour.value + 12 <= 24){
+                    hour = AppClass.alarmViewModel.currentAlarmHour.value + 12
                     // 24시는 0시로 설정되게 한다
                     if (hour == 24) {
                         hour = 0
                     }
+                }else{
+                    hour = AppClass.alarmViewModel.currentAlarmHour.value
                 }
 
                 // DB의 requestCode에 넣을 unique 수 생성
                 var requestCode = 0L
-                if (alarmViewModel.currentAlarmRequestCode.value == null) {
+                if (AppClass.alarmViewModel.currentAlarmRequestCode.value == 0L ||
+                    AppClass.alarmViewModel.currentAlarmRequestCode.value == null) {
                     requestCode = System.currentTimeMillis()
-                } else {
-                    requestCode = alarmViewModel.currentAlarmRequestCode.value!!
+
+                    // DB에 넣을 Data set
+                    val alarmData = AlarmData(
+                        // autoGenerate가 true이기 때문에 null을 넣으면 알아서 값이 들어간다
+                        id = null,
+                        button = true,
+                        Sun = AppClass.alarmViewModel.currentAlarmSun.value,
+                        Mon = AppClass.alarmViewModel.currentAlarmMon.value,
+                        Tue = AppClass.alarmViewModel.currentAlarmTue.value,
+                        Wed = AppClass.alarmViewModel.currentAlarmWed.value,
+                        Thu = AppClass.alarmViewModel.currentAlarmThu.value,
+                        Fri = AppClass.alarmViewModel.currentAlarmFri.value,
+                        Sat = AppClass.alarmViewModel.currentAlarmSat.value,
+                        hour = hour,
+                        minute = binding.numberPickerMin.value,
+                        volume = AppClass.alarmViewModel.currentAlarmVolume.value,
+                        bell = AppClass.alarmViewModel.currentAlarmBell.value,
+                        quick = false,
+                        mode = AppClass.alarmViewModel.currentAlarmMode.value,
+                        vibration = AppClass.alarmViewModel.currentAlarmVibration.value,
+                        name = binding.alarmNameEditText.text.toString(),
+                        requestCode = requestCode
+                    )
+
+                    // DB에 데이터 삽입
+                    AppClass.alarmViewModel.insert(alarmData)
+                }
+                // 데이터를 수정
+                else {
+                    requestCode = AppClass.alarmViewModel.currentAlarmRequestCode.value!!
+
+                    val alarmData = AlarmData(
+                        // autoGenerate가 true이기 때문에 null을 넣으면 알아서 값이 들어간다
+                        id = AppClass.alarmViewModel.currentAlarmId.value,
+                        button = true,
+                        Sun = AppClass.alarmViewModel.currentAlarmSun.value,
+                        Mon = AppClass.alarmViewModel.currentAlarmMon.value,
+                        Tue = AppClass.alarmViewModel.currentAlarmTue.value,
+                        Wed = AppClass.alarmViewModel.currentAlarmWed.value,
+                        Thu = AppClass.alarmViewModel.currentAlarmThu.value,
+                        Fri = AppClass.alarmViewModel.currentAlarmFri.value,
+                        Sat = AppClass.alarmViewModel.currentAlarmSat.value,
+                        hour = hour,
+                        minute = binding.numberPickerMin.value,
+                        volume = AppClass.alarmViewModel.currentAlarmVolume.value,
+                        bell = AppClass.alarmViewModel.currentAlarmBell.value,
+                        quick = false,
+                        mode = AppClass.alarmViewModel.currentAlarmMode.value,
+                        vibration = AppClass.alarmViewModel.currentAlarmVibration.value,
+                        name = binding.alarmNameEditText.text.toString(),
+                        requestCode = requestCode
+                    )
+
+                    // DB 업데이트
+                    AppClass.alarmViewModel.update(alarmData)
                 }
 
-                // DB에 넣을 Data set
-                val alarmData = AlarmData(
-                    // autoGenerate가 true이기 때문에 null을 넣으면 알아서 값이 들어간다
-                    id = null,
-                    button = true,
-                    Sun = alarmViewModel.currentAlarmSun.value,
-                    Mon = alarmViewModel.currentAlarmMon.value,
-                    Tue = alarmViewModel.currentAlarmTue.value,
-                    Wed = alarmViewModel.currentAlarmWed.value,
-                    Thu = alarmViewModel.currentAlarmThu.value,
-                    Fri = alarmViewModel.currentAlarmFri.value,
-                    Sat = alarmViewModel.currentAlarmSat.value,
-                    hour = hour,
-                    minute = binding.numberPickerMin.value,
-                    volume = alarmViewModel.currenAlarmVolume.value,
-                    bell = alarmViewModel.currentAlarmBell.value,
-                    quick = false,
-                    mode = alarmViewModel.currentAlarmMode.value,
-                    vibration = alarmViewModel.currentAlarmVibration.value,
-                    name = binding.alarmNameEditText.text.toString(),
-                    requestCode = requestCode
-                )
-
-                // DB에 데이터 삽입
-                alarmViewModel.insert(alarmData)
-
-                // setting에 사용된 viewModel 변수들은 모두 초기화해야한다다
-
                 finish()
+                // setting에 사용된 viewModel 변수들은 모두 초기화해야한다
                 initCurrentAlarmData()
             } else {
                 makeToast(this, getString(R.string.alarmSet_Toast))
@@ -317,19 +362,19 @@ class NormalAlarmActivity : AppCompatActivity() {
         // 진동 버튼을 눌렀을 때때
         binding.imageVibration.apply {
             setOnClickListener {
-                when (alarmViewModel.currentAlarmVibration.value) {
+                when (AppClass.alarmViewModel.currentAlarmVibration.value) {
                     0 -> {
-                        alarmViewModel.currentAlarmVibration.value = 1
+                        AppClass.alarmViewModel.currentAlarmVibration.value = 1
                     }
                     1 -> {
                         lifecycleScope.launchWhenStarted {
-                            alarmViewModel.currentAlarmVibration.emit(2)
+                            AppClass.alarmViewModel.currentAlarmVibration.emit(2)
                         }
                         makeAnimation.swing(this).start()
                     }
                     2 -> {
                         lifecycleScope.launchWhenStarted {
-                            alarmViewModel.currentAlarmVibration.emit(0)
+                            AppClass.alarmViewModel.currentAlarmVibration.emit(0)
                         }
                     }
                 }
@@ -338,22 +383,22 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         // 볼륨 이미지를 클릭했을 때
         binding.imageVolume.setOnClickListener {
-            if (alarmViewModel.currenAlarmVolume.value > 0) {
-                alarmViewModel.currenAlarmVolume.value = 0
+            if (AppClass.alarmViewModel.currentAlarmVolume.value > 0) {
+                AppClass.alarmViewModel.currentAlarmVolume.value = 0
             } else {
-                alarmViewModel.currenAlarmVolume.value = 100
+                AppClass.alarmViewModel.currentAlarmVolume.value = 100
             }
         }
 
         // 월
         binding.monButton.apply {
             setOnClickListener {
-                if (!alarmViewModel.currentAlarmMon.value) {
-                    alarmViewModel.currentAlarmMon.value = true
+                if (!AppClass.alarmViewModel.currentAlarmMon.value) {
+                    AppClass.alarmViewModel.currentAlarmMon.value = true
                     // 점프 애니메이션
                     makeAnimation.jump(this).start()
                 } else {
-                    alarmViewModel.currentAlarmMon.value = false
+                    AppClass.alarmViewModel.currentAlarmMon.value = false
                     // 털어내는 애니메이션
                     makeAnimation.swing(this).start()
                 }
@@ -363,11 +408,11 @@ class NormalAlarmActivity : AppCompatActivity() {
         // 화
         binding.tueButton.apply {
             setOnClickListener {
-                if (!alarmViewModel.currentAlarmTue.value) {
-                    alarmViewModel.currentAlarmTue.value = true
+                if (!AppClass.alarmViewModel.currentAlarmTue.value) {
+                    AppClass.alarmViewModel.currentAlarmTue.value = true
                     makeAnimation.jump(this).start()
                 } else {
-                    alarmViewModel.currentAlarmTue.value = false
+                    AppClass.alarmViewModel.currentAlarmTue.value = false
                     makeAnimation.swing(this).start()
                 }
             }
@@ -376,11 +421,11 @@ class NormalAlarmActivity : AppCompatActivity() {
         // 수
         binding.wedButton.apply {
             setOnClickListener {
-                if (!alarmViewModel.currentAlarmWed.value) {
-                    alarmViewModel.currentAlarmWed.value = true
+                if (!AppClass.alarmViewModel.currentAlarmWed.value) {
+                    AppClass.alarmViewModel.currentAlarmWed.value = true
                     makeAnimation.jump(this).start()
                 } else {
-                    alarmViewModel.currentAlarmWed.value = false
+                    AppClass.alarmViewModel.currentAlarmWed.value = false
                     setStrokeColorResource(R.color.background)
                     makeAnimation.swing(this).start()
                 }
@@ -390,11 +435,11 @@ class NormalAlarmActivity : AppCompatActivity() {
         // 목
         binding.thurButton.apply {
             setOnClickListener {
-                if (!alarmViewModel.currentAlarmThu.value) {
-                    alarmViewModel.currentAlarmThu.value = true
+                if (!AppClass.alarmViewModel.currentAlarmThu.value) {
+                    AppClass.alarmViewModel.currentAlarmThu.value = true
                     makeAnimation.jump(this).start()
                 } else {
-                    alarmViewModel.currentAlarmThu.value = false
+                    AppClass.alarmViewModel.currentAlarmThu.value = false
                     makeAnimation.swing(this).start()
                 }
             }
@@ -403,11 +448,11 @@ class NormalAlarmActivity : AppCompatActivity() {
         // 금
         binding.friButton.apply {
             setOnClickListener {
-                if (!alarmViewModel.currentAlarmFri.value) {
-                    alarmViewModel.currentAlarmFri.value = true
+                if (!AppClass.alarmViewModel.currentAlarmFri.value) {
+                    AppClass.alarmViewModel.currentAlarmFri.value = true
                     makeAnimation.jump(this).start()
                 } else {
-                    alarmViewModel.currentAlarmFri.value = false
+                    AppClass.alarmViewModel.currentAlarmFri.value = false
                     makeAnimation.swing(this).start()
                 }
             }
@@ -416,11 +461,11 @@ class NormalAlarmActivity : AppCompatActivity() {
         // 토
         binding.satButton.apply {
             setOnClickListener {
-                if (!alarmViewModel.currentAlarmSat.value) {
-                    alarmViewModel.currentAlarmSat.value = true
+                if (!AppClass.alarmViewModel.currentAlarmSat.value) {
+                    AppClass.alarmViewModel.currentAlarmSat.value = true
                     makeAnimation.jump(this).start()
                 } else {
-                    alarmViewModel.currentAlarmSat.value = false
+                    AppClass.alarmViewModel.currentAlarmSat.value = false
                     makeAnimation.swing(this).start()
                 }
             }
@@ -429,11 +474,11 @@ class NormalAlarmActivity : AppCompatActivity() {
         // 일
         binding.sunButton.apply {
             setOnClickListener {
-                if (!alarmViewModel.currentAlarmSun.value) {
-                    alarmViewModel.currentAlarmSun.value = true
+                if (!AppClass.alarmViewModel.currentAlarmSun.value) {
+                    AppClass.alarmViewModel.currentAlarmSun.value = true
                     makeAnimation.jump(this).start()
                 } else {
-                    alarmViewModel.currentAlarmSun.value = false
+                    AppClass.alarmViewModel.currentAlarmSun.value = false
                     setStrokeColorResource(R.color.background)
                     makeAnimation.swing(this).start()
                 }
@@ -466,28 +511,5 @@ class NormalAlarmActivity : AppCompatActivity() {
                 setStrokeColorResource(R.color.background)
             }
         }
-    }
-
-    private fun initCurrentAlarmData() {
-        alarmViewModel.currentAlarmData.value = AlarmData(
-            id = null,
-            button = true,
-            Sun = false,
-            Mon = false,
-            Tue = false,
-            Wed = false,
-            Thu = false,
-            Fri = false,
-            Sat = false,
-            vibration = 0,
-            requestCode = 0,
-            mode = 0,
-            hour = 1,
-            minute = 0,
-            quick = false,
-            volume = 100,
-            bell = 0,
-            name = ""
-        )
     }
 }

@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,10 +18,12 @@ import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
 import com.easyo.pairalarm.Constant.OVERLAYCODE
 import com.easyo.pairalarm.R
+import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
 import com.easyo.pairalarm.groupieitem.AlarmGroupie
 import com.easyo.pairalarm.ui.activity.SimpleAlarmActivity
 import com.easyo.pairalarm.util.ControlDialog
+import com.easyo.pairalarm.util.initCurrentAlarmData
 import com.easyo.pairalarm.util.makeToast
 import com.easyo.pairalarm.util.setOnSingleClickExt
 import com.easyo.pairalarm.viewModel.AlarmViewModel
@@ -32,7 +35,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class AlarmFragment : Fragment(R.layout.fragment_alarm) {
     private lateinit var binding: FragmentAlarmBinding
-    private val alarmViewModel: AlarmViewModel by viewModels()
+    private val alarmViewModel: AlarmViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,21 +44,23 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         // 나중에 화면 사이즈에 맞게 숫자 바뀌게 하기
         var recyclerViewSpan = 2
 
-        // Groupie - RecyclerView 초기화
+        // Groupie - RecyclerView 정의
         val alarmRecyclerAdapter = GroupieAdapter()
         binding.alarmRecycler.run {
             adapter = alarmRecyclerAdapter
             layoutManager = GridLayoutManager(context, recyclerViewSpan, GridLayoutManager.VERTICAL, false)
         }
+
+        // Groupie - RecyclerView 데이터 입력
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                AppClass.alarmDataList?.collectLatest {alarmDataList ->
+                AppClass.alarmDataList?.collectLatest { alarmDataList ->
                     Log.d("AlarmFragment", "AlarmData: $alarmDataList")
-                    alarmDataList.map { AlarmGroupie(requireContext(), it) }.also { alarmRecyclerAdapter.update(it) }
+                    alarmDataList.map { AlarmGroupie(requireContext(), it, alarmViewModel) }
+                        .also { alarmRecyclerAdapter.update(it) }
                 }
             }
         }
-
 
         // FAB의 간격 조절
         var interval = 0f
@@ -80,42 +85,29 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
 
         // 일반 알람 설정
         binding.fab2.setOnSingleClickExt {
-            if (checkOverlayPermission()){
-
-                // todo 밑에 내용은 나중에 recyclerView에서 각 항목을 클릭했을 때 실시하게 한다
-//                alarmViewModel.currentAlarmMon.value = alarmViewModel.currentAlarmData.value.Mon
-//                alarmViewModel.currentAlarmTue.value = alarmViewModel.currentAlarmData.value.Tue
-//                alarmViewModel.currentAlarmWed.value = alarmViewModel.currentAlarmData.value.Wed
-//                alarmViewModel.currentAlarmThu.value = alarmViewModel.currentAlarmData.value.Thu
-//                alarmViewModel.currentAlarmFri.value = alarmViewModel.currentAlarmData.value.Fri
-//                alarmViewModel.currentAlarmSat.value = alarmViewModel.currentAlarmData.value.Sat
-//                alarmViewModel.currentAlarmSun.value = alarmViewModel.currentAlarmData.value.Sun
-//                alarmViewModel.currentAlarmVibration.value = alarmViewModel.currentAlarmData.value.vibration
-//                alarmViewModel.currentAlarmRequestCode.value = alarmViewModel.currentAlarmData.value.requestCode
-//                alarmViewModel.currentAlarmMode.value = alarmViewModel.currentAlarmData.value.mode
-//                alarmViewModel.currentAlarmHour.value = alarmViewModel.currentAlarmData.value.hour
-//                alarmViewModel.currentAlarmMin.value = alarmViewModel.currentAlarmData.value.minute
-//                alarmViewModel.currenAlarmVolume.value = alarmViewModel.currentAlarmData.value.volume
-//                alarmViewModel.currentAlarmBell.value = alarmViewModel.currentAlarmData.value.bell
-//                alarmViewModel.currentAlarmName.value = alarmViewModel.currentAlarmData.value.name
-
+            if (checkOverlayPermission()) {
+                initViewModel()
                 val makeNormalAlarmIntent = Intent(activity, NormalAlarmActivity::class.java)
                 startActivity(makeNormalAlarmIntent)
             }
-
         }
 
         // 간단 알람 설정
         binding.fab3.setOnSingleClickExt {
-            if (checkOverlayPermission()){
+            if (checkOverlayPermission()) {
                 val makeSimpleAlarmIntent = Intent(activity, SimpleAlarmActivity::class.java)
                 startActivity(makeSimpleAlarmIntent)
             }
         }
     }
 
+    private fun initViewModel(){
+        AppClass.alarmViewModel = alarmViewModel
+    }
+
+
     // 오버레이 권한 확인
-    private fun checkOverlayPermission(): Boolean{
+    private fun checkOverlayPermission(): Boolean {
         // 권한이 ok가 아닐 때
         if (!Settings.canDrawOverlays(requireContext())) {
             val intent = Intent(
@@ -140,8 +132,13 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 getString(R.string.dialog_permission_title),
                 getString(R.string.dialog_overlay_message),
                 null,
-                positive = {  },
-                negative = { makeToast(requireContext(), getString(R.string.dialog_permission_overlay_no))}
+                positive = { },
+                negative = {
+                    makeToast(
+                        requireContext(),
+                        getString(R.string.dialog_permission_overlay_no)
+                    )
+                }
             )
         }
     }

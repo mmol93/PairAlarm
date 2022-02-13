@@ -114,8 +114,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/monday_short"
+            android:fontFamily="@font/naver_bold"
             android:textColor="@color/new_subTextColor"
-            android:textSize="18dp" />
+            android:textSize="19dp" />
 
         <TextView
             android:id="@+id/tueText"
@@ -124,8 +125,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/tuesday_short"
+            android:fontFamily="@font/naver_bold"
             android:textColor="@color/new_subTextColor"
-            android:textSize="18dp" />
+            android:textSize="19dp" />
 
         <TextView
             android:id="@+id/wedText"
@@ -134,8 +136,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/wednesday_short"
+            android:fontFamily="@font/naver_bold"
             android:textColor="@color/new_subTextColor"
-            android:textSize="18dp" />
+            android:textSize="19dp" />
 
         <TextView
             android:id="@+id/thuText"
@@ -144,8 +147,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/thursday_short"
+            android:fontFamily="@font/naver_bold"
             android:textColor="@color/new_subTextColor"
-            android:textSize="18dp" />
+            android:textSize="19dp" />
 
         <TextView
             android:id="@+id/friText"
@@ -154,8 +158,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/friday_short"
+            android:fontFamily="@font/naver_bold"
             android:textColor="@color/new_subTextColor"
-            android:textSize="18dp" />
+            android:textSize="19dp" />
 
         <TextView
             android:id="@+id/satText"
@@ -164,8 +169,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/saturday_short"
+            android:fontFamily="@font/naver_bold"
             android:textColor="@color/new_subTextColor"
-            android:textSize="18dp" />
+            android:textSize="19dp" />
 
         <TextView
             android:id="@+id/sunText"
@@ -174,8 +180,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/sunday_short"
+            android:fontFamily="@font/naver_bold"
             android:textColor="@color/new_subTextColor"
-            android:textSize="18dp" />
+            android:textSize="19dp" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

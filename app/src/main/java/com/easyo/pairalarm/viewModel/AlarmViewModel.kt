@@ -34,6 +34,7 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
             bell = 0,
             name = ""
         ))
+    val currentAlarmId = MutableStateFlow<Int?>(null)
     val currentAlarmName = MutableStateFlow("")
     val currentAlarmMon = MutableStateFlow(false)
     val currentAlarmTue = MutableStateFlow(false)
@@ -47,9 +48,9 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
     val currentAlarmMin = MutableStateFlow(0)
     val currentAlarmBell = MutableStateFlow(0)
     val currentAlarmMode = MutableStateFlow(0)
-    val currenAlarmVolume = MutableStateFlow(100)
+    val currentAlarmVolume = MutableStateFlow(100)
     val currentAlarmRequestCode = MutableStateFlow<Long?>(null)
-    val currenAlarmAmPm = MutableStateFlow(0)
+    val currentAlarmAmPm = MutableStateFlow(0)
     val playStopTextView = MutableStateFlow("play")
 
     // DB에 관한 것들

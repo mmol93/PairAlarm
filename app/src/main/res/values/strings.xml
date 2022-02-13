@@ -10,6 +10,7 @@
     <string name="alarmSet_AM">AM</string>
     <string name="alarmSet_PM">PM</string>
     <string name="save">save</string>
+    <string name="update">update</string>
     <string name="cancel">cancel</string>
     <string name="ok">OK</string>
     <string name="play">play</string>
@@ -33,7 +34,7 @@
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
 
-    
+
     <!-- Alarm Set -->
     <string name="alarmSet_selectBell">Alarm Bell</string>
     <string name="alarmSet_selectMode">Alarm Mode</string>
@@ -46,14 +47,14 @@
     <string name="alarmSet_alarmModeItem1">Normal</string>
     <string name="alarmSet_alarmModeItem2">Calculator</string>
     <string name="alarmSet_calRepeat">Calculate Repeat</string>
-    
+
 
     <!-- about Dialog -->
     <string name="dialog_permission_title">Permission</string>
     <string name="dialog_overlay_message">Overlay permission is necessary to show alarm on the background</string>
     <string name="dialog_bell_set_title">Bell Select</string>
-    
-    
+
+
     <!-- bell type-->
     <string name="bellType_Normal_Walking">Walking</string>
     <string name="bellType_Normal_PianoMan">PianoMan</string>
