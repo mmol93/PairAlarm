@@ -9,16 +9,25 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
+import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
 import com.easyo.pairalarm.Constant.OVERLAYCODE
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
+import com.easyo.pairalarm.groupieitem.AlarmGroupie
 import com.easyo.pairalarm.ui.activity.SimpleAlarmActivity
 import com.easyo.pairalarm.util.ControlDialog
 import com.easyo.pairalarm.util.makeToast
 import com.easyo.pairalarm.util.setOnSingleClickExt
 import com.easyo.pairalarm.viewModel.AlarmViewModel
+import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AlarmFragment : Fragment(R.layout.fragment_alarm) {
@@ -28,6 +37,25 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = DataBindingUtil.bind(view)!!
+
+        // 나중에 화면 사이즈에 맞게 숫자 바뀌게 하기
+        var recyclerViewSpan = 2
+
+        // Groupie - RecyclerView 초기화
+        val alarmRecyclerAdapter = GroupieAdapter()
+        binding.alarmRecycler.run {
+            adapter = alarmRecyclerAdapter
+            layoutManager = GridLayoutManager(context, recyclerViewSpan, GridLayoutManager.VERTICAL, false)
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                AppClass.alarmDataList?.collectLatest {alarmDataList ->
+                    Log.d("AlarmFragment", "AlarmData: $alarmDataList")
+                    alarmDataList.map { AlarmGroupie(requireContext(), it) }.also { alarmRecyclerAdapter.update(it) }
+                }
+            }
+        }
+
 
         // FAB의 간격 조절
         var interval = 0f

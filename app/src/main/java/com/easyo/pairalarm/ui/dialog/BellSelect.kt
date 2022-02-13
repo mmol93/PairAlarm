@@ -79,7 +79,7 @@ class BellSelect(context: Context, val alarmViewModel: AlarmViewModel):Dialog(co
             // 음악 재생중 아닐 때 -> 음악 시작
             else{
                 AppClass.mediaPlayer = selectMusic(context, bellIndex)
-                AppClass.mediaPlayer!!.apply {
+                AppClass.mediaPlayer!!.run {
                     setVolume(1f, 1f)
                     isLooping = true
                     start()

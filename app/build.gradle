@@ -103,11 +103,14 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha02"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha02"
 
+    // Groupie - https://github.com/lisawray/groupie
+    implementation "com.github.lisawray.groupie:groupie:$groupie_version"
+    implementation "com.github.lisawray.groupie:groupie-viewbinding:$groupie_version"
+    implementation "com.github.lisawray.groupie:groupie-databinding:$groupie_version"
+
     // 커스텀 FAB
     implementation(files("libs/customFloating-release.aar"))
 
     // FitButton - https://github.com/nikartm/FitButton
     implementation 'io.github.nikartm:fit-button:2.0.0'
-
-
 }
