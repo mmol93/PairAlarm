@@ -10,11 +10,15 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.AlarmItemBinding
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
+import com.easyo.pairalarm.util.ControlDialog
+import com.easyo.pairalarm.util.makeToast
 import com.easyo.pairalarm.util.setOnSingleClickExt
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.databinding.BindableItem
 
-class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val alarmViewModel: AlarmViewModel): BindableItem<AlarmItemBinding>() {
+class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val alarmViewModel: AlarmViewModel):
+    BindableItem<AlarmItemBinding>(alarmData.hashCode().toLong()) {
+
     @SuppressLint("SetTextI18n")
     override fun bind(binding: AlarmItemBinding, position: Int) {
         binding.alarmNameText.text = alarmData.name
@@ -99,6 +103,25 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
 
         binding.alarmNameText.setOnSingleClickExt {
             openNormalAlarmActivity()
+        }
+
+        binding.itemLayout.setOnSingleClickExt {
+            openNormalAlarmActivity()
+        }
+
+        // 삭제 버튼 클릭
+        binding.deleteImage.setOnSingleClickExt {
+            ControlDialog.make(
+                context,
+                context.getString(R.string.dialog_permission_title),
+                context.getString(R.string.dialog_overlay_message),
+                null,
+                positive = {
+                    AppClass.alarmViewModel = alarmViewModel
+                    AppClass.alarmViewModel.delete(alarmData)
+                           },
+                negative = { }
+            )
         }
     }
 

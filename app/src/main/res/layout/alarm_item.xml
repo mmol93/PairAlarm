@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <LinearLayout
+    android:id="@+id/itemLayout"
     android:layout_width="180dp"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_corner_clear"
@@ -30,12 +31,12 @@
             android:focusableInTouchMode="true"
             android:marqueeRepeatLimit="marquee_forever"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView4"
+            app:layout_constraintEnd_toStartOf="@+id/deleteImage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/deleteImage"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_weight="1"

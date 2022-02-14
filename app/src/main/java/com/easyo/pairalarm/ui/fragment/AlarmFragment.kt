@@ -102,6 +102,45 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
     }
 
     private fun initViewModel(){
+        alarmViewModel.currentAlarmData.value = AlarmData(
+            id = null,
+            button = true,
+            Sun = false,
+            Mon = false,
+            Tue = false,
+            Wed = false,
+            Thu = false,
+            Fri = false,
+            Sat = false,
+            vibration = 0,
+            requestCode = 0,
+            mode = 0,
+            hour = 1,
+            minute = 0,
+            quick = false,
+            volume = 100,
+            bell = 0,
+            name = ""
+        )
+        alarmViewModel.currentAlarmId.value = null
+        alarmViewModel.currentAlarmName.value = ""
+        alarmViewModel.currentAlarmMon.value = false
+        alarmViewModel.currentAlarmTue.value = false
+        alarmViewModel.currentAlarmWed.value = false
+        alarmViewModel.currentAlarmThu.value = false
+        alarmViewModel.currentAlarmFri.value = false
+        alarmViewModel.currentAlarmSat.value = false
+        alarmViewModel.currentAlarmSun.value = false
+        alarmViewModel.currentAlarmVibration.value = 0
+        alarmViewModel.currentAlarmHour.value = 1
+        alarmViewModel.currentAlarmMin.value = 0
+        alarmViewModel.currentAlarmBell.value = 0
+        alarmViewModel.currentAlarmMode.value = 0
+        alarmViewModel.currentAlarmVolume.value = 100
+        alarmViewModel.currentAlarmRequestCode.value = null
+        alarmViewModel.currentAlarmAmPm.value = 0
+        alarmViewModel.playStopTextView.value = "play"
+
         AppClass.alarmViewModel = alarmViewModel
     }
 
