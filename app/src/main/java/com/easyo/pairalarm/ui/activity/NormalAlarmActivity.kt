@@ -500,7 +500,7 @@ class NormalAlarmActivity : AppCompatActivity() {
             }
         } else if (week == "Sat") {
             if (weekClicked) {
-                setStrokeColorResource(R.color.main_deepBlue)
+                setStrokeColorResource(R.color.light_blue)
             } else {
                 setStrokeColorResource(R.color.background)
             }

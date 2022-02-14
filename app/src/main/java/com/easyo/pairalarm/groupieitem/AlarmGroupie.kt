@@ -3,6 +3,7 @@ package com.easyo.pairalarm.groupieitem
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.Log
 import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.R
@@ -40,27 +41,39 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
 
         // 요일 표기
         if (alarmData.Mon){
-            binding.monText.setTextColor(context.getColor(R.color.deep_yellow))
+            binding.monText.setTextColor(Color.YELLOW)
+        }else{
+            binding.monText.setTextColor(context.getColor(R.color.new_subTextColor))
         }
         if (alarmData.Tue){
-            binding.tueText.setTextColor(context.getColor(R.color.deep_yellow))
+            binding.tueText.setTextColor(Color.YELLOW)
+        }else{
+            binding.tueText.setTextColor(context.getColor(R.color.new_subTextColor))
         }
         if (alarmData.Wed){
-            binding.wedText.setTextColor(context.getColor(R.color.deep_yellow))
+            binding.wedText.setTextColor(Color.YELLOW)
+        }else{
+            binding.wedText.setTextColor(context.getColor(R.color.new_subTextColor))
         }
         if (alarmData.Thu){
-            binding.thuText.setTextColor(context.getColor(R.color.deep_yellow))
+            binding.thuText.setTextColor(Color.YELLOW)
+        }else{
+            binding.thuText.setTextColor(context.getColor(R.color.new_subTextColor))
         }
         if (alarmData.Fri){
-            binding.friText.setTextColor(context.getColor(R.color.deep_yellow))
+            binding.friText.setTextColor(Color.YELLOW)
+        }else{
+            binding.friText.setTextColor(context.getColor(R.color.new_subTextColor))
         }
         if (alarmData.Sat){
-            Log.d("AlarmGroupie", "Blue")
-            binding.satText.setTextColor(context.getColor(R.color.main_blue))
+            binding.satText.setTextColor(context.getColor(R.color.light_blue))
+        }else{
+            binding.satText.setTextColor(context.getColor(R.color.new_subTextColor))
         }
         if (alarmData.Sun){
-            Log.d("AlarmGroupie", "Red")
-            binding.sunText.setTextColor(context.getColor(R.color.red))
+            binding.sunText.setTextColor(Color.RED)
+        }else{
+            binding.sunText.setTextColor(context.getColor(R.color.new_subTextColor))
         }
 
         // 진동 표기

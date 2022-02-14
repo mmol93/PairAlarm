@@ -11,7 +11,7 @@
     <color name="mainColor">#FFBB86FC</color>
     <color name="background">#1D1D23</color>
     <color name="itemBackground">#34344A</color>
-    <color name="red">#990011</color>
+    <color name="red">#ff0000</color>
     <color name="deep_yellow">#F5D042</color>
     <color name="new_subTextColor">#949494</color>
     <color name="Space_Purple">#CEABFA</color>
@@ -22,5 +22,6 @@
     <color name="main_deep_orange">#FF3300</color>
     <color name="main_deepPurple">#9900FF</color>
     <color name="main_deepBlue">#0066cc</color>
+    <color name="light_blue">#3abeff</color>
     <color name="main_orange">#FFC000</color>
 </resources>

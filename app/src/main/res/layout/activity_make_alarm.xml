@@ -185,7 +185,7 @@
                 android:textSize="20dp"
                 app:cornerRadius="60dp"
                 app:strokeWidth="2dp"
-                app:strokeColor="@color/background"
+                app:strokeColor="@color/light_blue"
                 android:layout_weight="1"
                 />
 
