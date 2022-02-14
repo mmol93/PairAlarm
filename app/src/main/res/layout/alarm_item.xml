@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    android:id="@+id/itemLayout"
+    android:layout_width="180dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_corner_clear"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:padding="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/alarmName_Text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/naver_bold"
+            android:text="TextView"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:focusable="true"
+            android:ellipsize="marquee"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/deleteImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/deleteImage"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_trash"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:id="@+id/timeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        >
+
+        <TextView
+            android:id="@+id/hourText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/nanumgothicextrabold"
+            android:gravity="center"
+            android:text="00"
+            android:textColor="@color/white"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/Textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/nanumgothicextrabold"
+            android:gravity="center"
+            android:text=":"
+            android:textColor="@color/white"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/minText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/nanumgothicextrabold"
+            android:gravity="center"
+            android:text="00"
+            android:textColor="@color/white"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/ampmText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/nanumgothicextrabold"
+            android:gravity="center"
+            android:text="AM"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/monText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/monday_short"
+            android:fontFamily="@font/naver_bold"
+            android:textColor="@color/new_subTextColor"
+            android:textSize="19dp" />
+
+        <TextView
+            android:id="@+id/tueText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/tuesday_short"
+            android:fontFamily="@font/naver_bold"
+            android:textColor="@color/new_subTextColor"
+            android:textSize="19dp" />
+
+        <TextView
+            android:id="@+id/wedText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/wednesday_short"
+            android:fontFamily="@font/naver_bold"
+            android:textColor="@color/new_subTextColor"
+            android:textSize="19dp" />
+
+        <TextView
+            android:id="@+id/thuText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/thursday_short"
+            android:fontFamily="@font/naver_bold"
+            android:textColor="@color/new_subTextColor"
+            android:textSize="19dp" />
+
+        <TextView
+            android:id="@+id/friText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/friday_short"
+            android:fontFamily="@font/naver_bold"
+            android:textColor="@color/new_subTextColor"
+            android:textSize="19dp" />
+
+        <TextView
+            android:id="@+id/satText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/saturday_short"
+            android:fontFamily="@font/naver_bold"
+            android:textColor="@color/new_subTextColor"
+            android:textSize="19dp" />
+
+        <TextView
+            android:id="@+id/sunText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/sunday_short"
+            android:fontFamily="@font/naver_bold"
+            android:textColor="@color/new_subTextColor"
+            android:textSize="19dp" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/vib_imageView"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:srcCompat="@drawable/ic_no_vib" />
+
+        <ImageView
+            android:id="@+id/volume_imageView"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:layout_constraintStart_toEndOf="@+id/vib_imageView"
+            app:srcCompat="@drawable/vol0"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/onOffSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/Widget.App.Switch"
+            android:checked="false"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
+</layout>

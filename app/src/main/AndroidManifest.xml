@@ -3,17 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.easyo.pairalarm">
 
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
-        android:name="com.easyo.pairalarm.AppClass"
+        android:name=".AppClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PairAlarm">
+        android:theme="@style/Theme.PairAlarm"
+        tools:replace="android:theme">
         <activity
-            android:name="com.easyo.pairalarm.ui.activity.InitialActivity"
-            android:exported="true" >
+            android:name="com.easyo.pairalarm.ui.activity.NormalAlarmActivity"
+            android:theme="@style/Theme.PairAlarm.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name="com.easyo.pairalarm.ui.activity.SimpleAlarmActivity"
+            android:theme="@style/Theme.PairAlarm.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.InitialActivity"
+            android:theme="@style/Theme.PairAlarm.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,9 +41,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.easyo.pairalarm.MainActivity"
-            android:exported="true">
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.PairAlarm.NoActionBar">
+
         </activity>
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

@@ -35,6 +35,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 
@@ -87,11 +93,24 @@ dependencies {
     def fragment_version = "1.4.0"
     implementation("androidx.fragment:fragment-ktx:$fragment_version")
 
-    // Lifecycle - https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=ko
-    def lifecycle_version = "2.4.0"
-    // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
-    // LiveData
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    // androidx.activity - https://developer.android.com/jetpack/androidx/releases/activity?hl=ko
+    implementation 'androidx.activity:activity-ktx:1.4.0'
 
+    // Lifecycle - https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=ko
+    implementation "androidx.lifecycle:lifecycle-livedata-core-ktx:2.5.0-alpha02"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-alpha02"
+    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:2.5.0-alpha02"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha02"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha02"
+
+    // Groupie - https://github.com/lisawray/groupie
+    implementation "com.github.lisawray.groupie:groupie:$groupie_version"
+    implementation "com.github.lisawray.groupie:groupie-viewbinding:$groupie_version"
+    implementation "com.github.lisawray.groupie:groupie-databinding:$groupie_version"
+
+    // 커스텀 FAB
+    implementation(files("libs/customFloating-release.aar"))
+
+    // FitButton - https://github.com/nikartm/FitButton
+    implementation 'io.github.nikartm:fit-button:2.0.0'
 }

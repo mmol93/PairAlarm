@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.easyo.pairalarm.database.AppDatabase
 import com.easyo.pairalarm.database.dao.AlarmDAO
+import com.easyo.pairalarm.repository.AlarmRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,7 +26,13 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideChampionDao(appDatabase: AppDatabase): AlarmDAO {
+    fun provideAlarmDao(appDatabase: AppDatabase): AlarmDAO {
         return appDatabase.alarmDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAlarmRepository(alarmDAO: AlarmDAO):AlarmRepository{
+        return AlarmRepository(alarmDAO)
     }
 }
