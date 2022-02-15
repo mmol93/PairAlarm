@@ -95,6 +95,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         // 간단 알람 설정
         binding.fab3.setOnSingleClickExt {
             if (checkOverlayPermission()) {
+                initViewModel()
                 val makeSimpleAlarmIntent = Intent(activity, SimpleAlarmActivity::class.java)
                 startActivity(makeSimpleAlarmIntent)
             }

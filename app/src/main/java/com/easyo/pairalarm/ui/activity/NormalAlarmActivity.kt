@@ -48,12 +48,10 @@ class NormalAlarmActivity : AppCompatActivity() {
         binding.numberPickerAMPM.maxValue = arg1.size - 1
         binding.numberPickerAMPM.displayedValues = arg1
 
-        var amPm = 0
-
         Log.d("NormalAlarmActivity", "alarmRequestCode: ${AppClass.alarmViewModel.currentAlarmRequestCode.value} ")
 
         // alarmData의 requestCode 값이 0이면 새로운 알람 생성
-        if (AppClass.alarmViewModel.currentAlarmRequestCode.value == null || AppClass.alarmViewModel.currentAlarmRequestCode.value == 0L ) {
+        if (AppClass.alarmViewModel.currentAlarmRequestCode.value == null || AppClass.alarmViewModel.currentAlarmRequestCode.value == 0L) {
             binding.saveButton.text = "save"
         }
 
