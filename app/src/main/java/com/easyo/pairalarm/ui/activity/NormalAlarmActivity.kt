@@ -192,7 +192,7 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         // AlarmBell 설정 버튼 눌렀을 때
         binding.selectBellButton.setOnSingleClickExt {
-            val bellSelectDialog = BellSelect(this, AppClass.alarmViewModel)
+            val bellSelectDialog = BellSelect(this, AppClass.alarmViewModel, null)
             bellSelectDialog.show()
         }
 
@@ -208,6 +208,7 @@ class NormalAlarmActivity : AppCompatActivity() {
             AppClass.alarmViewModel.currentAlarmAmPm.value = numberPicker.value
         }
 
+        // SeekBar에 대한 조작
         binding.volumeSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, p1: Int, p2: Boolean) {
 
@@ -347,7 +348,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                 // setting에 사용된 viewModel 변수들은 모두 초기화해야한다
                 initCurrentAlarmData()
             } else {
-                makeToast(this, getString(R.string.alarmSet_Toast))
+                makeToast(this, getString(R.string.alarmSet_Toast_week))
             }
         }
 

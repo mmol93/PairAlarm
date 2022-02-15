@@ -2,7 +2,6 @@ package com.easyo.pairalarm.viewModel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.repository.AlarmRepository
@@ -65,11 +64,5 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
 
     fun delete(alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.delete(alarmData)
-    }
-
-    fun getAllAlarms() = liveData {
-        alarmRepository.alarms.collect{
-            emit(it)
-        }
     }
 }
