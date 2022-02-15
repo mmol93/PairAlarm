@@ -42,12 +42,19 @@
     <string name="alarmSet_selectModeTextTitle">Current Mode</string>
     <string name="alarmSet_selectModeNormal">Normal</string>
     <string name="alarmSet_selectModeCAL">Calculation</string>
-    <string name="alarmSet_Toast">Please set week</string>
+    <string name="alarmSet_Toast_week">Please set week</string>
     <string name="alarmSet_selectBellDialogTitle">Select Alarm Mode</string>
     <string name="alarmSet_alarmModeItem1">Normal</string>
     <string name="alarmSet_alarmModeItem2">Calculator</string>
     <string name="alarmSet_calRepeat">Calculate Repeat</string>
-
+    <string name="alarmSet_simpleAlarmSubText">later alarm will go off</string>
+    <string name="alarmSet_60minButton">+60min</string>
+    <string name="alarmSet_30minButton">+30min</string>
+    <string name="alarmSet_15minButton">+15min</string>
+    <string name="alarmSet_10minButton">+10min</string>
+    <string name="alarmSet_5minButton">+5min</string>
+    <string name="alarmSet_1minButton">+1min</string>
+    <string name="alarmSet_Toast_min">Please set at least one minute</string>
 
     <!-- about Dialog -->
     <string name="dialog_permission_title">Permission</string>

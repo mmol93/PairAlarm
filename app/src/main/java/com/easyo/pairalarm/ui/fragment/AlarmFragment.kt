@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -23,7 +22,6 @@ import com.easyo.pairalarm.databinding.FragmentAlarmBinding
 import com.easyo.pairalarm.groupieitem.AlarmGroupie
 import com.easyo.pairalarm.ui.activity.SimpleAlarmActivity
 import com.easyo.pairalarm.util.ControlDialog
-import com.easyo.pairalarm.util.initCurrentAlarmData
 import com.easyo.pairalarm.util.makeToast
 import com.easyo.pairalarm.util.setOnSingleClickExt
 import com.easyo.pairalarm.viewModel.AlarmViewModel
@@ -95,6 +93,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         // 간단 알람 설정
         binding.fab3.setOnSingleClickExt {
             if (checkOverlayPermission()) {
+                initViewModel()
                 val makeSimpleAlarmIntent = Intent(activity, SimpleAlarmActivity::class.java)
                 startActivity(makeSimpleAlarmIntent)
             }

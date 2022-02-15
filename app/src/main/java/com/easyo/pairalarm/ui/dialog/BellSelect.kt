@@ -13,13 +13,14 @@ import com.easyo.pairalarm.databinding.DialogBellSetBinding
 import com.easyo.pairalarm.util.selectMusic
 import com.easyo.pairalarm.util.setOnSingleClickExt
 import com.easyo.pairalarm.viewModel.AlarmViewModel
+import com.easyo.pairalarm.viewModel.SimpleAlarmViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class BellSelect(context: Context, val alarmViewModel: AlarmViewModel):Dialog(context) {
+class BellSelect(context: Context, val alarmViewModel: AlarmViewModel?, val simpleAlarmViewModel: SimpleAlarmViewModel?):Dialog(context) {
     private lateinit var binding: DialogBellSetBinding
     private lateinit var uiJob: Job
 
@@ -33,19 +34,35 @@ class BellSelect(context: Context, val alarmViewModel: AlarmViewModel):Dialog(co
         // UI 값 세팅하기
         uiJob = CoroutineScope(Dispatchers.Main).launch {
             launch {
-                alarmViewModel.playStopTextView.collectLatest {
-                    binding.playButton.text = it
+                if (alarmViewModel != null){
+                    alarmViewModel.playStopTextView.collectLatest {
+                        binding.playButton.text = it
+                    }
+                }else{
+                    simpleAlarmViewModel!!.playStopTextView.collectLatest {
+                        binding.playButton.text = it
+                    }
                 }
             }
             launch {
-                alarmViewModel.currentAlarmBell.collectLatest {
-                    when(it){
-                        0 -> binding.RadioGroup.check(R.id.radioButton_N1)
-                        1 -> binding.RadioGroup.check(R.id.radioButton_N2)
-                        2 -> binding.RadioGroup.check(R.id.radioButton_N3)
-                        3 -> binding.RadioGroup.check(R.id.radioButton_N4)
+                if (alarmViewModel != null){
+                    alarmViewModel.currentAlarmBell.collectLatest {
+                        when(it){
+                            0 -> binding.RadioGroup.check(R.id.radioButton_N1)
+                            1 -> binding.RadioGroup.check(R.id.radioButton_N2)
+                            2 -> binding.RadioGroup.check(R.id.radioButton_N3)
+                            3 -> binding.RadioGroup.check(R.id.radioButton_N4)
+                        }
                     }
-
+                }else{
+                    simpleAlarmViewModel!!.currentAlarmBell.collectLatest {
+                        when(it){
+                            0 -> binding.RadioGroup.check(R.id.radioButton_N1)
+                            1 -> binding.RadioGroup.check(R.id.radioButton_N2)
+                            2 -> binding.RadioGroup.check(R.id.radioButton_N3)
+                            3 -> binding.RadioGroup.check(R.id.radioButton_N4)
+                        }
+                    }
                 }
             }
         }
@@ -73,7 +90,12 @@ class BellSelect(context: Context, val alarmViewModel: AlarmViewModel):Dialog(co
             // 음악 재생중일 때 -> 음악 정지
             if (AppClass.mediaPlayer!!.isPlaying){
                 mediaStop(false)
-                alarmViewModel.playStopTextView.value = context.getString(R.string.play)
+                if (alarmViewModel != null){
+                    alarmViewModel.playStopTextView.value = context.getString(R.string.play)
+                }else{
+                    simpleAlarmViewModel!!.playStopTextView.value = context.getString(R.string.play)
+                }
+
                 Log.d("BellSelect", "playing stop")
             }
             // 음악 재생중 아닐 때 -> 음악 시작
@@ -84,13 +106,21 @@ class BellSelect(context: Context, val alarmViewModel: AlarmViewModel):Dialog(co
                     isLooping = true
                     start()
                 }
-                alarmViewModel.playStopTextView.value = context.getString(R.string.stop)
+                if (alarmViewModel != null){
+                    alarmViewModel.playStopTextView.value = context.getString(R.string.stop)
+                }else{
+                    simpleAlarmViewModel!!.playStopTextView.value = context.getString(R.string.stop)
+                }
             }
         }
 
         // Save 버튼
         binding.saveButton.setOnSingleClickExt {
-            alarmViewModel.currentAlarmBell.value = bellIndex
+            if (alarmViewModel != null){
+                alarmViewModel.currentAlarmBell.value = bellIndex
+            }else{
+                simpleAlarmViewModel!!.currentAlarmBell.value = bellIndex
+            }
             dismiss()
         }
     }
