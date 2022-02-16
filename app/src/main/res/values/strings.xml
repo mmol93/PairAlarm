@@ -69,6 +69,13 @@
     <string name="bellType_Normal_Happy">HappyTown</string>
     <string name="bellType_Normal_Lonely">Lonely</string>
 
+    <!-- notification -->
+    <string name="alarm_notification_channel_id">alarmChanel</string>
+    <string name="alarm_notification_channel_name">Nearest Alarm</string>
+    <string name="weather_notification_channel_id">alarmChanel</string>
+    <string name="weather_notification_channel_name">Nearest Alarm</string>
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

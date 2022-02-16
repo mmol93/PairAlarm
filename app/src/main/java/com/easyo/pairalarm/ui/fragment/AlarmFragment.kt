@@ -20,6 +20,7 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
 import com.easyo.pairalarm.groupieitem.AlarmGroupie
+import com.easyo.pairalarm.notification.makeNotificationForAlarm
 import com.easyo.pairalarm.ui.activity.SimpleAlarmActivity
 import com.easyo.pairalarm.util.ControlDialog
 import com.easyo.pairalarm.util.makeToast
@@ -56,6 +57,8 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                     Log.d("AlarmFragment", "AlarmData: $alarmDataList")
                     alarmDataList.map { AlarmGroupie(requireContext(), it, alarmViewModel) }
                         .also { alarmRecyclerAdapter.update(it) }
+
+                    makeNotificationForAlarm(requireContext(), "title","notification")
                 }
             }
         }

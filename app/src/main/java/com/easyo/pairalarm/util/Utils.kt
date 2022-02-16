@@ -33,11 +33,7 @@ fun getAddedTime(hour: Int, min: Int): Calendar{
     return calendar
 }
 
-fun getWeekDataFromCalendar(calendar: Calendar): Int{
-    return calendar.get(Calendar.DAY_OF_WEEK)
-}
-
-
+// AlarmData를 만드는데 필요한 데이터를 매개변수로 받고 AlarmData를 반환 - SimpleAlarm과 QuickAlarm에서 사용된다
 fun makeAlarmData(calendar: Calendar, alarmName: String, simpleAlarmViewModel: SimpleAlarmViewModel): AlarmData{
     val DAY_OF_WEEK = calendar.get(Calendar.DAY_OF_WEEK)
     val currentTimeMillis = Calendar.getInstance().timeInMillis
