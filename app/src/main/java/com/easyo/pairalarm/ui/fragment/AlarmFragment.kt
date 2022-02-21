@@ -20,6 +20,7 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
 import com.easyo.pairalarm.groupieitem.AlarmGroupie
+import com.easyo.pairalarm.notification.cancelNotificationForAlarm
 import com.easyo.pairalarm.notification.makeNotificationForAlarm
 import com.easyo.pairalarm.ui.activity.SimpleAlarmActivity
 import com.easyo.pairalarm.util.ControlDialog
@@ -59,6 +60,9 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                         .also { alarmRecyclerAdapter.update(it) }
 
                     makeNotificationForAlarm(requireContext(), "title","notification")
+                    if (alarmDataList.isEmpty()){
+                        cancelNotificationForAlarm(requireContext())
+                    }
                 }
             }
         }

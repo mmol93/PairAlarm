@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.easyo.pairalarm.AppClass
+import com.easyo.pairalarm.broadcast.setNormalAlarm
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.ui.dialog.BellSelect
 import com.easyo.pairalarm.util.MakeAnimation
@@ -284,6 +285,8 @@ class NormalAlarmActivity : AppCompatActivity() {
 
                 // DB의 requestCode에 넣을 unique 수 생성
                 var requestCode = 0L
+
+                // currentAlarmRequestCode를 보고 새로운 알람 생성인지 수정인지 판단
                 if (AppClass.alarmViewModel.currentAlarmRequestCode.value == 0L ||
                     AppClass.alarmViewModel.currentAlarmRequestCode.value == null) {
                     requestCode = System.currentTimeMillis()
@@ -313,6 +316,9 @@ class NormalAlarmActivity : AppCompatActivity() {
 
                     // DB에 데이터 삽입
                     AppClass.alarmViewModel.insert(alarmData)
+
+                    // 브로드캐스트에 알람 예약하기
+                    setNormalAlarm(this, requestCode, hour, binding.numberPickerMin.value)
                 }
                 // 데이터를 수정
                 else {

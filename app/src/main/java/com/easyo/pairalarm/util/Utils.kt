@@ -24,11 +24,13 @@ fun selectMusic(context: Context, index: Int): MediaPlayer{
     }
 }
 
+// SimpleAalarm이나 QuickAlarm으로 만든 알람의 calendar 값을 얻는다
 fun getAddedTime(hour: Int, min: Int): Calendar{
-    val calendar = Calendar.getInstance()
-    calendar.add(Calendar.HOUR, hour)
-    calendar.add(Calendar.MINUTE, min)
-    calendar.timeInMillis
+    val calendar = Calendar.getInstance().apply {
+        add(Calendar.HOUR, hour)
+        add(Calendar.MINUTE, min)
+        timeInMillis
+    }
 //    Log.d("SimpleAlarmActivity", "calendar.timeInMillis: ${calendar.timeInMillis}")
     return calendar
 }
@@ -79,3 +81,4 @@ fun initCurrentAlarmData() {
         name = ""
     )
 }
+

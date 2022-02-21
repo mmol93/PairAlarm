@@ -10,7 +10,7 @@ import com.easyo.pairalarm.Constant.ALARM_NOTI_ID
 import com.easyo.pairalarm.MainActivity
 import com.easyo.pairalarm.R
 
-// Notification 생성
+// Notification 생성 - 알람 전용(슬라이드로 제거 불가)
 fun makeNotificationForAlarm(context: Context, title: String, messageBody: String){
     // noti 클릭 시 MainActivity를 열게 한다
     val intent = Intent(context, MainActivity::class.java)
@@ -40,4 +40,10 @@ fun makeNotificationForAlarm(context: Context, title: String, messageBody: Strin
 
     // noti 생성
     notificationManager.notify(ALARM_NOTI_ID, notificationBuilder.build())
+}
+
+// Alarm notification 삭제
+fun cancelNotificationForAlarm(context: Context){
+    val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    manager.cancel(ALARM_NOTI_ID)
 }

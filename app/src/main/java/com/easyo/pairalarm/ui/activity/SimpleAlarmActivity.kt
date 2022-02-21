@@ -237,7 +237,6 @@ class SimpleAlarmActivity : AppCompatActivity() {
         // 저장(save) 버튼 눌렀을 떄
         binding.saveButton.setOnSingleClickExt {
             if (simpleAlarmViewModel.currentAlarmHour.value > 0 || simpleAlarmViewModel.currentAlarmMin.value > 0) {
-                val requestCode = System.currentTimeMillis()
                 val dateData = getAddedTime(
                     hour = simpleAlarmViewModel.currentAlarmHour.value,
                     min = simpleAlarmViewModel.currentAlarmMin.value
