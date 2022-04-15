@@ -24,5 +24,5 @@ data class AlarmData(
     @ColumnInfo(name = "bell") var bell: Int,
     @ColumnInfo(name = "mode") var mode: Int,
     @ColumnInfo(name = "name") var name: String,
-    @ColumnInfo(name = "requestCode") var requestCode: Long
+    @ColumnInfo(name = "requestCode") var requestCode: String
 )

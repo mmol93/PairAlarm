@@ -24,7 +24,7 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
             Fri = false,
             Sat = false,
             vibration = 0,
-            requestCode = 0,
+            requestCode = "",
             mode = 0,
             hour = 1,
             minute = 0,
@@ -48,7 +48,7 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
     val currentAlarmBell = MutableStateFlow(0)
     val currentAlarmMode = MutableStateFlow(0)
     val currentAlarmVolume = MutableStateFlow(100)
-    val currentAlarmRequestCode = MutableStateFlow<Long?>(null)
+    val currentAlarmRequestCode = MutableStateFlow<String?>(null)
     val currentAlarmAmPm = MutableStateFlow(0)
     val playStopTextView = MutableStateFlow("play")
 
