@@ -5,6 +5,8 @@ import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.util.Log
+import com.easyo.pairalarm.util.transMillisToTime
 import java.util.*
 
 fun setNormalAlarm(context: Context, requestCode: Int, hour: Int, min: Int){
@@ -37,6 +39,7 @@ fun setNormalAlarm(context: Context, requestCode: Int, hour: Int, min: Int){
     )
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val alarmInfo = AlarmManager.AlarmClockInfo(calendarMillis, pendingIntent)
+    Log.d("Alarm", "set alarm(mills): ${transMillisToTime(calendarMillis)}")
     alarmManager.setAlarmClock(alarmInfo, pendingIntent)
 }
 
@@ -53,6 +56,14 @@ fun cancelAlarm(context: Context, requestCode: String){
     )
     val alarmManager: AlarmManager? =
         context.getSystemService(Context.ALARM_SERVICE) as AlarmManager?
+
     alarmManager?.cancel(pendingIntent)
     pendingIntent.cancel()
+}
+
+fun getNextAlarm(context: Context): Long? {
+    val alarmManager: AlarmManager? =
+        context.getSystemService(Context.ALARM_SERVICE) as AlarmManager?
+
+    return alarmManager?.nextAlarmClock?.triggerTime
 }

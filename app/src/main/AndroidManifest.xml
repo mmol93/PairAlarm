@@ -48,8 +48,6 @@
             android:theme="@style/Theme.PairAlarm.NoActionBar">
         </activity>
 
-        <service android:name=".service.MyService"/>
-
         <receiver android:name=".broadcast.MyReceiver"
             android:exported="true">
             <intent-filter>

@@ -18,7 +18,7 @@ import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.broadcast.setNormalAlarm
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.ui.dialog.BellSelect
-import com.easyo.pairalarm.util.MakeAnimation
+import com.easyo.pairalarm.util.AlarmAnimation
 import com.easyo.pairalarm.util.initCurrentAlarmData
 import com.easyo.pairalarm.util.makeToast
 import com.easyo.pairalarm.util.setOnSingleClickExt
@@ -185,7 +185,7 @@ class NormalAlarmActivity : AppCompatActivity() {
             }
         }
 
-        val makeAnimation = MakeAnimation()
+        val makeAnimation = AlarmAnimation()
 
         // editText의 외부를 클릭했을 때는 키보드랑 Focus 제거하기
         binding.rootLayout.setOnClickListener {

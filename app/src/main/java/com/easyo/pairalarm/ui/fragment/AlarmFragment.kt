@@ -9,20 +9,22 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
 import com.easyo.pairalarm.groupieitem.AlarmGroupie
-import com.easyo.pairalarm.service.MyService
 import com.easyo.pairalarm.ui.activity.SimpleAlarmActivity
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
+import com.easyo.pairalarm.worker.AlarmWorker
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -49,19 +51,16 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
 
         // Groupie - RecyclerView 데이터 입력
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                AppClass.alarmDataList?.collectLatest { alarmDataList ->
-                    Log.d("AlarmFragment", "AlarmData: $alarmDataList")
-                    alarmDataList.map { AlarmGroupie(requireContext(), it, alarmViewModel) }
-                        .also { alarmRecyclerAdapter.update(it) }
+            AppClass.alarmDataList?.collectLatest { alarmDataList ->
+                Log.d("AlarmFragment", "AlarmData: $alarmDataList")
+                alarmDataList.map { AlarmGroupie(requireContext(), it, alarmViewModel) }
+                    .also { alarmRecyclerAdapter.update(it) }
 
-                    if (alarmDataList.isEmpty()){
-                        val intentStop = Intent(requireActivity(), MyService::class.java)
-                        intentStop.action = ACTION_STOP
-                        requireContext().startService(intentStop)
-                    }else{
-                        requireContext().startForegroundService(Intent(requireContext(), MyService::class.java))
-                    }
+                if (alarmDataList.isEmpty()){
+                    cancelAlarmNotification(requireContext())
+                }else{
+                    val alarmTimeWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<AlarmWorker>().build()
+                    WorkManager.getInstance(requireContext()).enqueue(alarmTimeWorkRequest as OneTimeWorkRequest)
                 }
             }
         }
