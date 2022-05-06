@@ -332,7 +332,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                     // 브로드캐스트에 알람 예약하기
                     setNormalAlarm(this, requestCode.toInt(), hour, binding.numberPickerMin.value)
                 }
-                // 데이터를 수정
+                // 데이터를 수정 했을 경우
                 else {
                     requestCode = AppClass.alarmViewModel.currentAlarmRequestCode.value!!
 
@@ -360,6 +360,7 @@ class NormalAlarmActivity : AppCompatActivity() {
 
                     // DB 업데이트
                     AppClass.alarmViewModel.update(alarmData)
+                    setNormalAlarm(this, requestCode.toInt(), hour, binding.numberPickerMin.value)
                 }
 
                 finish()
