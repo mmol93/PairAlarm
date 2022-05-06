@@ -5,7 +5,7 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.view.View
 
-class MakeAnimation(){
+class AlarmAnimation(){
     lateinit var animatorSet: AnimatorSet
 
     fun swing(view: View): AnimatorSet{

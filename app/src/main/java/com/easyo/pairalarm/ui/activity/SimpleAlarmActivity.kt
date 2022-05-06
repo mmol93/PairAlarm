@@ -4,9 +4,6 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
 import androidx.activity.viewModels
@@ -15,7 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.easyo.pairalarm.R
-import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.ActivitySimpleAlarmBinding
 import com.easyo.pairalarm.ui.dialog.BellSelect
 import com.easyo.pairalarm.util.*
@@ -23,7 +19,6 @@ import com.easyo.pairalarm.viewModel.SimpleAlarmViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.*
 
 @AndroidEntryPoint
 class SimpleAlarmActivity : AppCompatActivity() {
@@ -34,7 +29,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
         binding = ActivitySimpleAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val makeAnimation = MakeAnimation()
+        val makeAnimation = AlarmAnimation()
 
         // UI 초기화
         lifecycleScope.launch {
@@ -237,7 +232,6 @@ class SimpleAlarmActivity : AppCompatActivity() {
         // 저장(save) 버튼 눌렀을 떄
         binding.saveButton.setOnSingleClickExt {
             if (simpleAlarmViewModel.currentAlarmHour.value > 0 || simpleAlarmViewModel.currentAlarmMin.value > 0) {
-                val requestCode = System.currentTimeMillis()
                 val dateData = getAddedTime(
                     hour = simpleAlarmViewModel.currentAlarmHour.value,
                     min = simpleAlarmViewModel.currentAlarmMin.value

@@ -77,9 +77,9 @@ class InitialActivity : AppCompatActivity() {
             }
         }
 
-        val initChampionWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<InitAlarmDataWorker>().build()
+        val initWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<InitAlarmDataWorker>().build()
         WorkManager.getInstance(applicationContext)
-            .enqueue(initChampionWorkRequest as OneTimeWorkRequest)
+            .enqueue(initWorkRequest as OneTimeWorkRequest)
     }
 
     // UI에 있는 Progress 상태 업데이트 하기

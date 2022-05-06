@@ -5,13 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.util.Log
+import androidx.appcompat.content.res.AppCompatResources
 import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.R
+import com.easyo.pairalarm.broadcast.cancelAlarm
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.AlarmItemBinding
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
 import com.easyo.pairalarm.util.ControlDialog
-import com.easyo.pairalarm.util.makeToast
 import com.easyo.pairalarm.util.setOnSingleClickExt
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.databinding.BindableItem
@@ -22,7 +23,7 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
     @SuppressLint("SetTextI18n")
     override fun bind(binding: AlarmItemBinding, position: Int) {
         binding.alarmNameText.text = alarmData.name
-        if (alarmData.name.length > 0){
+        if (alarmData.name.isNotEmpty()){
             binding.alarmNameText.isSelected = true
         }
 
@@ -49,31 +50,37 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
         }else{
             binding.monText.setTextColor(context.getColor(R.color.new_subTextColor))
         }
+
         if (alarmData.Tue){
             binding.tueText.setTextColor(Color.YELLOW)
         }else{
             binding.tueText.setTextColor(context.getColor(R.color.new_subTextColor))
         }
+
         if (alarmData.Wed){
             binding.wedText.setTextColor(Color.YELLOW)
         }else{
             binding.wedText.setTextColor(context.getColor(R.color.new_subTextColor))
         }
+
         if (alarmData.Thu){
             binding.thuText.setTextColor(Color.YELLOW)
         }else{
             binding.thuText.setTextColor(context.getColor(R.color.new_subTextColor))
         }
+
         if (alarmData.Fri){
             binding.friText.setTextColor(Color.YELLOW)
         }else{
             binding.friText.setTextColor(context.getColor(R.color.new_subTextColor))
         }
+
         if (alarmData.Sat){
             binding.satText.setTextColor(context.getColor(R.color.light_blue))
         }else{
             binding.satText.setTextColor(context.getColor(R.color.new_subTextColor))
         }
+
         if (alarmData.Sun){
             binding.sunText.setTextColor(Color.RED)
         }else{
@@ -82,17 +89,19 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
 
         // 진동 표기
         when(alarmData.vibration){
-            0 -> binding.vibImageView.setImageDrawable(context.getDrawable(R.drawable.ic_no_vib))
-            1 -> binding.vibImageView.setImageDrawable(context.getDrawable(R.drawable.ic_vib_1))
-            2 -> binding.vibImageView.setImageDrawable(context.getDrawable(R.drawable.ic_vib_2))
+            0 -> binding.vibImageView.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_no_vib))
+            1 -> binding.vibImageView.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_vib_1))
+            2 -> binding.vibImageView.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_vib_2))
         }
 
         // 볼륨 표기
-        if (alarmData.volume == 100) binding.volumeImageView.setImageDrawable(context.getDrawable(R.drawable.vol4))
-        else if (alarmData.volume in 61..99) binding.volumeImageView.setImageDrawable(context.getDrawable(R.drawable.vol3))
-        else if (alarmData.volume in 31..60) binding.volumeImageView.setImageDrawable(context.getDrawable(R.drawable.vol2))
-        else if (alarmData.volume in 1..30) binding.volumeImageView.setImageDrawable(context.getDrawable(R.drawable.vol1))
-        else binding.volumeImageView.setImageDrawable(context.getDrawable(R.drawable.vol0))
+        when (alarmData.volume) {
+            100 -> binding.volumeImageView.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.vol4))
+            in 61..99 -> binding.volumeImageView.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.vol3))
+            in 31..60 -> binding.volumeImageView.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.vol2))
+            in 1..30 -> binding.volumeImageView.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.vol1))
+            else -> binding.volumeImageView.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.vol0))
+        }
 
         // 스위치
         binding.onOffSwitch.isChecked = alarmData.button
@@ -113,12 +122,13 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
         binding.deleteImage.setOnSingleClickExt {
             ControlDialog.make(
                 context,
-                context.getString(R.string.dialog_permission_title),
-                context.getString(R.string.dialog_overlay_message),
+                context.getString(R.string.dialog_delete_title),
+                context.getString(R.string.dialog_delete_content),
                 null,
                 positive = {
                     AppClass.alarmViewModel = alarmViewModel
                     AppClass.alarmViewModel.delete(alarmData)
+                    cancelAlarm(context, alarmData.requestCode)
                            },
                 negative = { }
             )

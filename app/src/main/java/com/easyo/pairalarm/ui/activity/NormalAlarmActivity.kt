@@ -10,13 +10,15 @@ import com.easyo.pairalarm.databinding.ActivityMakeAlarmBinding
 import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.easyo.pairalarm.AppClass
+import com.easyo.pairalarm.broadcast.setNormalAlarm
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.ui.dialog.BellSelect
-import com.easyo.pairalarm.util.MakeAnimation
+import com.easyo.pairalarm.util.AlarmAnimation
 import com.easyo.pairalarm.util.initCurrentAlarmData
 import com.easyo.pairalarm.util.makeToast
 import com.easyo.pairalarm.util.setOnSingleClickExt
@@ -24,6 +26,7 @@ import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.*
 
 @AndroidEntryPoint
 class NormalAlarmActivity : AppCompatActivity() {
@@ -48,10 +51,13 @@ class NormalAlarmActivity : AppCompatActivity() {
         binding.numberPickerAMPM.maxValue = arg1.size - 1
         binding.numberPickerAMPM.displayedValues = arg1
 
-        Log.d("NormalAlarmActivity", "alarmRequestCode: ${AppClass.alarmViewModel.currentAlarmRequestCode.value} ")
+        Log.d(
+            "NormalAlarmActivity",
+            "alarmRequestCode: ${AppClass.alarmViewModel.currentAlarmRequestCode.value} "
+        )
 
         // alarmData의 requestCode 값이 0이면 새로운 알람 생성
-        if (AppClass.alarmViewModel.currentAlarmRequestCode.value == null || AppClass.alarmViewModel.currentAlarmRequestCode.value == 0L) {
+        if (AppClass.alarmViewModel.currentAlarmRequestCode.value == null) {
             binding.saveButton.text = "save"
         }
 
@@ -85,8 +91,8 @@ class NormalAlarmActivity : AppCompatActivity() {
                     // 볼륨
                     AppClass.alarmViewModel.currentAlarmVolume.collectLatest {
                         when (it) {
-                            0 -> binding.imageVolume.setImageDrawable(getDrawable(R.drawable.volume_mute))
-                            else -> binding.imageVolume.setImageDrawable(getDrawable(R.drawable.volume_icon))
+                            0 -> binding.imageVolume.setImageDrawable(AppCompatResources.getDrawable(this@NormalAlarmActivity, R.drawable.volume_mute))
+                            else -> binding.imageVolume.setImageDrawable(AppCompatResources.getDrawable(this@NormalAlarmActivity, R.drawable.volume_icon))
                         }
                         binding.volumeSeekBar.progress = it
                     }
@@ -121,9 +127,9 @@ class NormalAlarmActivity : AppCompatActivity() {
                     // 진동
                     AppClass.alarmViewModel.currentAlarmVibration.collectLatest {
                         when (it) {
-                            0 -> binding.imageVibration.setImageDrawable(getDrawable(R.drawable.ic_no_vib))
-                            1 -> binding.imageVibration.setImageDrawable(getDrawable(R.drawable.ic_vib_1))
-                            2 -> binding.imageVibration.setImageDrawable(getDrawable(R.drawable.ic_vib_2))
+                            0 -> binding.imageVibration.setImageDrawable(AppCompatResources.getDrawable(this@NormalAlarmActivity, R.drawable.ic_no_vib))
+                            1 -> binding.imageVibration.setImageDrawable(AppCompatResources.getDrawable(this@NormalAlarmActivity, R.drawable.ic_vib_1))
+                            2 -> binding.imageVibration.setImageDrawable(AppCompatResources.getDrawable(this@NormalAlarmActivity, R.drawable.ic_vib_2))
                         }
                     }
                 }
@@ -179,7 +185,7 @@ class NormalAlarmActivity : AppCompatActivity() {
             }
         }
 
-        val makeAnimation = MakeAnimation()
+        val makeAnimation = AlarmAnimation()
 
         // editText의 외부를 클릭했을 때는 키보드랑 Focus 제거하기
         binding.rootLayout.setOnClickListener {
@@ -196,20 +202,20 @@ class NormalAlarmActivity : AppCompatActivity() {
             bellSelectDialog.show()
         }
 
-        binding.numberPickerHour.setOnValueChangedListener { numberPicker, i, i2 ->
+        binding.numberPickerHour.setOnValueChangedListener { numberPicker, _, _ ->
             AppClass.alarmViewModel.currentAlarmHour.value = numberPicker.value
         }
 
-        binding.numberPickerMin.setOnValueChangedListener { numberPicker, i, i2 ->
+        binding.numberPickerMin.setOnValueChangedListener { numberPicker, _, _ ->
             AppClass.alarmViewModel.currentAlarmMin.value = numberPicker.value
         }
 
-        binding.numberPickerAMPM.setOnValueChangedListener { numberPicker, i, i2 ->
+        binding.numberPickerAMPM.setOnValueChangedListener { numberPicker, _, _ ->
             AppClass.alarmViewModel.currentAlarmAmPm.value = numberPicker.value
         }
 
         // SeekBar에 대한 조작
-        binding.volumeSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+        binding.volumeSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, p1: Int, p2: Boolean) {
 
             }
@@ -269,24 +275,33 @@ class NormalAlarmActivity : AppCompatActivity() {
                 AppClass.alarmViewModel.currentAlarmSat.value ||
                 AppClass.alarmViewModel.currentAlarmSun.value
             ) {
-                var hour = 0
+                var hour: Int
 
                 // 오전, 오후에 따라 hour의 값에 12를 더해주기
-                if (AppClass.alarmViewModel.currentAlarmAmPm.value == 1 && AppClass.alarmViewModel.currentAlarmHour.value + 12 <= 24){
+                if (AppClass.alarmViewModel.currentAlarmAmPm.value == 1 && AppClass.alarmViewModel.currentAlarmHour.value + 12 <= 24) {
                     hour = AppClass.alarmViewModel.currentAlarmHour.value + 12
                     // 24시는 0시로 설정되게 한다
                     if (hour == 24) {
                         hour = 0
                     }
-                }else{
+                } else {
                     hour = AppClass.alarmViewModel.currentAlarmHour.value
                 }
 
                 // DB의 requestCode에 넣을 unique 수 생성
-                var requestCode = 0L
-                if (AppClass.alarmViewModel.currentAlarmRequestCode.value == 0L ||
-                    AppClass.alarmViewModel.currentAlarmRequestCode.value == null) {
-                    requestCode = System.currentTimeMillis()
+                val requestCode: String
+
+                // currentAlarmRequestCode를 보고 새로운 알람 생성인지 수정인지 판단
+                if (AppClass.alarmViewModel.currentAlarmRequestCode.value == null
+                ) {
+                    val calendar = Calendar.getInstance()
+                    val currentDay = calendar.get(Calendar.DAY_OF_YEAR)
+                    val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+                    val currentMin = calendar.get(Calendar.MINUTE)
+                    val currentSecond = calendar.get(Calendar.SECOND)
+
+                    requestCode = currentDay.toString() + currentHour.toString() +
+                            currentMin.toString() + currentSecond.toString()
 
                     // DB에 넣을 Data set
                     val alarmData = AlarmData(
@@ -313,6 +328,9 @@ class NormalAlarmActivity : AppCompatActivity() {
 
                     // DB에 데이터 삽입
                     AppClass.alarmViewModel.insert(alarmData)
+
+                    // 브로드캐스트에 알람 예약하기
+                    setNormalAlarm(this, requestCode.toInt(), hour, binding.numberPickerMin.value)
                 }
                 // 데이터를 수정
                 else {

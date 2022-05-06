@@ -2,7 +2,6 @@ package com.easyo.pairalarm.util
 
 import android.content.Context
 import android.media.MediaPlayer
-import android.util.Log
 import android.widget.Toast
 import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.R
@@ -24,40 +23,44 @@ fun selectMusic(context: Context, index: Int): MediaPlayer{
     }
 }
 
+// SimpleAlarm 이나 QuickAlarm 으로 만든 알람의 calendar 값을 얻는다
 fun getAddedTime(hour: Int, min: Int): Calendar{
-    val calendar = Calendar.getInstance()
-    calendar.add(Calendar.HOUR, hour)
-    calendar.add(Calendar.MINUTE, min)
-    calendar.timeInMillis
+    val calendar = Calendar.getInstance().apply {
+        add(Calendar.HOUR, hour)
+        add(Calendar.MINUTE, min)
+        timeInMillis
+    }
 //    Log.d("SimpleAlarmActivity", "calendar.timeInMillis: ${calendar.timeInMillis}")
     return calendar
 }
 
-fun getWeekDataFromCalendar(calendar: Calendar): Int{
-    return calendar.get(Calendar.DAY_OF_WEEK)
-}
-
-
+// AlarmData를 만드는데 필요한 데이터를 매개변수로 받고 AlarmData를 반환 - SimpleAlarm과 QuickAlarm에서 사용된다
 fun makeAlarmData(calendar: Calendar, alarmName: String, simpleAlarmViewModel: SimpleAlarmViewModel): AlarmData{
-    val DAY_OF_WEEK = calendar.get(Calendar.DAY_OF_WEEK)
-    val currentTimeMillis = Calendar.getInstance().timeInMillis
+    val setWeek = calendar.get(Calendar.DAY_OF_WEEK)
     val vibration = simpleAlarmViewModel.currentAlarmVibration.value
     val hour = calendar.get(Calendar.HOUR_OF_DAY)
     val min = calendar.get(Calendar.MINUTE)
     val volume = simpleAlarmViewModel.currentAlarmVolume.value
     val bell = simpleAlarmViewModel.currentAlarmBell.value
     val mode = simpleAlarmViewModel.currentAlarmMode.value
+    val currentCalendar = Calendar.getInstance()
+    val currentDay = currentCalendar.get(Calendar.DAY_OF_YEAR)
+    val currentHour = currentCalendar.get(Calendar.HOUR_OF_DAY)
+    val currentMin = currentCalendar.get(Calendar.MINUTE)
+    val currentSecond = currentCalendar.get(Calendar.SECOND)
+    val requestCode = currentDay.toString() + currentHour.toString() +
+            currentMin.toString() + currentSecond.toString()
 
     // 일요일=1 ~ 토요일 = 7임
-    return when(DAY_OF_WEEK){
+    return when(setWeek){
         // 일
-        1 -> AlarmData(id = null, button = true, Sun = true, Mon = false, Tue = false, Wed = false, Thu = false, Fri = false, Sat = false, vibration = vibration, requestCode = currentTimeMillis, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
-        2 -> AlarmData(id = null, button = true, Sun = false, Mon = true, Tue = false, Wed = false, Thu = false, Fri = false, Sat = false, vibration = vibration, requestCode = currentTimeMillis, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
-        3 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = true, Wed = false, Thu = false, Fri = false, Sat = false, vibration = vibration, requestCode = currentTimeMillis, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
-        4 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = true, Thu = false, Fri = false, Sat = false, vibration = vibration, requestCode = currentTimeMillis, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
-        5 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = false, Thu = true, Fri = false, Sat = false, vibration = vibration, requestCode = currentTimeMillis, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
-        6 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = false, Thu = false, Fri = true, Sat = false, vibration = vibration, requestCode = currentTimeMillis, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
-        else -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = false, Thu = false, Fri = false, Sat = true, vibration = vibration, requestCode = currentTimeMillis, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
+        1 -> AlarmData(id = null, button = true, Sun = true, Mon = false, Tue = false, Wed = false, Thu = false, Fri = false, Sat = false, vibration = vibration, requestCode = requestCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
+        2 -> AlarmData(id = null, button = true, Sun = false, Mon = true, Tue = false, Wed = false, Thu = false, Fri = false, Sat = false, vibration = vibration, requestCode = requestCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
+        3 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = true, Wed = false, Thu = false, Fri = false, Sat = false, vibration = vibration, requestCode = requestCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
+        4 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = true, Thu = false, Fri = false, Sat = false, vibration = vibration, requestCode = requestCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
+        5 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = false, Thu = true, Fri = false, Sat = false, vibration = vibration, requestCode = requestCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
+        6 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = false, Thu = false, Fri = true, Sat = false, vibration = vibration, requestCode = requestCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
+        else -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = false, Thu = false, Fri = false, Sat = true, vibration = vibration, requestCode = requestCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
     }
 }
 
@@ -73,7 +76,7 @@ fun initCurrentAlarmData() {
         Fri = false,
         Sat = false,
         vibration = 0,
-        requestCode = 0,
+        requestCode = "",
         mode = 0,
         hour = 1,
         minute = 0,
@@ -83,3 +86,4 @@ fun initCurrentAlarmData() {
         name = ""
     )
 }
+

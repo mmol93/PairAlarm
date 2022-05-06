@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:name=".AppClass"
@@ -21,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PairAlarm"
-        tools:replace="android:theme">
+        tools:replace="android:theme"
+        android:fullBackupContent="true">
         <activity
             android:name="com.easyo.pairalarm.ui.activity.NormalAlarmActivity"
             android:theme="@style/Theme.PairAlarm.NoActionBar"
@@ -44,8 +46,18 @@
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.PairAlarm.NoActionBar">
-
         </activity>
+
+        <receiver android:name=".broadcast.MyReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.easyo.pairalarm"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="POSTPHONETIME" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
 
         <provider
             android:name="androidx.startup.InitializationProvider"

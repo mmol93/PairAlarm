@@ -9,22 +9,22 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
-import com.easyo.pairalarm.Constant.OVERLAYCODE
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
 import com.easyo.pairalarm.groupieitem.AlarmGroupie
 import com.easyo.pairalarm.ui.activity.SimpleAlarmActivity
-import com.easyo.pairalarm.util.ControlDialog
-import com.easyo.pairalarm.util.makeToast
-import com.easyo.pairalarm.util.setOnSingleClickExt
+import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
+import com.easyo.pairalarm.worker.AlarmWorker
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -39,7 +39,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         super.onViewCreated(view, savedInstanceState)
         binding = DataBindingUtil.bind(view)!!
 
-        // 나중에 화면 사이즈에 맞게 숫자 바뀌게 하기
+        // todo 나중에 화면 사이즈에 맞게 숫자 바뀌게 하기
         var recyclerViewSpan = 2
 
         // Groupie - RecyclerView 정의
@@ -51,11 +51,16 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
 
         // Groupie - RecyclerView 데이터 입력
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                AppClass.alarmDataList?.collectLatest { alarmDataList ->
-                    Log.d("AlarmFragment", "AlarmData: $alarmDataList")
-                    alarmDataList.map { AlarmGroupie(requireContext(), it, alarmViewModel) }
-                        .also { alarmRecyclerAdapter.update(it) }
+            AppClass.alarmDataList?.collectLatest { alarmDataList ->
+                Log.d("AlarmFragment", "AlarmData: $alarmDataList")
+                alarmDataList.map { AlarmGroupie(requireContext(), it, alarmViewModel) }
+                    .also { alarmRecyclerAdapter.update(it) }
+
+                if (alarmDataList.isEmpty()){
+                    cancelAlarmNotification(requireContext())
+                }else{
+                    val alarmTimeWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<AlarmWorker>().build()
+                    WorkManager.getInstance(requireContext()).enqueue(alarmTimeWorkRequest as OneTimeWorkRequest)
                 }
             }
         }
@@ -112,7 +117,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
             Fri = false,
             Sat = false,
             vibration = 0,
-            requestCode = 0,
+            requestCode = "",
             mode = 0,
             hour = 1,
             minute = 0,
@@ -152,7 +157,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Uri.parse("package:${requireContext().packageName}")
             )
-            startActivityForResult(intent, OVERLAYCODE)
+            startActivityForResult(intent, OVERLAY_CODE)
             Log.d("mainActivity", "오버레이 intent 호출")
             return false
         } else {
@@ -163,7 +168,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         // 오버레이 권한 설정에서 돌아왔을 때
-        if (requestCode == OVERLAYCODE) {
+        if (requestCode == OVERLAY_CODE) {
             // todo Dialog 만드는거 함수로 만들어서 간단하게 만들 수 있게 하기
             ControlDialog.make(
                 requireContext(),
