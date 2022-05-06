@@ -25,10 +25,9 @@ fun setNormalAlarm(context: Context, requestCode: Int, hour: Int, min: Int){
         calendarMillis += intervalOneDay
     }
 
-    val intent = Intent("com.example.selftest")
+    val intent = Intent("com.easyo.pairalarm")
     intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
-    intent.action = "com.example.selftest"
-    intent.component = ComponentName("com.example.selftest", "com.example.selftest.MyBroadcast")
+    intent.component = ComponentName("com.easyo.pairalarm", "com.easyo.pairalarm.broadcast.MyReceiver")
     intent.putExtra("alarm$requestCode", "alarm$requestCode")
 
     val pendingIntent = PendingIntent.getBroadcast(
@@ -41,13 +40,18 @@ fun setNormalAlarm(context: Context, requestCode: Int, hour: Int, min: Int){
     val alarmInfo = AlarmManager.AlarmClockInfo(calendarMillis, pendingIntent)
     Log.d("Alarm", "set alarm(mills): ${transMillisToTime(calendarMillis)}")
     alarmManager.setAlarmClock(alarmInfo, pendingIntent)
+    getNextAlarm(context)
+}
+
+fun getNextAlarm(context: Context){
+    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    Log.d("Alarm", "next alarm is ${transMillisToTime(alarmManager.nextAlarmClock.triggerTime)}")
 }
 
 fun cancelAlarm(context: Context, requestCode: String){
-    val intent = Intent("com.example.selftest")
+    val intent = Intent("com.easyo.pairalarm")
     intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
-    intent.action = "com.example.selftest"
-    intent.component = ComponentName("com.example.selftest", "com.example.selftest.MyBroadcast")
+    intent.component = ComponentName("com.easyo.pairalarm", "com.easyo.pairalarm.MyReceiver")
     val pendingIntent = PendingIntent.getBroadcast(
         context,
         requestCode.toInt(),
@@ -59,11 +63,4 @@ fun cancelAlarm(context: Context, requestCode: String){
 
     alarmManager?.cancel(pendingIntent)
     pendingIntent.cancel()
-}
-
-fun getNextAlarm(context: Context): Long? {
-    val alarmManager: AlarmManager? =
-        context.getSystemService(Context.ALARM_SERVICE) as AlarmManager?
-
-    return alarmManager?.nextAlarmClock?.triggerTime
 }
