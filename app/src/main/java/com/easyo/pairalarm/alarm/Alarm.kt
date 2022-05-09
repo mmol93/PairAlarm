@@ -9,7 +9,7 @@ import android.util.Log
 import com.easyo.pairalarm.util.transMillisToTime
 import java.util.*
 
-fun setNormalAlarm(context: Context, requestCode: Int, hour: Int, min: Int){
+fun setAlarm(context: Context, requestCode: Int, hour: Int, min: Int){
     val setAlarmCalendar = Calendar.getInstance().apply {
         set(Calendar.HOUR_OF_DAY, hour)
         set(Calendar.MINUTE, min)

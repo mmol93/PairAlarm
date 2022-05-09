@@ -15,7 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.easyo.pairalarm.AppClass
-import com.easyo.pairalarm.alarm.setNormalAlarm
+import com.easyo.pairalarm.alarm.setAlarm
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.ui.dialog.BellSelect
 import com.easyo.pairalarm.util.AlarmAnimation
@@ -329,7 +329,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                     AppClass.alarmViewModel.insert(alarmData)
 
                     // 브로드캐스트에 알람 예약하기
-                    setNormalAlarm(this, requestCode.toInt(), hour, binding.numberPickerMin.value)
+                    setAlarm(this, requestCode.toInt(), hour, binding.numberPickerMin.value)
                 }
                 // 데이터를 수정 했을 경우
                 else {
@@ -359,7 +359,7 @@ class NormalAlarmActivity : AppCompatActivity() {
 
                     // DB 업데이트
                     AppClass.alarmViewModel.update(alarmData)
-                    setNormalAlarm(this, requestCode.toInt(), hour, binding.numberPickerMin.value)
+                    setAlarm(this, requestCode.toInt(), hour, binding.numberPickerMin.value)
                 }
 
                 finish()
