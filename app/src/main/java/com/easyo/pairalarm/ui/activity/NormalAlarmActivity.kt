@@ -15,7 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.easyo.pairalarm.AppClass
-import com.easyo.pairalarm.broadcast.setNormalAlarm
+import com.easyo.pairalarm.alarm.setNormalAlarm
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.ui.dialog.BellSelect
 import com.easyo.pairalarm.util.AlarmAnimation
@@ -248,9 +248,8 @@ class NormalAlarmActivity : AppCompatActivity() {
 
             builder.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, i: Int ->
                 val alert = dialogInterface as AlertDialog
-                val idx = alert.listView.checkedItemPosition
                 // * 선택된 아이템의 position에 따라 행동 조건 넣기
-                when (idx) {
+                when (alert.listView.checkedItemPosition) {
                     // Normal 클릭 시
                     0 -> {
                         AppClass.alarmViewModel.currentAlarmMode.value = 0

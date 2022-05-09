@@ -8,7 +8,7 @@ import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.R
-import com.easyo.pairalarm.broadcast.cancelAlarm
+import com.easyo.pairalarm.alarm.cancelAlarm
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.AlarmItemBinding
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity

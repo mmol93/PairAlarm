@@ -1,4 +1,4 @@
-package com.easyo.pairalarm.broadcast
+package com.easyo.pairalarm.alarm
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -28,7 +28,7 @@ fun setNormalAlarm(context: Context, requestCode: Int, hour: Int, min: Int){
     val intent = Intent("com.easyo.pairalarm")
     intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
     intent.component = ComponentName("com.easyo.pairalarm", "com.easyo.pairalarm.broadcast.MyReceiver")
-    intent.putExtra("alarm$requestCode", "alarm$requestCode")
+    intent.putExtra("requestCode", "$requestCode")
 
     val pendingIntent = PendingIntent.getBroadcast(
         context,
@@ -38,14 +38,9 @@ fun setNormalAlarm(context: Context, requestCode: Int, hour: Int, min: Int){
     )
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val alarmInfo = AlarmManager.AlarmClockInfo(calendarMillis, pendingIntent)
+    Log.d("Alarm", "set requestCode: $requestCode")
     Log.d("Alarm", "set alarm(mills): ${transMillisToTime(calendarMillis)}")
     alarmManager.setAlarmClock(alarmInfo, pendingIntent)
-    getNextAlarm(context)
-}
-
-fun getNextAlarm(context: Context){
-    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    Log.d("Alarm", "next alarm is ${transMillisToTime(alarmManager.nextAlarmClock.triggerTime)}")
 }
 
 fun cancelAlarm(context: Context, requestCode: String){

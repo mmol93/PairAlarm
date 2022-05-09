@@ -65,4 +65,6 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
     fun delete(alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.delete(alarmData)
     }
+
+    fun searchRequestCode(requestCode: String) = alarmRepository.searchWithRequestCode(requestCode)
 }

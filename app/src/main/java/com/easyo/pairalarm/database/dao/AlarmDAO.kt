@@ -17,4 +17,7 @@ interface AlarmDAO {
 
     @Query("SELECT * FROM alarm_data")
     fun getAllAlarms(): Flow<List<AlarmData>>
+
+    @Query("SELECT * FROM alarm_data WHERE requestCode = :requestCode")
+    fun searchAlarmDataWithRequestCode(requestCode : String) : Flow<List<AlarmData>>
 }
