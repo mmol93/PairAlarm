@@ -15,6 +15,10 @@
     <string name="ok">OK</string>
     <string name="play">play</string>
     <string name="stop">stop</string>
+    <string name="ten_minutes_later">10minutes</string>
+
+    <!-- -->
+    <string name="on_alarm_error">Error!!: Could not read alarm data</string>
 
 
     <!-- Weekend -->

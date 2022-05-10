@@ -40,6 +40,7 @@
         <entry key="..\:/Users/ljws9/Documents/Git/PairAlarm/app/src/main/res/layout/fragment_normal_alarm.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/ljws9/Documents/Git/PairAlarm/app/src/main/res/layout/fragment_setting.xml" value="0.14947916666666666" />
         <entry key="..\:/Users/ljws9/Documents/Git/PairAlarm/app/src/main/res/layout/fragment_weather.xml" value="0.14947916666666666" />
+        <entry key="app/src/main/res/layout/activity_on_alarm.xml" value="0.25" />
       </map>
     </option>
   </component>

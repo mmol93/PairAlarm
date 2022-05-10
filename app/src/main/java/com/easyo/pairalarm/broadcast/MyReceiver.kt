@@ -4,10 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.work.OneTimeWorkRequest
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.WorkRequest
+import androidx.work.*
 import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.ui.activity.OnAlarmActivity
 import com.easyo.pairalarm.worker.ReceiverAlarmWorker
@@ -33,8 +30,13 @@ class MyReceiver : BroadcastReceiver() {
 
             if (requestCode != null) {
                 AppClass.requestCode = requestCode
-                val receiverAlarmWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<ReceiverAlarmWorker>().build()
-                WorkManager.getInstance(context!!).enqueue(receiverAlarmWorkRequest as OneTimeWorkRequest)
+                val receiverAlarmWorkRequest: WorkRequest =
+                    OneTimeWorkRequestBuilder<ReceiverAlarmWorker>().build()
+                WorkManager.getInstance(context!!).enqueueUniqueWork(
+                    "onAlarmActivity",
+                    ExistingWorkPolicy.KEEP,
+                    receiverAlarmWorkRequest as OneTimeWorkRequest
+                )
             }
         }
     }

@@ -227,20 +227,17 @@ class SimpleAlarmActivity : AppCompatActivity() {
             }
         }
 
-        // 캔슬 버튼 눌렀을 때
         binding.cancelButton.setOnClickListener {
             finish()
         }
 
-        // 저장(save) 버튼 눌렀을 떄
         binding.saveButton.setOnSingleClickExt {
             if (simpleAlarmViewModel.currentAlarmHour.value > 0 || simpleAlarmViewModel.currentAlarmMin.value > 0) {
                 val dateData = getAddedTime(
                     hour = simpleAlarmViewModel.currentAlarmHour.value,
                     min = simpleAlarmViewModel.currentAlarmMin.value
                 )
-                // dateData에서 가져온 값을 alarmData에 넣을 수 있게 가공한다
-                // textView에 들어있는 값만큼은 넘겨서 저장하게 한다
+
                 val alarmData = makeAlarmData(dateData, binding.alarmNameEditText.text.toString(), simpleAlarmViewModel)
                 simpleAlarmViewModel.insert(alarmData)
 
@@ -255,10 +252,6 @@ class SimpleAlarmActivity : AppCompatActivity() {
 
                 val requestCode = currentDay.toString() + currentHour.toString() +
                         currentMin.toString() + currentSecond.toString()
-
-                Log.d("SimpleAlarmActivity", "set currentDay: $currentDay")
-                Log.d("SimpleAlarmActivity", "set currentHour: $currentHour")
-                Log.d("SimpleAlarmActivity", "set currentMin: $currentMin")
 
                 setAlarm(this, requestCode.toInt(), setHour, setMin)
 

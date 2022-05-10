@@ -15,6 +15,7 @@
     <color name="deep_yellow">#F5D042</color>
     <color name="new_subTextColor">#949494</color>
     <color name="Space_Purple">#CEABFA</color>
+    <color name="on_alarm_background">#070417</color>
 
     // mainColor와 잘 어울리는 색
     <color name="main_pink">#ff66cc</color>

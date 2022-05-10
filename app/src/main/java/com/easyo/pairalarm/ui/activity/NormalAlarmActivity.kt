@@ -58,7 +58,7 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         // alarmData의 requestCode 값이 0이면 새로운 알람 생성
         if (AppClass.alarmViewModel.currentAlarmRequestCode.value == null) {
-            binding.saveButton.text = "save"
+            binding.saveButton.text = getString(R.string.save)
         }
 
         // UI 초기화
@@ -246,7 +246,7 @@ class NormalAlarmActivity : AppCompatActivity() {
             )
             builder.setNeutralButton(getString(R.string.cancel), null)
 
-            builder.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, i: Int ->
+            builder.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
                 val alert = dialogInterface as AlertDialog
                 // * 선택된 아이템의 position에 따라 행동 조건 넣기
                 when (alert.listView.checkedItemPosition) {
