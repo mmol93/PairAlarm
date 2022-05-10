@@ -90,16 +90,6 @@
             android:textColor="@color/white"
             android:textSize="30dp" />
 
-        <TextView
-            android:id="@+id/ampmText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/nanumgothicextrabold"
-            android:gravity="center"
-            android:text="AM"
-            android:textColor="@color/white"
-            android:textSize="15dp" />
     </LinearLayout>
 
     <LinearLayout

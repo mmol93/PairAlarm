@@ -156,16 +156,16 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
     // 오버레이 권한 확인
     private fun checkOverlayPermission(): Boolean {
         // 권한이 ok가 아닐 때
-        if (!Settings.canDrawOverlays(requireContext())) {
+        return if (!Settings.canDrawOverlays(requireContext())) {
             val intent = Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Uri.parse("package:${requireContext().packageName}")
             )
             startActivityForResult(intent, OVERLAY_CODE)
             Log.d("mainActivity", "오버레이 intent 호출")
-            return false
+            false
         } else {
-            return true
+            true
         }
     }
 

@@ -178,8 +178,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                 launch {
                     // Am PM
                     AppClass.alarmViewModel.currentAlarmAmPm.collectLatest {
-                        binding.numberPickerAMPM.value =
-                            AppClass.alarmViewModel.currentAlarmAmPm.value
+                        binding.numberPickerAMPM.value = it
                     }
                 }
             }
@@ -277,14 +276,14 @@ class NormalAlarmActivity : AppCompatActivity() {
                 var hour: Int
 
                 // 오전, 오후에 따라 hour의 값에 12를 더해주기
-                if (AppClass.alarmViewModel.currentAlarmAmPm.value == 1 && AppClass.alarmViewModel.currentAlarmHour.value + 12 <= 24) {
-                    hour = AppClass.alarmViewModel.currentAlarmHour.value + 12
-                    // 24시는 0시로 설정되게 한다
-                    if (hour == 24) {
-                        hour = 0
-                    }
-                } else {
-                    hour = AppClass.alarmViewModel.currentAlarmHour.value
+                if (binding.numberPickerHour.value == 12 && binding.numberPickerAMPM.value == 1){
+                    hour = 12
+                }else if(binding.numberPickerHour.value == 12 && binding.numberPickerAMPM.value == 0){
+                    hour = 0
+                }else if (binding.numberPickerAMPM.value == 1 && binding.numberPickerHour.value + 12 <= 24){
+                    hour = binding.numberPickerHour.value + 12
+                }else{
+                    hour = binding.numberPickerHour.value
                 }
 
                 // DB의 requestCode에 넣을 unique 수 생성

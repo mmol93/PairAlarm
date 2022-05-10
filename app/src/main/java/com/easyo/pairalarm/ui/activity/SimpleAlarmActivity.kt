@@ -257,7 +257,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
 
                 finish()
             } else {
-                makeToast(this, getString(R.string.alarmSet_Toast_min))
+                makeToast(this, getString(R.string.toast_set_minimum_time))
             }
         }
     }

@@ -28,14 +28,7 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
         }
 
         // 시간 표기
-        if (alarmData.hour > 12){
-            binding.hourText.text = (alarmData.hour - 12).toString()
-            binding.ampmText.text = context.getString(R.string.alarmSet_PM)
-        }else{
-            // 시간은 두 자릿수로 표현하지 않는다
-            binding.hourText.text = alarmData.hour.toString()
-            binding.ampmText.text = context.getString(R.string.alarmSet_AM)
-        }
+        binding.hourText.text = alarmData.hour.toString()
 
         // 두 자릿수로 표현 - 분
         if (alarmData.minute < 10){
@@ -158,6 +151,11 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
         AppClass.alarmViewModel.currentAlarmVolume.value = alarmViewModel.currentAlarmData.value.volume
         AppClass.alarmViewModel.currentAlarmBell.value = alarmViewModel.currentAlarmData.value.bell
         AppClass.alarmViewModel.currentAlarmName.value = alarmViewModel.currentAlarmData.value.name
+        if (alarmViewModel.currentAlarmData.value.hour >= 12){
+            AppClass.alarmViewModel.currentAlarmAmPm.value = 1
+        }else{
+            AppClass.alarmViewModel.currentAlarmAmPm.value = 0
+        }
 
         Log.d("AlarmGroupie", "name: ${AppClass.alarmViewModel.currentAlarmName.value}")
 

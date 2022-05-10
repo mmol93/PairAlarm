@@ -2,19 +2,21 @@ package com.easyo.pairalarm.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.work.WorkManager
+import androidx.work.*
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.alarm.setAlarm
 import com.easyo.pairalarm.databinding.ActivityOnAlarmBinding
 import com.easyo.pairalarm.util.getCurrentHourDoubleDigitWithString
 import com.easyo.pairalarm.util.getCurrentMinuteDoubleDigitWithString
+import com.easyo.pairalarm.util.makeToast
 import com.easyo.pairalarm.viewModel.AlarmViewModel
+import com.easyo.pairalarm.worker.NextAlarmWorker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.*
 
 @AndroidEntryPoint
 class OnAlarmActivity : AppCompatActivity() {
@@ -30,9 +32,9 @@ class OnAlarmActivity : AppCompatActivity() {
         if (requestCode != null) {
             stopOnAlarmWorkManager()
 
-            val goesOnAlarmData = alarmViewModel.searchRequestCode(requestCode.toString())
+            val goesOffAlarmData = alarmViewModel.searchRequestCode(requestCode.toString())
             lifecycleScope.launch {
-                goesOnAlarmData.collectLatest { alarmDataList ->
+                goesOffAlarmData.collectLatest { alarmDataList ->
                     if (alarmDataList.isNotEmpty()) {
                         binding.hour.text = getCurrentHourDoubleDigitWithString()
                         binding.min.text = getCurrentMinuteDoubleDigitWithString()
@@ -48,18 +50,44 @@ class OnAlarmActivity : AppCompatActivity() {
                                     alarmDataList[0].minute
                                 )
                             }
+
+                            val alarmTimeWorkRequest: WorkRequest =
+                                OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
+                            WorkManager.getInstance(this@OnAlarmActivity)
+                                .enqueueUniqueWork(
+                                    "makeNotification",
+                                    ExistingWorkPolicy.KEEP,
+                                    alarmTimeWorkRequest as OneTimeWorkRequest
+                                )
+
                             finish()
                         }
 
-                        // todo need to set 10 later function
                         binding.tenMinutes.setOnClickListener {
+                            val calendar = Calendar.getInstance().apply {
+                                add(Calendar.MINUTE, 10)
+                            }
+                            val addHour = calendar.get(Calendar.HOUR_OF_DAY)
+                            val addMinute = calendar.get(Calendar.MINUTE)
+                            setAlarm(
+                                this@OnAlarmActivity,
+                                alarmDataList[0].requestCode.toInt(),
+                                addHour,
+                                addMinute
+                            )
+
+                            makeToast(
+                                this@OnAlarmActivity,
+                                getString(R.string.toast_ten_minute_later)
+                            )
+
                             finish()
                         }
                     }
                 }
             }
         } else {
-            Toast.makeText(this, getString(R.string.on_alarm_error), Toast.LENGTH_LONG).show()
+            makeToast(this, getString(R.string.on_alarm_error))
             finish()
         }
     }

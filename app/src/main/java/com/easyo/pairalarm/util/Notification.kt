@@ -34,7 +34,6 @@ fun makeAlarmNotification(context: Context, messageBody: String) {
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setOngoing(true)   // 알람이 계속 뜬 상태로 있게하기
 
-    // noti에서 사용할 채널을 만든다(API26 이상에서는 반드시 채널 필요)
     val notificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     val channel = NotificationChannel(
@@ -43,9 +42,9 @@ fun makeAlarmNotification(context: Context, messageBody: String) {
         NotificationManager.IMPORTANCE_DEFAULT
     )
     notificationManager.createNotificationChannel(channel)
-
     notificationManager.notify(ALARM_NOTI_ID, notificationBuilder.build())
 
+    // Worker를 캔슬하지 않으면 notification을 만들고 Worker로 되돌아감(suspend로 만들어서 그럼)
     WorkManager.getInstance(context).cancelUniqueWork("makeNotification")
 }
 
