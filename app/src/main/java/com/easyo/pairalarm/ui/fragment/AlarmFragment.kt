@@ -11,10 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.work.OneTimeWorkRequest
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.WorkRequest
+import androidx.work.*
 import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
 import com.easyo.pairalarm.R
@@ -46,7 +43,8 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         val alarmRecyclerAdapter = GroupieAdapter()
         binding.alarmRecycler.run {
             adapter = alarmRecyclerAdapter
-            layoutManager = GridLayoutManager(context, recyclerViewSpan, GridLayoutManager.VERTICAL, false)
+            layoutManager =
+                GridLayoutManager(context, recyclerViewSpan, GridLayoutManager.VERTICAL, false)
         }
 
         // Groupie - RecyclerView 데이터 입력
@@ -56,11 +54,17 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 alarmDataList.map { AlarmGroupie(requireContext(), it, alarmViewModel) }
                     .also { alarmRecyclerAdapter.update(it) }
 
-                if (alarmDataList.isEmpty()){
+                if (alarmDataList.isNullOrEmpty()) {
                     cancelAlarmNotification(requireContext())
-                }else{
-                    val alarmTimeWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
-                    WorkManager.getInstance(requireContext()).enqueue(alarmTimeWorkRequest as OneTimeWorkRequest)
+                } else {
+                    val alarmTimeWorkRequest: WorkRequest =
+                        OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
+                    WorkManager.getInstance(requireContext())
+                        .enqueueUniqueWork(
+                            "makeNotification",
+                            ExistingWorkPolicy.KEEP,
+                            alarmTimeWorkRequest as OneTimeWorkRequest
+                        )
                 }
             }
         }
@@ -105,7 +109,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         }
     }
 
-    private fun initViewModel(){
+    private fun initViewModel() {
         alarmViewModel.currentAlarmData.value = AlarmData(
             id = null,
             button = true,
