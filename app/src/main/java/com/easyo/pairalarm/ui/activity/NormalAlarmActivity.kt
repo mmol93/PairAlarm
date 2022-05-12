@@ -15,7 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.easyo.pairalarm.AppClass
-import com.easyo.pairalarm.broadcast.setNormalAlarm
+import com.easyo.pairalarm.alarm.setAlarm
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.ui.dialog.BellSelect
 import com.easyo.pairalarm.util.AlarmAnimation
@@ -58,7 +58,7 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         // alarmData의 requestCode 값이 0이면 새로운 알람 생성
         if (AppClass.alarmViewModel.currentAlarmRequestCode.value == null) {
-            binding.saveButton.text = "save"
+            binding.saveButton.text = getString(R.string.save)
         }
 
         // UI 초기화
@@ -178,8 +178,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                 launch {
                     // Am PM
                     AppClass.alarmViewModel.currentAlarmAmPm.collectLatest {
-                        binding.numberPickerAMPM.value =
-                            AppClass.alarmViewModel.currentAlarmAmPm.value
+                        binding.numberPickerAMPM.value = it
                     }
                 }
             }
@@ -246,11 +245,10 @@ class NormalAlarmActivity : AppCompatActivity() {
             )
             builder.setNeutralButton(getString(R.string.cancel), null)
 
-            builder.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, i: Int ->
+            builder.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
                 val alert = dialogInterface as AlertDialog
-                val idx = alert.listView.checkedItemPosition
                 // * 선택된 아이템의 position에 따라 행동 조건 넣기
-                when (idx) {
+                when (alert.listView.checkedItemPosition) {
                     // Normal 클릭 시
                     0 -> {
                         AppClass.alarmViewModel.currentAlarmMode.value = 0
@@ -278,14 +276,14 @@ class NormalAlarmActivity : AppCompatActivity() {
                 var hour: Int
 
                 // 오전, 오후에 따라 hour의 값에 12를 더해주기
-                if (AppClass.alarmViewModel.currentAlarmAmPm.value == 1 && AppClass.alarmViewModel.currentAlarmHour.value + 12 <= 24) {
-                    hour = AppClass.alarmViewModel.currentAlarmHour.value + 12
-                    // 24시는 0시로 설정되게 한다
-                    if (hour == 24) {
-                        hour = 0
-                    }
-                } else {
-                    hour = AppClass.alarmViewModel.currentAlarmHour.value
+                if (binding.numberPickerHour.value == 12 && binding.numberPickerAMPM.value == 1){
+                    hour = 12
+                }else if(binding.numberPickerHour.value == 12 && binding.numberPickerAMPM.value == 0){
+                    hour = 0
+                }else if (binding.numberPickerAMPM.value == 1 && binding.numberPickerHour.value + 12 <= 24){
+                    hour = binding.numberPickerHour.value + 12
+                }else{
+                    hour = binding.numberPickerHour.value
                 }
 
                 // DB의 requestCode에 넣을 unique 수 생성
@@ -330,9 +328,9 @@ class NormalAlarmActivity : AppCompatActivity() {
                     AppClass.alarmViewModel.insert(alarmData)
 
                     // 브로드캐스트에 알람 예약하기
-                    setNormalAlarm(this, requestCode.toInt(), hour, binding.numberPickerMin.value)
+                    setAlarm(this, requestCode.toInt(), hour, binding.numberPickerMin.value)
                 }
-                // 데이터를 수정
+                // 데이터를 수정 했을 경우
                 else {
                     requestCode = AppClass.alarmViewModel.currentAlarmRequestCode.value!!
 
@@ -360,6 +358,7 @@ class NormalAlarmActivity : AppCompatActivity() {
 
                     // DB 업데이트
                     AppClass.alarmViewModel.update(alarmData)
+                    setAlarm(this, requestCode.toInt(), hour, binding.numberPickerMin.value)
                 }
 
                 finish()

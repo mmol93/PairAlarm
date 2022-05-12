@@ -6,9 +6,11 @@ import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.room.Room
 import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.R
-import com.easyo.pairalarm.broadcast.cancelAlarm
+import com.easyo.pairalarm.alarm.cancelAlarm
+import com.easyo.pairalarm.database.AppDatabase
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.AlarmItemBinding
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
@@ -16,6 +18,9 @@ import com.easyo.pairalarm.util.ControlDialog
 import com.easyo.pairalarm.util.setOnSingleClickExt
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.databinding.BindableItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val alarmViewModel: AlarmViewModel):
     BindableItem<AlarmItemBinding>(alarmData.hashCode().toLong()) {
@@ -28,14 +33,7 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
         }
 
         // 시간 표기
-        if (alarmData.hour > 12){
-            binding.hourText.text = (alarmData.hour - 12).toString()
-            binding.ampmText.text = context.getString(R.string.alarmSet_PM)
-        }else{
-            // 시간은 두 자릿수로 표현하지 않는다
-            binding.hourText.text = alarmData.hour.toString()
-            binding.ampmText.text = context.getString(R.string.alarmSet_AM)
-        }
+        binding.hourText.text = alarmData.hour.toString()
 
         // 두 자릿수로 표현 - 분
         if (alarmData.minute < 10){
@@ -103,7 +101,6 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
             else -> binding.volumeImageView.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.vol0))
         }
 
-        // 스위치
         binding.onOffSwitch.isChecked = alarmData.button
 
         binding.timeContainer.setOnSingleClickExt {
@@ -133,6 +130,21 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
                 negative = { }
             )
         }
+
+        // on/off
+        binding.onOffSwitch.setOnCheckedChangeListener { _, isChecked ->
+            val currentAlarmData = alarmData
+            if (isChecked){
+                currentAlarmData.apply {
+                    this.button = false
+                }
+            }else{
+                currentAlarmData.apply {
+                    this.button = true
+                }
+            }
+//            Log.d("AlarmGroupie", "on/off data: $currentAlarmData")
+        }
     }
 
     private fun openNormalAlarmActivity(){
@@ -158,6 +170,11 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
         AppClass.alarmViewModel.currentAlarmVolume.value = alarmViewModel.currentAlarmData.value.volume
         AppClass.alarmViewModel.currentAlarmBell.value = alarmViewModel.currentAlarmData.value.bell
         AppClass.alarmViewModel.currentAlarmName.value = alarmViewModel.currentAlarmData.value.name
+        if (alarmViewModel.currentAlarmData.value.hour >= 12){
+            AppClass.alarmViewModel.currentAlarmAmPm.value = 1
+        }else{
+            AppClass.alarmViewModel.currentAlarmAmPm.value = 0
+        }
 
         Log.d("AlarmGroupie", "name: ${AppClass.alarmViewModel.currentAlarmName.value}")
 

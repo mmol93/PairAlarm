@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.easyo.pairalarm">
 
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -12,30 +12,33 @@
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".AppClass"
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PairAlarm"
-        tools:replace="android:theme"
-        android:fullBackupContent="true">
+        tools:replace="android:theme">
         <activity
-            android:name="com.easyo.pairalarm.ui.activity.NormalAlarmActivity"
-            android:theme="@style/Theme.PairAlarm.NoActionBar"
+            android:name=".ui.activity.OnAlarmActivity"
             android:exported="false" />
         <activity
-            android:name="com.easyo.pairalarm.ui.activity.SimpleAlarmActivity"
-            android:theme="@style/Theme.PairAlarm.NoActionBar"
-            android:exported="false" />
+            android:name=".ui.activity.NormalAlarmActivity"
+            android:exported="false"
+            android:theme="@style/Theme.PairAlarm.NoActionBar" />
+        <activity
+            android:name=".ui.activity.SimpleAlarmActivity"
+            android:exported="false"
+            android:theme="@style/Theme.PairAlarm.NoActionBar" />
         <activity
             android:name=".ui.activity.InitialActivity"
-            android:theme="@style/Theme.PairAlarm.NoActionBar"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.PairAlarm.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,12 +49,14 @@
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.PairAlarm.NoActionBar">
+
         </activity>
 
-        <receiver android:name=".broadcast.MyReceiver"
+        <receiver
+            android:name=".broadcast.MyReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.easyo.pairalarm"/>
+                <action android:name="com.easyo.pairalarm" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="POSTPHONETIME" />

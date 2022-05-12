@@ -52,7 +52,6 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
     val currentAlarmAmPm = MutableStateFlow(0)
     val playStopTextView = MutableStateFlow("play")
 
-    // DB에 관한 것들
     fun insert(alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.insert(alarmData)
         Log.d("AlarmViewModel", "inserted: $alarmData")
@@ -65,4 +64,6 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
     fun delete(alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.delete(alarmData)
     }
+
+    fun searchRequestCode(requestCode: String) = alarmRepository.searchWithRequestCode(requestCode)
 }

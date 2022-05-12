@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
 import androidx.activity.viewModels
@@ -12,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.easyo.pairalarm.R
+import com.easyo.pairalarm.alarm.setAlarm
 import com.easyo.pairalarm.databinding.ActivitySimpleAlarmBinding
 import com.easyo.pairalarm.ui.dialog.BellSelect
 import com.easyo.pairalarm.util.*
@@ -19,6 +21,7 @@ import com.easyo.pairalarm.viewModel.SimpleAlarmViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.*
 
 @AndroidEntryPoint
 class SimpleAlarmActivity : AppCompatActivity() {
@@ -224,27 +227,37 @@ class SimpleAlarmActivity : AppCompatActivity() {
             }
         }
 
-        // 캔슬 버튼 눌렀을 때
         binding.cancelButton.setOnClickListener {
             finish()
         }
 
-        // 저장(save) 버튼 눌렀을 떄
         binding.saveButton.setOnSingleClickExt {
             if (simpleAlarmViewModel.currentAlarmHour.value > 0 || simpleAlarmViewModel.currentAlarmMin.value > 0) {
                 val dateData = getAddedTime(
                     hour = simpleAlarmViewModel.currentAlarmHour.value,
                     min = simpleAlarmViewModel.currentAlarmMin.value
                 )
-                // dateData에서 가져온 값을 alarmData에 넣을 수 있게 가공한다
-                // textView에 들어있는 값만큼은 넘겨서 저장하게 한다
-                val alarmData = makeAlarmData(dateData, binding.alarmNameEditText.text.toString(), simpleAlarmViewModel)
 
+                val alarmData = makeAlarmData(dateData, binding.alarmNameEditText.text.toString(), simpleAlarmViewModel)
                 simpleAlarmViewModel.insert(alarmData)
+
+                val setHour = dateData.get(Calendar.HOUR_OF_DAY)
+                val setMin = dateData.get(Calendar.MINUTE)
+
+                val calendar = Calendar.getInstance()
+                val currentDay = calendar.get(Calendar.DAY_OF_YEAR)
+                val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+                val currentMin = calendar.get(Calendar.MINUTE)
+                val currentSecond = calendar.get(Calendar.SECOND)
+
+                val requestCode = currentDay.toString() + currentHour.toString() +
+                        currentMin.toString() + currentSecond.toString()
+
+                setAlarm(this, requestCode.toInt(), setHour, setMin)
 
                 finish()
             } else {
-                makeToast(this, getString(R.string.alarmSet_Toast_min))
+                makeToast(this, getString(R.string.toast_set_minimum_time))
             }
         }
     }

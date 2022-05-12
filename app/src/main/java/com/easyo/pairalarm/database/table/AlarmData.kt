@@ -16,6 +16,7 @@ data class AlarmData(
     @ColumnInfo(name = "Thu") var Thu: Boolean,
     @ColumnInfo(name = "Fri") var Fri: Boolean,
     @ColumnInfo(name = "Sat") var Sat: Boolean,
+    // hour은 24시간 형식으로 저장됨
     @ColumnInfo(name = "hour") var hour: Int,
     @ColumnInfo(name = "minute") var minute: Int,
     @ColumnInfo(name = "volume") var volume: Int,

@@ -11,11 +11,14 @@
     <string name="alarmSet_PM">PM</string>
     <string name="save">save</string>
     <string name="update">update</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="play">play</string>
     <string name="stop">stop</string>
+    <string name="ten_minutes_later">10minutes</string>
 
+    <!-- error message -->
+    <string name="on_alarm_error">Error!!: Could not read alarm data</string>
 
     <!-- Weekend -->
     <string name="monday_short">M</string>
@@ -33,7 +36,6 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
-
 
     <!-- Alarm Set -->
     <string name="alarmSet_selectBell">Alarm Bell</string>
@@ -54,7 +56,7 @@
     <string name="alarmSet_10minButton">+10min</string>
     <string name="alarmSet_5minButton">+5min</string>
     <string name="alarmSet_1minButton">+1min</string>
-    <string name="alarmSet_Toast_min">Please set at least one minute</string>
+
 
     <!-- about Dialog -->
     <string name="dialog_permission_title">Permission</string>
@@ -74,7 +76,11 @@
     <string name="alarm_notification_channel_name">Nearest Alarm</string>
     <string name="weather_notification_channel_id">alarmChanel</string>
     <string name="weather_notification_channel_name">Nearest Alarm</string>
+    <string name="alarm_notification_title">Next alarm</string>
 
+    <!-- Toast -->
+    <string name="toast_set_minimum_time">Please set at least one minute</string>
+    <string name="toast_ten_minute_later">Alarm goes off 10minutes later</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
