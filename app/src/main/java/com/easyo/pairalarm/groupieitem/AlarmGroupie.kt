@@ -6,9 +6,11 @@ import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.room.Room
 import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.alarm.cancelAlarm
+import com.easyo.pairalarm.database.AppDatabase
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.AlarmItemBinding
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
@@ -16,6 +18,9 @@ import com.easyo.pairalarm.util.ControlDialog
 import com.easyo.pairalarm.util.setOnSingleClickExt
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.databinding.BindableItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val alarmViewModel: AlarmViewModel):
     BindableItem<AlarmItemBinding>(alarmData.hashCode().toLong()) {
@@ -96,7 +101,6 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
             else -> binding.volumeImageView.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.vol0))
         }
 
-        // 스위치
         binding.onOffSwitch.isChecked = alarmData.button
 
         binding.timeContainer.setOnSingleClickExt {
@@ -125,6 +129,21 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
                            },
                 negative = { }
             )
+        }
+
+        // on/off
+        binding.onOffSwitch.setOnCheckedChangeListener { _, isChecked ->
+            val currentAlarmData = alarmData
+            if (isChecked){
+                currentAlarmData.apply {
+                    this.button = false
+                }
+            }else{
+                currentAlarmData.apply {
+                    this.button = true
+                }
+            }
+//            Log.d("AlarmGroupie", "on/off data: $currentAlarmData")
         }
     }
 

@@ -34,12 +34,6 @@ class AppClass:Application(), Configuration.Provider {
         return alarmTimeList
     }
 
-    fun getClosestAlarm() = closestAlarm
-
-    fun setClosestAlarm(timeMillis: Long){
-        closestAlarm = timeMillis
-    }
-
     override fun onCreate() {
         super.onCreate()
         context = this

@@ -54,10 +54,10 @@ fun setAlarm(context: Context, requestCode: Int, hour: Int, min: Int) {
 
 fun resetAlarm(context: Context?) {
     if (context != null) {
-        val appData: AppDatabase =
+        val alarmData: AppDatabase =
             Room.databaseBuilder(context, AppDatabase::class.java, "alarm_data_database").build()
         CoroutineScope(Dispatchers.IO).launch {
-            appData.alarmDao().getAllAlarms().collectLatest {
+            alarmData.alarmDao().getAllAlarms().collectLatest {
                 it.forEach { alarmData ->
                     Log.d("Alarm", "reset alarm: ${alarmData.requestCode}")
                     setAlarm(
