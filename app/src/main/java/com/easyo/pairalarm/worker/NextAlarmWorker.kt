@@ -22,15 +22,9 @@ class NextAlarmWorker @AssistedInject constructor(
     private val alarmDao: AlarmDAO
 ) : CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result {
-        AppClass.alarmDataList = alarmDao.getAllAlarms()
-        CoroutineScope(Dispatchers.IO).launch {
-            AppClass.alarmDataList?.collectLatest {
-                val appClass = AppClass()
-                appClass.getAlarmTimeList().clear()
-                val transformedNextAlarm = getNextAlarm(it)
-
-                makeAlarmNotification(applicationContext, transformedNextAlarm.toString())
-            }
+        alarmDao.getAllAlarms().collectLatest {alarmData->
+            val transformedNextAlarm = getNextAlarm(alarmData)
+            makeAlarmNotification(applicationContext, transformedNextAlarm.toString())
         }
         return Result.success()
     }
