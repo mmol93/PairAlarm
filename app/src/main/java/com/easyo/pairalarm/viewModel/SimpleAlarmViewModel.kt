@@ -19,7 +19,6 @@ class SimpleAlarmViewModel @Inject constructor(private val alarmRepository: Alar
     val currentAlarmBell = MutableStateFlow(0)
     val currentAlarmMode = MutableStateFlow(0)
     val currentAlarmVolume = MutableStateFlow(100)
-    val playStopTextView = MutableStateFlow("play")
 
     // SimpleAlarmViewModel에서는 insert만 사용한다
     fun insert(alarmData: AlarmData) = viewModelScope.launch {

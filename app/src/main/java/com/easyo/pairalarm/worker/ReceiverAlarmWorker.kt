@@ -22,7 +22,6 @@ class ReceiverAlarmWorker @AssistedInject constructor(
     private val alarmDao: AlarmDAO
 ) : CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result {
-
         if (requestCode != null) {
             val targetAlarmData = alarmDao.searchAlarmDataWithRequestCode(requestCode.toString())
             Log.d("ReceiverAlarmWorker", "ReceiverWorker Called!!")
