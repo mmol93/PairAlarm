@@ -16,22 +16,14 @@ class AppClass:Application(), Configuration.Provider {
     lateinit var workerFactory: HiltWorkerFactory
 
     override fun getWorkManagerConfiguration() = Configuration.Builder().setWorkerFactory(workerFactory).build()
+    lateinit var context : AppClass
 
     companion object{
-        lateinit var context : AppClass
-        var alarmDataList: Flow<List<AlarmData>>? = null
-        var mediaPlayer: MediaPlayer? = null
 
         // AlarmFragment에서 수정할 때 NormalAlarmActivity에서 같은 viewModel을 사용하기 위해 필요함
         lateinit var alarmViewModel: AlarmViewModel
-        private var alarmTimeList = mutableListOf<Long>()
-        private var closestAlarm = 0L
 
         var requestCode:String? = null
-    }
-
-    fun getAlarmTimeList(): MutableList<Long> {
-        return alarmTimeList
     }
 
     override fun onCreate() {

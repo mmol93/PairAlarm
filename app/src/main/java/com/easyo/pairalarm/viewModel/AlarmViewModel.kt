@@ -52,6 +52,8 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
     val currentAlarmAmPm = MutableStateFlow(0)
     val playStopTextView = MutableStateFlow("play")
 
+    fun getAllAlarmData() = alarmRepository.getAllAlarm()
+
     fun insert(alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.insert(alarmData)
         Log.d("AlarmViewModel", "inserted: $alarmData")

@@ -49,7 +49,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
 
         // Groupie - RecyclerView 데이터 입력
         lifecycleScope.launch {
-            AppClass.alarmDataList?.collectLatest { alarmDataList ->
+            alarmViewModel.getAllAlarmData().collectLatest { alarmDataList ->
                 Log.d("AlarmFragment", "AlarmData: $alarmDataList")
                 alarmDataList.map { AlarmGroupie(requireContext(), it, alarmViewModel) }
                     .also { alarmRecyclerAdapter.update(it) }
@@ -58,7 +58,8 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                     cancelAlarmNotification(requireContext())
                 } else {
                     val alarmTimeWorkRequest: WorkRequest =
-                        OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
+                        OneTimeWorkRequestBuilder<NextAlarmWorker>()
+                            .build()
                     WorkManager.getInstance(requireContext())
                         .enqueueUniqueWork(
                             "makeNotification",

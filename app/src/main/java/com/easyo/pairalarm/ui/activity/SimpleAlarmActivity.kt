@@ -192,7 +192,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
 
         // AlarmBell 설정 버튼 눌렀을 때
         binding.selectBellButton.setOnSingleClickExt {
-            val bellSelectDialog = BellSelect(this, alarmViewModel = null, simpleAlarmViewModel)
+            val bellSelectDialog = BellSelect(this)
             bellSelectDialog.show()
         }
 

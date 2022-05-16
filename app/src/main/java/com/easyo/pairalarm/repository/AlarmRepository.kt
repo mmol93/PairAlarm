@@ -5,6 +5,8 @@ import com.easyo.pairalarm.database.table.AlarmData
 
 class AlarmRepository(private val dao: AlarmDAO) {
 
+    fun getAllAlarm() = dao.getAllAlarms()
+
     suspend fun insert(alarmData: AlarmData) {
         dao.insertNewAlarm(alarmData)
     }

@@ -1,28 +1,22 @@
 package com.easyo.pairalarm.ui.dialog
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.DialogBellSetBinding
+import com.easyo.pairalarm.util.AlarmBell
+import com.easyo.pairalarm.util.AlarmMusic
 import com.easyo.pairalarm.util.selectMusic
 import com.easyo.pairalarm.util.setOnSingleClickExt
-import com.easyo.pairalarm.viewModel.AlarmViewModel
-import com.easyo.pairalarm.viewModel.SimpleAlarmViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
-class BellSelect(context: Context, val alarmViewModel: AlarmViewModel?, val simpleAlarmViewModel: SimpleAlarmViewModel?):Dialog(context) {
+class BellSelect(
+    context: Context
+) : Dialog(context) {
     private lateinit var binding: DialogBellSetBinding
-    private lateinit var uiJob: Job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,121 +25,87 @@ class BellSelect(context: Context, val alarmViewModel: AlarmViewModel?, val simp
 
         var bellIndex = 0
 
-        // UI 값 세팅하기
-        uiJob = CoroutineScope(Dispatchers.Main).launch {
-            launch {
-                if (alarmViewModel != null){
-                    alarmViewModel.playStopTextView.collectLatest {
-                        binding.playButton.text = it
-                    }
-                }else{
-                    simpleAlarmViewModel!!.playStopTextView.collectLatest {
-                        binding.playButton.text = it
-                    }
-                }
-            }
-            launch {
-                if (alarmViewModel != null){
-                    alarmViewModel.currentAlarmBell.collectLatest {
-                        when(it){
-                            0 -> binding.RadioGroup.check(R.id.radioButton_N1)
-                            1 -> binding.RadioGroup.check(R.id.radioButton_N2)
-                            2 -> binding.RadioGroup.check(R.id.radioButton_N3)
-                            3 -> binding.RadioGroup.check(R.id.radioButton_N4)
-                        }
-                    }
-                }else{
-                    simpleAlarmViewModel!!.currentAlarmBell.collectLatest {
-                        when(it){
-                            0 -> binding.RadioGroup.check(R.id.radioButton_N1)
-                            1 -> binding.RadioGroup.check(R.id.radioButton_N2)
-                            2 -> binding.RadioGroup.check(R.id.radioButton_N3)
-                            3 -> binding.RadioGroup.check(R.id.radioButton_N4)
-                        }
-                    }
-                }
-            }
+        if (AlarmBell.getBellIndex() != 0) {
+            bellIndex = AlarmBell.getBellIndex()
         }
 
         // 배경 투명하게 만들기
         window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         // 라디오 버튼 클릭에 따라 인덱스 값 지정하기
-        binding.RadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
+        binding.RadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            mediaStop(false)
             when(checkedId){
                 R.id.radioButton_N1 -> bellIndex = 0
                 R.id.radioButton_N2 -> bellIndex = 1
                 R.id.radioButton_N3 -> bellIndex = 2
                 R.id.radioButton_N4 -> bellIndex = 3
             }
-            mediaStop(false)
         }
 
         // Play 버튼
         binding.playButton.setOnSingleClickExt {
-            if (AppClass.mediaPlayer == null){
-                AppClass.mediaPlayer = selectMusic(context, bellIndex)
+            if (AlarmMusic.getCurrentMusic() == null) {
+                AlarmMusic.setCurrentMusic(selectMusic(context, bellIndex))
             }
 
             // 음악 재생중일 때 -> 음악 정지
-            if (AppClass.mediaPlayer!!.isPlaying){
+            if (AlarmMusic.getCurrentMusic()!!.isPlaying) {
                 mediaStop(false)
-                if (alarmViewModel != null){
-                    alarmViewModel.playStopTextView.value = context.getString(R.string.play)
-                }else{
-                    simpleAlarmViewModel!!.playStopTextView.value = context.getString(R.string.play)
-                }
+                binding.playButton.text = context.getString(R.string.play)
 
                 Log.d("BellSelect", "playing stop")
             }
             // 음악 재생중 아닐 때 -> 음악 시작
-            else{
-                AppClass.mediaPlayer = selectMusic(context, bellIndex)
-                AppClass.mediaPlayer!!.run {
+            else {
+                AlarmMusic.setCurrentMusic(selectMusic(context, bellIndex))
+                AlarmMusic.getCurrentMusic()!!.run {
                     setVolume(1f, 1f)
                     isLooping = true
                     start()
                 }
-                if (alarmViewModel != null){
-                    alarmViewModel.playStopTextView.value = context.getString(R.string.stop)
-                }else{
-                    simpleAlarmViewModel!!.playStopTextView.value = context.getString(R.string.stop)
-                }
+                binding.playButton.text = context.getString(R.string.stop)
             }
         }
 
         // Save 버튼
         binding.saveButton.setOnSingleClickExt {
-            if (alarmViewModel != null){
-                alarmViewModel.currentAlarmBell.value = bellIndex
-            }else{
-                simpleAlarmViewModel!!.currentAlarmBell.value = bellIndex
-            }
+            AlarmBell.setBellIndex(bellIndex)
             dismiss()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        when (AlarmBell.getBellIndex()) {
+            0 -> binding.RadioGroup.check(R.id.radioButton_N1)
+            1 -> binding.RadioGroup.check(R.id.radioButton_N2)
+            2 -> binding.RadioGroup.check(R.id.radioButton_N3)
+            3 -> binding.RadioGroup.check(R.id.radioButton_N4)
         }
     }
 
     override fun onStop() {
         super.onStop()
         mediaStop(true)
-        uiJob.cancel()
     }
-    private fun mediaStop(dialogClose: Boolean){
-        if (AppClass.mediaPlayer != null){
+
+    private fun mediaStop(dialogClose: Boolean) {
+        if (AlarmMusic.getCurrentMusic() != null) {
             // 음악 재생중 + Dialog를 완전히 닫았을 때
-            if(AppClass.mediaPlayer!!.isPlaying || dialogClose){
-                AppClass.mediaPlayer?.stop()
-                AppClass.mediaPlayer?.release()
-                AppClass.mediaPlayer = null
+            if (AlarmMusic.getCurrentMusic()!!.isPlaying || dialogClose) {
+                AlarmMusic.getCurrentMusic()?.stop()
+                AlarmMusic.getCurrentMusic()?.release()
+                AlarmMusic.setCurrentMusic(null)
             }
             // 음악만 정지하고 싶을 때
-            else if(AppClass.mediaPlayer!!.isPlaying || !dialogClose){
-                AppClass.mediaPlayer!!.stop()
+            else if (AlarmMusic.getCurrentMusic()!!.isPlaying || !dialogClose) {
+                AlarmMusic.getCurrentMusic()!!.stop()
             }
             // playing이 아닌 상태 + dialog를 닫고 싶을 때
-            else if(!AppClass.mediaPlayer!!.isPlaying || dialogClose){
-                AppClass.mediaPlayer?.release()
-                AppClass.mediaPlayer = null
+            else if (!AlarmMusic.getCurrentMusic()!!.isPlaying || dialogClose) {
+                AlarmMusic.getCurrentMusic()?.release()
+                AlarmMusic.setCurrentMusic(null)
             }
         }
     }

@@ -179,6 +179,7 @@ class AlarmGroupie(val context: Context, val alarmData: AlarmData, private val a
         Log.d("AlarmGroupie", "name: ${AppClass.alarmViewModel.currentAlarmName.value}")
 
         val intent = Intent(context, NormalAlarmActivity::class.java)
+        intent.putExtra("requestCode", alarmData.requestCode)
         context.startActivity(intent)
     }
 

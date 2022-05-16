@@ -16,11 +16,10 @@ import dagger.assisted.AssistedInject
 @HiltWorker
 class InitAlarmDataWorker @AssistedInject constructor(
     @Assisted appContext: Context,
-    @Assisted workerParams: WorkerParameters,
-    private val alarmDao: AlarmDAO
+    @Assisted workerParams: WorkerParameters
 ): CoroutineWorker(appContext, workerParams){
     override suspend fun doWork(): Result {
-        AppClass.alarmDataList =  alarmDao.getAllAlarms()
+        //todo get weather data from server
         EventBus.post(InitDataEvent(Int.MAX_VALUE, applicationContext.getString(R.string.progressInit)))
         Log.d("InitWorker", "run")
         return Result.success()
