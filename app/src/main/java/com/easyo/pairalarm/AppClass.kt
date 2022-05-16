@@ -19,10 +19,6 @@ class AppClass:Application(), Configuration.Provider {
     lateinit var context : AppClass
 
     companion object{
-
-        // AlarmFragment에서 수정할 때 NormalAlarmActivity에서 같은 viewModel을 사용하기 위해 필요함
-        lateinit var alarmViewModel: AlarmViewModel
-
         var requestCode:String? = null
     }
 

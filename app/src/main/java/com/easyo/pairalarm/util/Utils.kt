@@ -64,26 +64,3 @@ fun makeAlarmData(calendar: Calendar, alarmName: String, simpleAlarmViewModel: S
     }
 }
 
-fun initCurrentAlarmData() {
-    AppClass.alarmViewModel.currentAlarmData.value = AlarmData(
-        id = null,
-        button = true,
-        Sun = false,
-        Mon = false,
-        Tue = false,
-        Wed = false,
-        Thu = false,
-        Fri = false,
-        Sat = false,
-        vibration = 0,
-        requestCode = "",
-        mode = 0,
-        hour = 1,
-        minute = 0,
-        quick = false,
-        volume = 100,
-        bell = 0,
-        name = ""
-    )
-}
-
