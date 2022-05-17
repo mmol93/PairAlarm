@@ -40,12 +40,16 @@
         <entry key="..\:/Users/ljws9/Documents/Git/PairAlarm/app/src/main/res/layout/fragment_normal_alarm.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/ljws9/Documents/Git/PairAlarm/app/src/main/res/layout/fragment_setting.xml" value="0.14947916666666666" />
         <entry key="..\:/Users/ljws9/Documents/Git/PairAlarm/app/src/main/res/layout/fragment_weather.xml" value="0.14947916666666666" />
+        <entry key="app/src/main/res/drawable/container_round_shape.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable/ic_baseline_refresh_24.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable/ic_clouds.xml" value="0.223" />
         <entry key="app/src/main/res/layout/activity_initial.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_make_alarm.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_on_alarm.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_simple_alarm.xml" value="0.25" />
         <entry key="app/src/main/res/layout/alarm_item.xml" value="0.2453125" />
+        <entry key="app/src/main/res/layout/fragment_weather.xml" value="0.24895833333333334" />
       </map>
     </option>
   </component>
