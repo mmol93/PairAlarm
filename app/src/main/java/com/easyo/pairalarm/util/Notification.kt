@@ -53,4 +53,5 @@ fun cancelAlarmNotification(context: Context) {
     val notificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     notificationManager.cancel(ALARM_NOTI_ID)
+    WorkManager.getInstance(context).cancelUniqueWork("makeNotification")
 }
