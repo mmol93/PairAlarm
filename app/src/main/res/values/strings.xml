@@ -117,6 +117,9 @@
     <!-- Toast -->
     <string name="toast_set_minimum_time">Please set at least one minute</string>
     <string name="toast_ten_minute_later">Alarm goes off 10minutes later</string>
+    <string name="toast_error_internet_connection">Please check Internet Connection</string>
+    <string name="toast_error_gps_location">Please permit to use GPS location to get weather info</string>
+    <string name="toast_error_please_refresh">Please refresh this page</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

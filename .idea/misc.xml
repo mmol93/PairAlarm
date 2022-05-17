@@ -43,6 +43,15 @@
         <entry key="app/src/main/res/drawable/container_round_shape.xml" value="0.223" />
         <entry key="app/src/main/res/drawable/ic_baseline_refresh_24.xml" value="0.223" />
         <entry key="app/src/main/res/drawable/ic_clouds.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable/ic_drop.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable/ic_gear.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable/ic_halfclouds.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable/ic_setting_bottombar.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable/ic_shopping_basket_black_24dp.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable/ic_tornado.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable/ic_weather_bottombar.xml" value="0.223" />
         <entry key="app/src/main/res/layout/activity_initial.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_make_alarm.xml" value="0.25" />
