@@ -6,6 +6,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.database.dao.AlarmDAO
+import com.easyo.pairalarm.util.cancelAlarmNotification
 import com.easyo.pairalarm.util.getNextAlarm
 import com.easyo.pairalarm.util.makeAlarmNotification
 import dagger.assisted.Assisted
@@ -24,7 +25,11 @@ class NextAlarmWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         alarmDao.getAllAlarms().collectLatest {alarmData->
             val transformedNextAlarm = getNextAlarm(alarmData)
-            makeAlarmNotification(applicationContext, transformedNextAlarm.toString())
+            if(transformedNextAlarm.isNullOrEmpty()){
+                cancelAlarmNotification(applicationContext)
+            }else{
+                makeAlarmNotification(applicationContext, transformedNextAlarm.toString())
+            }
         }
         return Result.success()
     }
