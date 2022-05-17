@@ -30,9 +30,10 @@ class MyReceiver : BroadcastReceiver() {
             Log.d("MyReceiver", "requestCode: $requestCode")
 
             if (requestCode != null) {
-                AppClass.requestCode = requestCode
+                val workData = workDataOf("requestCode" to requestCode)
                 val receiverAlarmWorkRequest: WorkRequest =
                     OneTimeWorkRequestBuilder<ReceiverAlarmWorker>()
+                        .setInputData(workData)
                         .build()
                 WorkManager.getInstance(context!!).enqueueUniqueWork(
                     "onAlarmActivity",
