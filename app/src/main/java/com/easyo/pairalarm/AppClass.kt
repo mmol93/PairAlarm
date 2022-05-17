@@ -18,10 +18,6 @@ class AppClass:Application(), Configuration.Provider {
     override fun getWorkManagerConfiguration() = Configuration.Builder().setWorkerFactory(workerFactory).build()
     lateinit var context : AppClass
 
-    companion object{
-        var requestCode:String? = null
-    }
-
     override fun onCreate() {
         super.onCreate()
         context = this
