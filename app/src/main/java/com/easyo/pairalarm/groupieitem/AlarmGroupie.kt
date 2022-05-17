@@ -12,6 +12,7 @@ import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.AlarmItemBinding
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
 import com.easyo.pairalarm.util.ControlDialog
+import com.easyo.pairalarm.util.setOnSingleCheckedChangeListener
 import com.easyo.pairalarm.util.setOnSingleClickExt
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.databinding.BindableItem
@@ -29,6 +30,8 @@ class AlarmGroupie(
         if (alarmData.name.isNotEmpty()) {
             binding.alarmNameText.isSelected = true
         }
+
+        var lastClickTime = 0L
 
         // 시간 표기
         binding.hourText.text = alarmData.hour.toString()
@@ -139,8 +142,6 @@ class AlarmGroupie(
             )
         }
 
-        binding.onOffSwitch.isChecked = alarmData.button
-
         binding.root.setOnSingleClickExt {
             openNormalAlarmActivity()
         }
@@ -161,16 +162,15 @@ class AlarmGroupie(
         }
 
         // on/off
+        binding.onOffSwitch.isChecked = alarmData.button
+
         binding.onOffSwitch.setOnCheckedChangeListener { _, isChecked ->
-            val currentAlarmData = alarmData
-            if (isChecked) {
-                currentAlarmData.apply {
-                    this.button = false
-                }
-            } else {
-                currentAlarmData.apply {
-                    this.button = true
-                }
+            // 한 번만 클릭되는 기능을 넣지 않으면 혼자서 여러번 클릭됨
+            if (com.easyo.pairalarm.util.lastClickTime < System.currentTimeMillis() - 300) {
+                com.easyo.pairalarm.util.lastClickTime = System.currentTimeMillis()
+                alarmData.button = isChecked
+                alarmViewModel.update(alarmData)
+                Log.d("AlarmGroupie", "update alarmData: $alarmData")
             }
         }
     }

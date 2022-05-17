@@ -33,37 +33,37 @@ class ReceiverAlarmWorker @AssistedInject constructor(
 
                     when (todayWeek) {
                         1 -> {
-                            if (alarmDataList[0].Sun) {
+                            if (alarmDataList[0].Sun && alarmDataList[0].button) {
                                 openOnAlarmActivity(applicationContext, requestCode)
                             }
                         }
                         2 -> {
-                            if (alarmDataList[0].Mon) {
+                            if (alarmDataList[0].Mon && alarmDataList[0].button) {
                                 openOnAlarmActivity(applicationContext, requestCode)
                             }
                         }
                         3 -> {
-                            if (alarmDataList[0].Tue) {
+                            if (alarmDataList[0].Tue && alarmDataList[0].button) {
                                 openOnAlarmActivity(applicationContext, requestCode)
                             }
                         }
                         4 -> {
-                            if (alarmDataList[0].Wed) {
+                            if (alarmDataList[0].Wed && alarmDataList[0].button) {
                                 openOnAlarmActivity(applicationContext, requestCode)
                             }
                         }
                         5 -> {
-                            if (alarmDataList[0].Thu) {
+                            if (alarmDataList[0].Thu && alarmDataList[0].button) {
                                 openOnAlarmActivity(applicationContext, requestCode)
                             }
                         }
                         6 -> {
-                            if (alarmDataList[0].Fri) {
+                            if (alarmDataList[0].Fri && alarmDataList[0].button) {
                                 openOnAlarmActivity(applicationContext, requestCode)
                             }
                         }
                         7 -> {
-                            if (alarmDataList[0].Sat) {
+                            if (alarmDataList[0].Sat && alarmDataList[0].button) {
                                 openOnAlarmActivity(applicationContext, requestCode)
                             }
                         }
