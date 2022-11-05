@@ -19,9 +19,8 @@ class InitAlarmDataWorker @AssistedInject constructor(
     @Assisted workerParams: WorkerParameters
 ): CoroutineWorker(appContext, workerParams){
     override suspend fun doWork(): Result {
-        //todo get weather data from server
-        EventBus.post(InitDataEvent(Int.MAX_VALUE, applicationContext.getString(R.string.progressInit)))
         Log.d("InitWorker", "run")
+        EventBus.post(InitDataEvent(Int.MAX_VALUE, applicationContext.getString(R.string.progressInit)))
         return Result.success()
     }
 }

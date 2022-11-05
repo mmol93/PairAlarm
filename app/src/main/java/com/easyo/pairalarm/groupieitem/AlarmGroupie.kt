@@ -12,7 +12,7 @@ import com.easyo.pairalarm.databinding.AlarmItemBinding
 import com.easyo.pairalarm.extensions.lastClickTime
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
-import com.easyo.pairalarm.util.ControlDialog
+import com.easyo.pairalarm.util.SimpleDialog
 import com.easyo.pairalarm.util.cancelAlarm
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.databinding.BindableItem
@@ -146,13 +146,13 @@ class AlarmGroupie(
 
         // 삭제 버튼 클릭
         binding.deleteImage.setOnSingleClickListener {
-            ControlDialog.make(
+            SimpleDialog.make(
                 context,
                 context.getString(R.string.dialog_delete_title),
                 context.getString(R.string.dialog_delete_content),
                 null,
                 positive = {
-                    alarmViewModel.delete(alarmData)
+                    alarmViewModel.deleteAlarmData(alarmData)
                     cancelAlarm(context, alarmData.requestCode)
                 },
                 negative = { }
@@ -167,7 +167,7 @@ class AlarmGroupie(
             if (lastClickTime < System.currentTimeMillis() - 300) {
                 lastClickTime = System.currentTimeMillis()
                 alarmData.button = isChecked
-                alarmViewModel.update(alarmData)
+                alarmViewModel.updateAlarData(alarmData)
                 Log.d("AlarmGroupie", "update alarmData: $alarmData")
             }
         }

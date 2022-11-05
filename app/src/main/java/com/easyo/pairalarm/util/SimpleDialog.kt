@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import com.easyo.pairalarm.R
 
-object ControlDialog {
+object SimpleDialog {
     fun make(context: Context,
              title: String,
              message: String,

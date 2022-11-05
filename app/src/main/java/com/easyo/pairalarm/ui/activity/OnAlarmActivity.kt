@@ -39,7 +39,7 @@ class OnAlarmActivity : AppCompatActivity() {
 
                         binding.ok.setOnClickListener {
                             if (alarmDataList[0].quick) {
-                                alarmViewModel.delete(alarmDataList[0])
+                                alarmViewModel.deleteAlarmData(alarmDataList[0])
                             } else {
                                 setAlarm(
                                     this@OnAlarmActivity,

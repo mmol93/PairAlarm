@@ -128,7 +128,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         // 오버레이 권한 설정에서 돌아왔을 때
         if (requestCode == OVERLAY_CODE) {
             // todo Dialog 만드는거 함수로 만들어서 간단하게 만들 수 있게 하기
-            ControlDialog.make(
+            SimpleDialog.make(
                 requireContext(),
                 getString(R.string.dialog_permission_title),
                 getString(R.string.dialog_overlay_message),

@@ -252,7 +252,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                     )
 
                     // DB에 데이터 삽입
-                    alarmViewModel.insert(alarmData)
+                    alarmViewModel.insertAlarmData(alarmData)
 
                     // 브로드캐스트에 알람 예약하기
                     setAlarm(this, requestCode!!.toInt(), hour, binding.numberPickerMin.value)
@@ -282,7 +282,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                     )
 
                     // DB 업데이트
-                    alarmViewModel.update(alarmData)
+                    alarmViewModel.updateAlarData(alarmData)
                     setAlarm(this, requestCode!!.toInt(), hour, binding.numberPickerMin.value)
                 }
 

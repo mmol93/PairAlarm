@@ -3,15 +3,15 @@ package com.easyo.pairalarm.eventbus
 import kotlinx.coroutines.flow.*
 
 object EventBus {
-    private val events = MutableSharedFlow<Any>()
+    private val _events = MutableSharedFlow<Any>()
 
-    val mutableEvents = events.asSharedFlow()
+    val events = _events.asSharedFlow()
 
     suspend fun post(event: Any) {
-        events.emit(event)
+        _events.emit(event)
     }
 
     inline fun <reified T> subscribe(): Flow<T> {
-        return mutableEvents.filter { it is T }.map { it as T }
+        return events.filter { it is T }.map { it as T }
     }
 }

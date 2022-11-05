@@ -24,7 +24,7 @@ class ReceiverAlarmWorker @AssistedInject constructor(
         Log.d("ReceiverAlarmWorker", "requestCode: $requestCode")
 
         if (requestCode != null) {
-            val targetAlarmData = alarmDao.searchAlarmDataWithRequestCode(requestCode.toString())
+            val targetAlarmData = alarmDao.searchAlarmDataWithAlarmCode(requestCode.toString())
             targetAlarmData.collectLatest { alarmDataList ->
                 if (alarmDataList.isNotEmpty()) {
                     Log.d("ReceiverAlarmWorker", "Called alarm data: $alarmDataList")
