@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivitySimpleAlarmBinding
+import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.ui.dialog.BellSelect
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.SimpleAlarmViewModel
@@ -154,7 +155,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
         })
 
         // 모드 버튼을 눌렀을 때
-        binding.selectModeButton.setOnSingleClickExt {
+        binding.selectModeButton.setOnSingleClickListener {
             // ** 항목 선택 Dialog 설정
             val modeItem = arrayOf(
                 getString(R.string.alarmSet_alarmModeItem1),
@@ -189,7 +190,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
         }
 
         // AlarmBell 설정 버튼 눌렀을 때
-        binding.selectBellButton.setOnSingleClickExt {
+        binding.selectBellButton.setOnSingleClickListener {
             val bellSelectDialog = BellSelect(this)
             bellSelectDialog.show()
         }
@@ -229,7 +230,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.saveButton.setOnSingleClickExt {
+        binding.saveButton.setOnSingleClickListener {
             if (simpleAlarmViewModel.currentAlarmHour.value > 0 || simpleAlarmViewModel.currentAlarmMin.value > 0) {
                 val dateData = getAddedTime(
                     hour = simpleAlarmViewModel.currentAlarmHour.value,

@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
 import com.easyo.pairalarm.database.table.AlarmData
+import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.ui.dialog.BellSelect
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
@@ -154,12 +155,12 @@ class NormalAlarmActivity : AppCompatActivity() {
         }
 
         // AlarmBell 설정 버튼 눌렀을 때
-        binding.selectBellButton.setOnSingleClickExt {
+        binding.selectBellButton.setOnSingleClickListener {
             bellSelectDialog.show()
         }
 
         // AlarmMode 설정 버튼 눌렀을 때
-        binding.selectModeButton.setOnSingleClickExt {
+        binding.selectModeButton.setOnSingleClickListener {
             // ** 항목 선택 Dialog 설정
             val modeItems = arrayOf(
                 getString(R.string.alarmSet_alarmModeItem1),
@@ -193,7 +194,7 @@ class NormalAlarmActivity : AppCompatActivity() {
         }
 
         // save 버튼 눌렀을 때
-        binding.saveButton.setOnSingleClickExt {
+        binding.saveButton.setOnSingleClickListener {
             // 요일을 하나라도 선택해야한다
             if (currentAlarmData.Mon ||
                 currentAlarmData.Tue ||
@@ -292,7 +293,7 @@ class NormalAlarmActivity : AppCompatActivity() {
         }
 
         // cancel 버튼 눌렀을 때
-        binding.cancelButton.setOnSingleClickExt {
+        binding.cancelButton.setOnSingleClickListener {
             finish()
         }
 

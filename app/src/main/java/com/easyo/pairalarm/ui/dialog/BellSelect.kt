@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.util.Log
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.DialogBellSetBinding
+import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.util.AlarmBell
 import com.easyo.pairalarm.util.AlarmMusic
 import com.easyo.pairalarm.util.selectMusic
-import com.easyo.pairalarm.util.setOnSingleClickExt
 
 class BellSelect(
     context: Context
@@ -44,7 +44,7 @@ class BellSelect(
         }
 
         // Play 버튼
-        binding.playButton.setOnSingleClickExt {
+        binding.playButton.setOnSingleClickListener {
             if (AlarmMusic.getCurrentMusic() == null) {
                 AlarmMusic.setCurrentMusic(selectMusic(context, bellIndex))
             }
@@ -69,7 +69,7 @@ class BellSelect(
         }
 
         // Save 버튼
-        binding.saveButton.setOnSingleClickExt {
+        binding.saveButton.setOnSingleClickListener {
             AlarmBell.setBellIndex(bellIndex)
             dismiss()
         }
