@@ -5,9 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.work.*
-import com.easyo.pairalarm.AppClass
-import com.easyo.pairalarm.alarm.resetAlarm
-import com.easyo.pairalarm.ui.activity.OnAlarmActivity
+import com.easyo.pairalarm.util.resetAlarm
 import com.easyo.pairalarm.worker.ReceiverAlarmWorker
 
 class MyReceiver : BroadcastReceiver() {

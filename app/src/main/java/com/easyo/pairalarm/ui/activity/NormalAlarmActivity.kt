@@ -13,7 +13,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
-import com.easyo.pairalarm.alarm.setAlarm
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.ui.dialog.BellSelect
 import com.easyo.pairalarm.util.*

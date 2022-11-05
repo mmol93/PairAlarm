@@ -7,12 +7,11 @@ import android.graphics.Color
 import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import com.easyo.pairalarm.R
-import com.easyo.pairalarm.alarm.cancelAlarm
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.AlarmItemBinding
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
 import com.easyo.pairalarm.util.ControlDialog
-import com.easyo.pairalarm.util.setOnSingleCheckedChangeListener
+import com.easyo.pairalarm.util.cancelAlarm
 import com.easyo.pairalarm.util.setOnSingleClickExt
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.databinding.BindableItem
@@ -30,8 +29,6 @@ class AlarmGroupie(
         if (alarmData.name.isNotEmpty()) {
             binding.alarmNameText.isSelected = true
         }
-
-        var lastClickTime = 0L
 
         // 시간 표기
         binding.hourText.text = alarmData.hour.toString()

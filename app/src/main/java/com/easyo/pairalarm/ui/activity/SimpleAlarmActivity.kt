@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
 import androidx.activity.viewModels
@@ -13,7 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.easyo.pairalarm.R
-import com.easyo.pairalarm.alarm.setAlarm
 import com.easyo.pairalarm.databinding.ActivitySimpleAlarmBinding
 import com.easyo.pairalarm.ui.dialog.BellSelect
 import com.easyo.pairalarm.util.*

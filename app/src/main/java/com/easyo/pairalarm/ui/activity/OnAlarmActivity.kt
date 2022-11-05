@@ -6,11 +6,11 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.work.*
 import com.easyo.pairalarm.R
-import com.easyo.pairalarm.alarm.setAlarm
 import com.easyo.pairalarm.databinding.ActivityOnAlarmBinding
 import com.easyo.pairalarm.util.getCurrentHourDoubleDigitWithString
 import com.easyo.pairalarm.util.getCurrentMinuteDoubleDigitWithString
 import com.easyo.pairalarm.util.makeToast
+import com.easyo.pairalarm.util.setAlarm
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.easyo.pairalarm.worker.NextAlarmWorker
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +22,6 @@ import java.util.*
 class OnAlarmActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOnAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOnAlarmBinding.inflate(layoutInflater)
@@ -31,7 +30,6 @@ class OnAlarmActivity : AppCompatActivity() {
 
         if (requestCode != null) {
             stopOnAlarmWorkManager()
-
             val goesOffAlarmData = alarmViewModel.searchRequestCode(requestCode.toString())
             lifecycleScope.launch {
                 goesOffAlarmData.collectLatest { alarmDataList ->
