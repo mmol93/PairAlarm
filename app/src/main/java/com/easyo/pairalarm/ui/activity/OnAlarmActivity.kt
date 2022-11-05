@@ -22,7 +22,6 @@ import java.util.*
 class OnAlarmActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOnAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOnAlarmBinding.inflate(layoutInflater)
@@ -31,7 +30,6 @@ class OnAlarmActivity : AppCompatActivity() {
 
         if (requestCode != null) {
             stopOnAlarmWorkManager()
-
             val goesOffAlarmData = alarmViewModel.searchRequestCode(requestCode.toString())
             lifecycleScope.launch {
                 goesOffAlarmData.collectLatest { alarmDataList ->
