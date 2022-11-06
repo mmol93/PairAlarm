@@ -173,9 +173,8 @@ class SimpleAlarmActivity : AppCompatActivity() {
 
             builder.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
                 val alert = dialogInterface as AlertDialog
-                val idx = alert.listView.checkedItemPosition
                 // * 선택된 아이템의 position에 따라 행동 조건 넣기
-                when (idx) {
+                when (alert.listView.checkedItemPosition) {
                     // Normal 클릭 시
                     0 -> {
                         simpleAlarmViewModel.currentAlarmMode.value = 0
@@ -243,14 +242,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
                 val setHour = dateData.get(Calendar.HOUR_OF_DAY)
                 val setMin = dateData.get(Calendar.MINUTE)
 
-                val calendar = Calendar.getInstance()
-                val currentDay = calendar.get(Calendar.DAY_OF_YEAR)
-                val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-                val currentMin = calendar.get(Calendar.MINUTE)
-                val currentSecond = calendar.get(Calendar.SECOND)
-
-                val alarmCode = currentDay.toString() + currentHour.toString() +
-                        currentMin.toString() + currentSecond.toString()
+                val alarmCode = getNewAlarmCode()
 
                 setAlarm(this, alarmCode.toInt(), setHour, setMin)
 

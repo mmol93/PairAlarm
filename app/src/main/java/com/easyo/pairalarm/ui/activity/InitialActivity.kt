@@ -89,7 +89,7 @@ class InitialActivity : AppCompatActivity() {
                 val handler = Handler(Looper.getMainLooper())
                 handler.postDelayed({
                     openMainActivity()
-                }, 1000)
+                }, 500)
             }
         }
     }

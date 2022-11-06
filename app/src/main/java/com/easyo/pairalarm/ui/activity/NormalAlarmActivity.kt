@@ -22,7 +22,6 @@ import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.util.*
 
 @AndroidEntryPoint
 class NormalAlarmActivity : AppCompatActivity() {
@@ -217,14 +216,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                 // currentAlarmCode를 보고 새로운 알람 생성인지 수정인지 판단
                 if (alarmCode == null
                 ) {
-                    val calendar = Calendar.getInstance()
-                    val currentDay = calendar.get(Calendar.DAY_OF_YEAR)
-                    val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-                    val currentMin = calendar.get(Calendar.MINUTE)
-                    val currentSecond = calendar.get(Calendar.SECOND)
-
-                    alarmCode = currentDay.toString() + currentHour.toString() +
-                            currentMin.toString() + currentSecond.toString()
+                    alarmCode = getNewAlarmCode()
 
                     // DB에 넣을 Data set
                     val alarmData = AlarmData(

@@ -8,6 +8,16 @@ import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.viewModel.SimpleAlarmViewModel
 import java.util.*
 
+fun getNewAlarmCode(): String {
+    val calendar = Calendar.getInstance()
+    val currentDay = calendar.get(Calendar.DAY_OF_YEAR)
+    val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+    val currentMin = calendar.get(Calendar.MINUTE)
+    val currentSecond = calendar.get(Calendar.SECOND)
+
+    return currentDay.toString() + currentHour.toString() +
+            currentMin.toString() + currentSecond.toString()
+}
 fun makeToast(context: Context, message: String){
     Toast.makeText(context, message, Toast.LENGTH_LONG).show()
 }
