@@ -24,11 +24,11 @@ class MyReceiver : BroadcastReceiver() {
         // 그 외의 모든 알람(= 내가 설정한 알람)
         else {
             Log.d("MyReceiver", "alarm!")
-            val requestCode = intent.getStringExtra("requestCode")
-            Log.d("MyReceiver", "requestCode: $requestCode")
+            val alarmCode = intent.getStringExtra("alarmCode")
+            Log.d("MyReceiver", "alarmCode: $alarmCode")
 
-            if (requestCode != null) {
-                val workData = workDataOf("requestCode" to requestCode)
+            if (alarmCode != null) {
+                val workData = workDataOf("alarmCode" to alarmCode)
                 val receiverAlarmWorkRequest: WorkRequest =
                     OneTimeWorkRequestBuilder<ReceiverAlarmWorker>()
                         .setInputData(workData)

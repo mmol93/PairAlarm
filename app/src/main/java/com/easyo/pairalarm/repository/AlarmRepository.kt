@@ -19,6 +19,6 @@ class AlarmRepository(private val dao: AlarmDAO) {
         dao.deleteAlarm(alarmData)
     }
 
-    fun searchWithAlarmCode(requestCode: String) =
-        dao.searchAlarmDataWithAlarmCode(requestCode)
+    fun searchWithAlarmCode(alarmCode: String) =
+        dao.searchAlarmDataWithAlarmCode(alarmCode)
 }

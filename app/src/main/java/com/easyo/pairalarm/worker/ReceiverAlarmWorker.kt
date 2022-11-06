@@ -20,11 +20,11 @@ class ReceiverAlarmWorker @AssistedInject constructor(
     private val alarmDao: AlarmDAO
 ) : CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result {
-        val requestCode = inputData.getString("requestCode")
-        Log.d("ReceiverAlarmWorker", "requestCode: $requestCode")
+        val alarmCode = inputData.getString("alarmCode")
+        Log.d("ReceiverAlarmWorker", "alarmCode: $alarmCode")
 
-        if (requestCode != null) {
-            val targetAlarmData = alarmDao.searchAlarmDataWithAlarmCode(requestCode.toString())
+        if (alarmCode != null) {
+            val targetAlarmData = alarmDao.searchAlarmDataWithAlarmCode(alarmCode.toString())
             targetAlarmData.collectLatest { alarmDataList ->
                 if (alarmDataList.isNotEmpty()) {
                     Log.d("ReceiverAlarmWorker", "Called alarm data: $alarmDataList")
@@ -34,37 +34,37 @@ class ReceiverAlarmWorker @AssistedInject constructor(
                     when (todayWeek) {
                         1 -> {
                             if (alarmDataList[0].Sun && alarmDataList[0].button) {
-                                openOnAlarmActivity(applicationContext, requestCode)
+                                openOnAlarmActivity(applicationContext, alarmCode)
                             }
                         }
                         2 -> {
                             if (alarmDataList[0].Mon && alarmDataList[0].button) {
-                                openOnAlarmActivity(applicationContext, requestCode)
+                                openOnAlarmActivity(applicationContext, alarmCode)
                             }
                         }
                         3 -> {
                             if (alarmDataList[0].Tue && alarmDataList[0].button) {
-                                openOnAlarmActivity(applicationContext, requestCode)
+                                openOnAlarmActivity(applicationContext, alarmCode)
                             }
                         }
                         4 -> {
                             if (alarmDataList[0].Wed && alarmDataList[0].button) {
-                                openOnAlarmActivity(applicationContext, requestCode)
+                                openOnAlarmActivity(applicationContext, alarmCode)
                             }
                         }
                         5 -> {
                             if (alarmDataList[0].Thu && alarmDataList[0].button) {
-                                openOnAlarmActivity(applicationContext, requestCode)
+                                openOnAlarmActivity(applicationContext, alarmCode)
                             }
                         }
                         6 -> {
                             if (alarmDataList[0].Fri && alarmDataList[0].button) {
-                                openOnAlarmActivity(applicationContext, requestCode)
+                                openOnAlarmActivity(applicationContext, alarmCode)
                             }
                         }
                         7 -> {
                             if (alarmDataList[0].Sat && alarmDataList[0].button) {
-                                openOnAlarmActivity(applicationContext, requestCode)
+                                openOnAlarmActivity(applicationContext, alarmCode)
                             }
                         }
                     }
@@ -75,9 +75,9 @@ class ReceiverAlarmWorker @AssistedInject constructor(
     }
 }
 
-fun openOnAlarmActivity(context: Context, requestCode: String) {
+fun openOnAlarmActivity(context: Context, alarmCode: String) {
     val onAlarmActivity = Intent(context, OnAlarmActivity::class.java)
     onAlarmActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    onAlarmActivity.putExtra("requestCode", requestCode)
+    onAlarmActivity.putExtra("alarmCode", alarmCode)
     context.startActivity(onAlarmActivity)
 }

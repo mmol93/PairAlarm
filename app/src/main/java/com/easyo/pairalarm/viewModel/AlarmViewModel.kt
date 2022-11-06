@@ -27,5 +27,5 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
         alarmRepository.deleteAlarmData(alarmData)
     }
 
-    fun searchRequestCode(requestCode: String) = alarmRepository.searchWithAlarmCode(requestCode)
+    fun searchAlarmCode(alarmCode: String) = alarmRepository.searchWithAlarmCode(alarmCode)
 }

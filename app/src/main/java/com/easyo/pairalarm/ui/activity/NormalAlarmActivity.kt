@@ -36,6 +36,7 @@ class NormalAlarmActivity : AppCompatActivity() {
         binding = ActivityMakeAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // TODO: 피커들 BindingAdapter에서 초기화 하게 바꾸기
         // numberPicker의 시간 부분 최대, 최소값 설정
         binding.numberPickerHour.maxValue = 12
         binding.numberPickerHour.minValue = 1
@@ -44,7 +45,7 @@ class NormalAlarmActivity : AppCompatActivity() {
         binding.numberPickerMin.maxValue = 59
         binding.numberPickerMin.minValue = 0
 
-        // numberPicker에 오전 오후 텍스트 세팅..
+        // numberPicker에 오전 오후 텍스트 세팅
         val arg1 = arrayOf(getString(R.string.alarmSet_AM), getString(R.string.alarmSet_PM))
         binding.numberPickerAMPM.minValue = 0
         binding.numberPickerAMPM.maxValue = arg1.size - 1
@@ -54,22 +55,21 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         val makeAnimation = AlarmAnimation()
 
-        var requestCode = intent.getStringExtra("requestCode")
-        currentAlarmDataFlowList = if (requestCode != null) {
-            val clickedAlarmData = alarmViewModel.searchRequestCode(requestCode)
-            clickedAlarmData
+        var alarmCode = intent.getStringExtra("alarmCode")
+        currentAlarmDataFlowList = if (alarmCode != null) {
+            alarmViewModel.searchAlarmCode(alarmCode)
         } else {
             initCurrentAlarmData()
         }
 
-        // alarmData의 requestCode 값이 0이면 새로운 알람 생성
-        if (requestCode == null) {
+        // alarmData의 alarmCode 값이 0이면 새로운 알람 생성
+        if (alarmCode == null) {
             binding.saveButton.text = getString(R.string.save)
         }
 
         lifecycleScope.launch {
             currentAlarmDataFlowList.collectLatest {
-                it[0].let { alarmData ->
+                it.first().let { alarmData ->
                     currentAlarmData = alarmData
                     Log.d("NormalAlarmActivity", "alarmData: $alarmData")
 
@@ -216,8 +216,8 @@ class NormalAlarmActivity : AppCompatActivity() {
                         binding.numberPickerHour.value
                     }
 
-                // currentAlarmRequestCode를 보고 새로운 알람 생성인지 수정인지 판단
-                if (requestCode == null
+                // currentAlarmCode를 보고 새로운 알람 생성인지 수정인지 판단
+                if (alarmCode == null
                 ) {
                     val calendar = Calendar.getInstance()
                     val currentDay = calendar.get(Calendar.DAY_OF_YEAR)
@@ -225,7 +225,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                     val currentMin = calendar.get(Calendar.MINUTE)
                     val currentSecond = calendar.get(Calendar.SECOND)
 
-                    requestCode = currentDay.toString() + currentHour.toString() +
+                    alarmCode = currentDay.toString() + currentHour.toString() +
                             currentMin.toString() + currentSecond.toString()
 
                     // DB에 넣을 Data set
@@ -248,14 +248,14 @@ class NormalAlarmActivity : AppCompatActivity() {
                         mode = currentAlarmData.mode,
                         vibration = currentAlarmData.vibration,
                         name = binding.alarmNameEditText.text.toString(),
-                        requestCode = requestCode!!
+                        alarmCode = alarmCode!!
                     )
 
                     // DB에 데이터 삽입
                     alarmViewModel.insertAlarmData(alarmData)
 
                     // 브로드캐스트에 알람 예약하기
-                    setAlarm(this, requestCode!!.toInt(), hour, binding.numberPickerMin.value)
+                    setAlarm(this, alarmCode!!.toInt(), hour, binding.numberPickerMin.value)
                 }
                 // 데이터를 수정 했을 경우
                 else {
@@ -278,12 +278,12 @@ class NormalAlarmActivity : AppCompatActivity() {
                         mode = currentAlarmData.mode,
                         vibration = currentAlarmData.vibration,
                         name = binding.alarmNameEditText.text.toString(),
-                        requestCode = requestCode!!
+                        alarmCode = alarmCode!!
                     )
 
                     // DB 업데이트
                     alarmViewModel.updateAlarData(alarmData)
-                    setAlarm(this, requestCode!!.toInt(), hour, binding.numberPickerMin.value)
+                    setAlarm(this, alarmCode!!.toInt(), hour, binding.numberPickerMin.value)
                 }
 
                 finish()
@@ -500,7 +500,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                     Fri = false,
                     Sat = false,
                     vibration = 0,
-                    requestCode = "",
+                    alarmCode = "",
                     mode = 0,
                     hour = getCurrentHour(),
                     minute = getCurrentMinute(),

@@ -3,7 +3,6 @@ package com.easyo.pairalarm.util
 import android.content.Context
 import android.media.MediaPlayer
 import android.widget.Toast
-import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.viewModel.SimpleAlarmViewModel
@@ -48,19 +47,19 @@ fun makeAlarmData(calendar: Calendar, alarmName: String, simpleAlarmViewModel: S
     val currentHour = currentCalendar.get(Calendar.HOUR_OF_DAY)
     val currentMin = currentCalendar.get(Calendar.MINUTE)
     val currentSecond = currentCalendar.get(Calendar.SECOND)
-    val requestCode = currentDay.toString() + currentHour.toString() +
+    val alarmCode = currentDay.toString() + currentHour.toString() +
             currentMin.toString() + currentSecond.toString()
 
     // 일요일=1 ~ 토요일 = 7임
     return when(setWeek){
         // 일
-        1 -> AlarmData(id = null, button = true, Sun = true, Mon = false, Tue = false, Wed = false, Thu = false, Fri = false, Sat = false, vibration = vibration, requestCode = requestCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
-        2 -> AlarmData(id = null, button = true, Sun = false, Mon = true, Tue = false, Wed = false, Thu = false, Fri = false, Sat = false, vibration = vibration, requestCode = requestCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
-        3 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = true, Wed = false, Thu = false, Fri = false, Sat = false, vibration = vibration, requestCode = requestCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
-        4 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = true, Thu = false, Fri = false, Sat = false, vibration = vibration, requestCode = requestCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
-        5 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = false, Thu = true, Fri = false, Sat = false, vibration = vibration, requestCode = requestCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
-        6 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = false, Thu = false, Fri = true, Sat = false, vibration = vibration, requestCode = requestCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
-        else -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = false, Thu = false, Fri = false, Sat = true, vibration = vibration, requestCode = requestCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
+        1 -> AlarmData(id = null, button = true, Sun = true, Mon = false, Tue = false, Wed = false, Thu = false, Fri = false, Sat = false, vibration = vibration, alarmCode = alarmCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
+        2 -> AlarmData(id = null, button = true, Sun = false, Mon = true, Tue = false, Wed = false, Thu = false, Fri = false, Sat = false, vibration = vibration, alarmCode = alarmCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
+        3 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = true, Wed = false, Thu = false, Fri = false, Sat = false, vibration = vibration, alarmCode = alarmCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
+        4 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = true, Thu = false, Fri = false, Sat = false, vibration = vibration, alarmCode = alarmCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
+        5 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = false, Thu = true, Fri = false, Sat = false, vibration = vibration, alarmCode = alarmCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
+        6 -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = false, Thu = false, Fri = true, Sat = false, vibration = vibration, alarmCode = alarmCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
+        else -> AlarmData(id = null, button = true, Sun = false, Mon = false, Tue = false, Wed = false, Thu = false, Fri = false, Sat = true, vibration = vibration, alarmCode = alarmCode, mode = mode, hour = hour, minute = min, quick = true, volume = volume, bell = bell, name = alarmName)
     }
 }
 

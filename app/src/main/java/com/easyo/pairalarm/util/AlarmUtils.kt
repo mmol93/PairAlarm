@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
 
-fun setAlarm(context: Context, requestCode: Int, hour: Int, min: Int) {
+fun setAlarm(context: Context, alarmCode: Int, hour: Int, min: Int) {
     val setAlarmCalendar = Calendar.getInstance().apply {
         set(Calendar.HOUR_OF_DAY, hour)
         set(Calendar.MINUTE, min)
@@ -35,17 +35,17 @@ fun setAlarm(context: Context, requestCode: Int, hour: Int, min: Int) {
     intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
     intent.component =
         ComponentName("com.easyo.pairalarm", "com.easyo.pairalarm.broadcast.MyReceiver")
-    intent.putExtra("requestCode", "$requestCode")
+    intent.putExtra("alarmCode", "$alarmCode")
 
     val pendingIntent = PendingIntent.getBroadcast(
         context,
-        requestCode,
+        alarmCode,
         intent,
         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val alarmInfo = AlarmManager.AlarmClockInfo(calendarMillis, pendingIntent)
-    Log.d("Alarm", "set requestCode: $requestCode")
+    Log.d("Alarm", "set alarmCode: $alarmCode")
     Log.d("Alarm", "set alarm(mills): ${transMillisToTime(calendarMillis)}")
     alarmManager.setAlarmClock(alarmInfo, pendingIntent)
 }
@@ -57,10 +57,10 @@ fun resetAlarm(context: Context?) {
         CoroutineScope(Dispatchers.IO).launch {
             alarmData.alarmDao().getAllAlarms().collectLatest {
                 it.forEach { alarmData ->
-                    Log.d("Alarm", "reset alarm: ${alarmData.requestCode}")
+                    Log.d("Alarm", "reset alarm: ${alarmData.alarmCode}")
                     setAlarm(
                         context,
-                        alarmData.requestCode.toInt(),
+                        alarmData.alarmCode.toInt(),
                         alarmData.hour,
                         alarmData.minute
                     )
@@ -71,13 +71,13 @@ fun resetAlarm(context: Context?) {
     }
 }
 
-fun cancelAlarm(context: Context, requestCode: String) {
+fun cancelAlarm(context: Context, alarmCode: String) {
     val intent = Intent("com.easyo.pairalarm")
     intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
     intent.component = ComponentName("com.easyo.pairalarm", "com.easyo.pairalarm.MyReceiver")
     val pendingIntent = PendingIntent.getBroadcast(
         context,
-        requestCode.toInt(),
+        alarmCode.toInt(),
         intent,
         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )

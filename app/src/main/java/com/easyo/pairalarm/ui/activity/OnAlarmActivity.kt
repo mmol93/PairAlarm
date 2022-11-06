@@ -26,11 +26,11 @@ class OnAlarmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOnAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val requestCode = intent.getStringExtra("requestCode")
+        val alarmCode = intent.getStringExtra("alarmCode")
 
-        if (requestCode != null) {
+        if (alarmCode != null) {
             stopOnAlarmWorkManager()
-            val goesOffAlarmData = alarmViewModel.searchRequestCode(requestCode.toString())
+            val goesOffAlarmData = alarmViewModel.searchAlarmCode(alarmCode.toString())
             lifecycleScope.launch {
                 goesOffAlarmData.collectLatest { alarmDataList ->
                     if (alarmDataList.isNotEmpty()) {
@@ -43,7 +43,7 @@ class OnAlarmActivity : AppCompatActivity() {
                             } else {
                                 setAlarm(
                                     this@OnAlarmActivity,
-                                    alarmDataList[0].requestCode.toInt(),
+                                    alarmDataList[0].alarmCode.toInt(),
                                     alarmDataList[0].hour,
                                     alarmDataList[0].minute
                                 )
@@ -69,7 +69,7 @@ class OnAlarmActivity : AppCompatActivity() {
                             val addMinute = calendar.get(Calendar.MINUTE)
                             setAlarm(
                                 this@OnAlarmActivity,
-                                alarmDataList[0].requestCode.toInt(),
+                                alarmDataList[0].alarmCode.toInt(),
                                 addHour,
                                 addMinute
                             )

@@ -153,7 +153,7 @@ class AlarmGroupie(
                 null,
                 positive = {
                     alarmViewModel.deleteAlarmData(alarmData)
-                    cancelAlarm(context, alarmData.requestCode)
+                    cancelAlarm(context, alarmData.alarmCode)
                 },
                 negative = { }
             )
@@ -175,7 +175,7 @@ class AlarmGroupie(
 
     private fun openNormalAlarmActivity() {
         val intent = Intent(context, NormalAlarmActivity::class.java)
-        intent.putExtra("requestCode", alarmData.requestCode)
+        intent.putExtra("alarmCode", alarmData.alarmCode)
         context.startActivity(intent)
     }
 

@@ -249,10 +249,10 @@ class SimpleAlarmActivity : AppCompatActivity() {
                 val currentMin = calendar.get(Calendar.MINUTE)
                 val currentSecond = calendar.get(Calendar.SECOND)
 
-                val requestCode = currentDay.toString() + currentHour.toString() +
+                val alarmCode = currentDay.toString() + currentHour.toString() +
                         currentMin.toString() + currentSecond.toString()
 
-                setAlarm(this, requestCode.toInt(), setHour, setMin)
+                setAlarm(this, alarmCode.toInt(), setHour, setMin)
 
                 finish()
             } else {
