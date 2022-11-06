@@ -171,7 +171,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
             )
             builder.setNeutralButton(getString(R.string.cancel), null)
 
-            builder.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, i: Int ->
+            builder.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
                 val alert = dialogInterface as AlertDialog
                 val idx = alert.listView.checkedItemPosition
                 // * 선택된 아이템의 position에 따라 행동 조건 넣기

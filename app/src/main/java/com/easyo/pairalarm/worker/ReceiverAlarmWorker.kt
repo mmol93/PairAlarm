@@ -25,47 +25,45 @@ class ReceiverAlarmWorker @AssistedInject constructor(
 
         if (alarmCode != null) {
             val targetAlarmData = alarmDao.searchAlarmDataWithAlarmCode(alarmCode.toString())
-            targetAlarmData.collectLatest { alarmDataList ->
-                if (alarmDataList.isNotEmpty()) {
-                    Log.d("ReceiverAlarmWorker", "Called alarm data: $alarmDataList")
-                    val todayWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-                    Log.d("ReceiverAlarmWorker", "today week: $todayWeek")
+            targetAlarmData.collectLatest { alarmData ->
+                Log.d("ReceiverAlarmWorker", "Called alarm data: $alarmData")
+                val todayWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+                Log.d("ReceiverAlarmWorker", "today week: $todayWeek")
 
-                    when (todayWeek) {
-                        1 -> {
-                            if (alarmDataList[0].Sun && alarmDataList[0].button) {
-                                openOnAlarmActivity(applicationContext, alarmCode)
-                            }
+                when (todayWeek) {
+                    1 -> {
+                        if (alarmData.Sun && alarmData.button) {
+                            openOnAlarmActivity(applicationContext, alarmCode)
                         }
-                        2 -> {
-                            if (alarmDataList[0].Mon && alarmDataList[0].button) {
-                                openOnAlarmActivity(applicationContext, alarmCode)
-                            }
+                    }
+                    2 -> {
+                        if (alarmData.Mon && alarmData.button) {
+                            openOnAlarmActivity(applicationContext, alarmCode)
                         }
-                        3 -> {
-                            if (alarmDataList[0].Tue && alarmDataList[0].button) {
-                                openOnAlarmActivity(applicationContext, alarmCode)
-                            }
+                    }
+                    3 -> {
+                        if (alarmData.Tue && alarmData.button) {
+                            openOnAlarmActivity(applicationContext, alarmCode)
                         }
-                        4 -> {
-                            if (alarmDataList[0].Wed && alarmDataList[0].button) {
-                                openOnAlarmActivity(applicationContext, alarmCode)
-                            }
+                    }
+                    4 -> {
+                        if (alarmData.Wed && alarmData.button) {
+                            openOnAlarmActivity(applicationContext, alarmCode)
                         }
-                        5 -> {
-                            if (alarmDataList[0].Thu && alarmDataList[0].button) {
-                                openOnAlarmActivity(applicationContext, alarmCode)
-                            }
+                    }
+                    5 -> {
+                        if (alarmData.Thu && alarmData.button) {
+                            openOnAlarmActivity(applicationContext, alarmCode)
                         }
-                        6 -> {
-                            if (alarmDataList[0].Fri && alarmDataList[0].button) {
-                                openOnAlarmActivity(applicationContext, alarmCode)
-                            }
+                    }
+                    6 -> {
+                        if (alarmData.Fri && alarmData.button) {
+                            openOnAlarmActivity(applicationContext, alarmCode)
                         }
-                        7 -> {
-                            if (alarmDataList[0].Sat && alarmDataList[0].button) {
-                                openOnAlarmActivity(applicationContext, alarmCode)
-                            }
+                    }
+                    7 -> {
+                        if (alarmData.Sat && alarmData.button) {
+                            openOnAlarmActivity(applicationContext, alarmCode)
                         }
                     }
                 }

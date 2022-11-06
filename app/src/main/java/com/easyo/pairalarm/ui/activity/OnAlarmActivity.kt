@@ -32,55 +32,53 @@ class OnAlarmActivity : AppCompatActivity() {
             stopOnAlarmWorkManager()
             val goesOffAlarmData = alarmViewModel.searchAlarmCode(alarmCode.toString())
             lifecycleScope.launch {
-                goesOffAlarmData.collectLatest { alarmDataList ->
-                    if (alarmDataList.isNotEmpty()) {
-                        binding.hour.text = getCurrentHourDoubleDigitWithString()
-                        binding.min.text = getCurrentMinuteDoubleDigitWithString()
+                goesOffAlarmData.collectLatest { alarmData ->
+                    binding.hour.text = getCurrentHourDoubleDigitWithString()
+                    binding.min.text = getCurrentMinuteDoubleDigitWithString()
 
-                        binding.ok.setOnClickListener {
-                            if (alarmDataList[0].quick) {
-                                alarmViewModel.deleteAlarmData(alarmDataList[0])
-                            } else {
-                                setAlarm(
-                                    this@OnAlarmActivity,
-                                    alarmDataList[0].alarmCode.toInt(),
-                                    alarmDataList[0].hour,
-                                    alarmDataList[0].minute
-                                )
-                            }
-
-                            val alarmTimeWorkRequest: WorkRequest =
-                                OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
-                            WorkManager.getInstance(this@OnAlarmActivity)
-                                .enqueueUniqueWork(
-                                    "makeNotification",
-                                    ExistingWorkPolicy.KEEP,
-                                    alarmTimeWorkRequest as OneTimeWorkRequest
-                                )
-
-                            finish()
-                        }
-
-                        binding.tenMinutes.setOnClickListener {
-                            val calendar = Calendar.getInstance().apply {
-                                add(Calendar.MINUTE, 10)
-                            }
-                            val addHour = calendar.get(Calendar.HOUR_OF_DAY)
-                            val addMinute = calendar.get(Calendar.MINUTE)
+                    binding.ok.setOnClickListener {
+                        if (alarmData.quick) {
+                            alarmViewModel.deleteAlarmData(alarmData)
+                        } else {
                             setAlarm(
                                 this@OnAlarmActivity,
-                                alarmDataList[0].alarmCode.toInt(),
-                                addHour,
-                                addMinute
+                                alarmData.alarmCode.toInt(),
+                                alarmData.hour,
+                                alarmData.minute
                             )
-
-                            makeToast(
-                                this@OnAlarmActivity,
-                                getString(R.string.toast_ten_minute_later)
-                            )
-
-                            finish()
                         }
+
+                        val alarmTimeWorkRequest: WorkRequest =
+                            OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
+                        WorkManager.getInstance(this@OnAlarmActivity)
+                            .enqueueUniqueWork(
+                                "makeNotification",
+                                ExistingWorkPolicy.KEEP,
+                                alarmTimeWorkRequest as OneTimeWorkRequest
+                            )
+
+                        finish()
+                    }
+
+                    binding.tenMinutes.setOnClickListener {
+                        val calendar = Calendar.getInstance().apply {
+                            add(Calendar.MINUTE, 10)
+                        }
+                        val addHour = calendar.get(Calendar.HOUR_OF_DAY)
+                        val addMinute = calendar.get(Calendar.MINUTE)
+                        setAlarm(
+                            this@OnAlarmActivity,
+                            alarmData.alarmCode.toInt(),
+                            addHour,
+                            addMinute
+                        )
+
+                        makeToast(
+                            this@OnAlarmActivity,
+                            getString(R.string.toast_ten_minute_later)
+                        )
+
+                        finish()
                     }
                 }
             }
