@@ -52,8 +52,6 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         val bellSelectDialog = BellSelect(this)
 
-        val makeAnimation = AlarmAnimation()
-
         var alarmCode = intent.getStringExtra("alarmCode")
         currentAlarmFlowData = if (alarmCode != null) {
             alarmViewModel.searchAlarmCode(alarmCode)
@@ -308,7 +306,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                                 R.drawable.ic_vib_2
                             )
                         )
-                        makeAnimation.swing(this).start()
+                        AlarmAnimation.swing(this).start()
                     }
                     2 -> {
                         binding.imageVibration.setImageDrawable(
@@ -379,11 +377,11 @@ class NormalAlarmActivity : AppCompatActivity() {
                 if (!currentAlarmData.Mon) {
                     currentAlarmData.Mon = true
                     // 점프 애니메이션
-                    makeAnimation.jump(this).start()
+                    AlarmAnimation.jump(this).start()
                 } else {
                     currentAlarmData.Mon = false
                     // 털어내는 애니메이션
-                    makeAnimation.swing(this).start()
+                    AlarmAnimation.swing(this).start()
                 }
                 setStrokeColorInButton(null, currentAlarmData.Mon)
             }
@@ -394,10 +392,10 @@ class NormalAlarmActivity : AppCompatActivity() {
             setOnClickListener {
                 if (!currentAlarmData.Tue) {
                     currentAlarmData.Tue = true
-                    makeAnimation.jump(this).start()
+                    AlarmAnimation.jump(this).start()
                 } else {
                     currentAlarmData.Tue = false
-                    makeAnimation.swing(this).start()
+                    AlarmAnimation.swing(this).start()
                 }
                 setStrokeColorInButton(null, currentAlarmData.Tue)
             }
@@ -408,11 +406,11 @@ class NormalAlarmActivity : AppCompatActivity() {
             setOnClickListener {
                 if (!currentAlarmData.Wed) {
                     currentAlarmData.Wed = true
-                    makeAnimation.jump(this).start()
+                    AlarmAnimation.jump(this).start()
                 } else {
                     currentAlarmData.Wed = false
                     setStrokeColorResource(R.color.background)
-                    makeAnimation.swing(this).start()
+                    AlarmAnimation.swing(this).start()
                 }
                 setStrokeColorInButton(null, currentAlarmData.Wed)
             }
@@ -423,10 +421,10 @@ class NormalAlarmActivity : AppCompatActivity() {
             setOnClickListener {
                 if (!currentAlarmData.Thu) {
                     currentAlarmData.Thu = true
-                    makeAnimation.jump(this).start()
+                    AlarmAnimation.jump(this).start()
                 } else {
                     currentAlarmData.Thu = false
-                    makeAnimation.swing(this).start()
+                    AlarmAnimation.swing(this).start()
                 }
                 setStrokeColorInButton(null, currentAlarmData.Thu)
             }
@@ -437,10 +435,10 @@ class NormalAlarmActivity : AppCompatActivity() {
             setOnClickListener {
                 if (!currentAlarmData.Fri) {
                     currentAlarmData.Fri = true
-                    makeAnimation.jump(this).start()
+                    AlarmAnimation.jump(this).start()
                 } else {
                     currentAlarmData.Fri = false
-                    makeAnimation.swing(this).start()
+                    AlarmAnimation.swing(this).start()
                 }
                 setStrokeColorInButton(null, currentAlarmData.Fri)
             }
@@ -451,10 +449,10 @@ class NormalAlarmActivity : AppCompatActivity() {
             setOnClickListener {
                 if (!currentAlarmData.Sat) {
                     currentAlarmData.Sat = true
-                    makeAnimation.jump(this).start()
+                    AlarmAnimation.jump(this).start()
                 } else {
                     currentAlarmData.Sat = false
-                    makeAnimation.swing(this).start()
+                    AlarmAnimation.swing(this).start()
                 }
                 setStrokeColorInButton("Sat", currentAlarmData.Sat)
             }
@@ -465,11 +463,11 @@ class NormalAlarmActivity : AppCompatActivity() {
             setOnClickListener {
                 if (!currentAlarmData.Sun) {
                     currentAlarmData.Sun = true
-                    makeAnimation.jump(this).start()
+                    AlarmAnimation.jump(this).start()
                 } else {
                     currentAlarmData.Sun = false
                     setStrokeColorResource(R.color.background)
-                    makeAnimation.swing(this).start()
+                    AlarmAnimation.swing(this).start()
                 }
                 setStrokeColorInButton("Sun", currentAlarmData.Sun)
             }

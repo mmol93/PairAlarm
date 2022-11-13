@@ -2,10 +2,9 @@ package com.easyo.pairalarm.util
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
 import android.view.View
 
-class AlarmAnimation {
+object AlarmAnimation {
     lateinit var animatorSet: AnimatorSet
 
     fun swing(view: View): AnimatorSet{

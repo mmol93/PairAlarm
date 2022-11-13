@@ -21,9 +21,8 @@ class MyReceiver : BroadcastReceiver() {
         else if (intent.action == "android.intent.action.MY_PACKAGE_REPLACED") {
             resetAlarm(context)
         }
-        // 그 외의 모든 알람(= 내가 설정한 알람)
+        // 내가 설정한 알람이 울렸을 때
         else {
-            Log.d("MyReceiver", "alarm!")
             val alarmCode = intent.getStringExtra("alarmCode")
             Log.d("MyReceiver", "alarmCode: $alarmCode")
 

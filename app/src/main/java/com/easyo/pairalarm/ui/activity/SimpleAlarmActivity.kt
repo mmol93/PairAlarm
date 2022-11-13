@@ -31,8 +31,6 @@ class SimpleAlarmActivity : AppCompatActivity() {
         binding = ActivitySimpleAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val makeAnimation = AlarmAnimation()
-
         // UI 초기화
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -205,7 +203,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
                         lifecycleScope.launchWhenStarted {
                             simpleAlarmViewModel.currentAlarmVibration.emit(2)
                         }
-                        makeAnimation.swing(this).start()
+                        AlarmAnimation.swing(this).start()
                     }
                     2 -> {
                         lifecycleScope.launchWhenStarted {
