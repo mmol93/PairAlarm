@@ -12,11 +12,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.work.*
-import com.easyo.pairalarm.AppClass
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
 import com.easyo.pairalarm.R
-import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
+import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.groupieitem.AlarmGroupie
 import com.easyo.pairalarm.ui.activity.SimpleAlarmActivity
 import com.easyo.pairalarm.util.*
@@ -37,7 +36,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         binding = DataBindingUtil.bind(view)!!
 
         // todo 나중에 화면 사이즈에 맞게 숫자 바뀌게 하기
-        var recyclerViewSpan = 2
+        val recyclerViewSpan = 2
 
         // Groupie - RecyclerView 정의
         val alarmRecyclerAdapter = GroupieAdapter()
@@ -54,7 +53,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 alarmDataList.map { AlarmGroupie(requireContext(), it, alarmViewModel) }
                     .also { alarmRecyclerAdapter.update(it) }
 
-                if (alarmDataList.isNullOrEmpty()) {
+                if (alarmDataList.isEmpty()) {
                     cancelAlarmNotification(requireContext())
                 } else {
                     val alarmTimeWorkRequest: WorkRequest =
@@ -92,7 +91,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         binding.fabLayout.animationSize = interval
 
         // 일반 알람 설정
-        binding.fab2.setOnSingleClickExt {
+        binding.fab2.setOnSingleClickListener {
             if (checkOverlayPermission()) {
                 val makeNormalAlarmIntent = Intent(activity, NormalAlarmActivity::class.java)
                 startActivity(makeNormalAlarmIntent)
@@ -100,7 +99,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         }
 
         // 간단 알람 설정
-        binding.fab3.setOnSingleClickExt {
+        binding.fab3.setOnSingleClickListener {
             if (checkOverlayPermission()) {
                 val makeSimpleAlarmIntent = Intent(activity, SimpleAlarmActivity::class.java)
                 startActivity(makeSimpleAlarmIntent)
@@ -128,8 +127,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         super.onActivityResult(requestCode, resultCode, data)
         // 오버레이 권한 설정에서 돌아왔을 때
         if (requestCode == OVERLAY_CODE) {
-            // todo Dialog 만드는거 함수로 만들어서 간단하게 만들 수 있게 하기
-            ControlDialog.make(
+            SimpleDialog.make(
                 requireContext(),
                 getString(R.string.dialog_permission_title),
                 getString(R.string.dialog_overlay_message),

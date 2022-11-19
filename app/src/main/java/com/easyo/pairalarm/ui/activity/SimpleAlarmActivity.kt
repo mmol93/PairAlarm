@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
 import androidx.activity.viewModels
@@ -13,9 +12,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.easyo.pairalarm.R
-import com.easyo.pairalarm.alarm.setAlarm
 import com.easyo.pairalarm.databinding.ActivitySimpleAlarmBinding
-import com.easyo.pairalarm.ui.dialog.BellSelect
+import com.easyo.pairalarm.extensions.setOnSingleClickListener
+import com.easyo.pairalarm.ui.dialog.BellSelectDialog
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.SimpleAlarmViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,8 +30,6 @@ class SimpleAlarmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySimpleAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val makeAnimation = AlarmAnimation()
 
         // UI 초기화
         lifecycleScope.launch {
@@ -156,7 +153,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
         })
 
         // 모드 버튼을 눌렀을 때
-        binding.selectModeButton.setOnSingleClickExt {
+        binding.selectModeButton.setOnSingleClickListener {
             // ** 항목 선택 Dialog 설정
             val modeItem = arrayOf(
                 getString(R.string.alarmSet_alarmModeItem1),
@@ -172,11 +169,10 @@ class SimpleAlarmActivity : AppCompatActivity() {
             )
             builder.setNeutralButton(getString(R.string.cancel), null)
 
-            builder.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, i: Int ->
+            builder.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
                 val alert = dialogInterface as AlertDialog
-                val idx = alert.listView.checkedItemPosition
                 // * 선택된 아이템의 position에 따라 행동 조건 넣기
-                when (idx) {
+                when (alert.listView.checkedItemPosition) {
                     // Normal 클릭 시
                     0 -> {
                         simpleAlarmViewModel.currentAlarmMode.value = 0
@@ -191,8 +187,8 @@ class SimpleAlarmActivity : AppCompatActivity() {
         }
 
         // AlarmBell 설정 버튼 눌렀을 때
-        binding.selectBellButton.setOnSingleClickExt {
-            val bellSelectDialog = BellSelect(this)
+        binding.selectBellButton.setOnSingleClickListener {
+            val bellSelectDialog = BellSelectDialog(this)
             bellSelectDialog.show()
         }
 
@@ -207,7 +203,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
                         lifecycleScope.launchWhenStarted {
                             simpleAlarmViewModel.currentAlarmVibration.emit(2)
                         }
-                        makeAnimation.swing(this).start()
+                        AlarmAnimation.swing(this).start()
                     }
                     2 -> {
                         lifecycleScope.launchWhenStarted {
@@ -231,7 +227,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.saveButton.setOnSingleClickExt {
+        binding.saveButton.setOnSingleClickListener {
             if (simpleAlarmViewModel.currentAlarmHour.value > 0 || simpleAlarmViewModel.currentAlarmMin.value > 0) {
                 val dateData = getAddedTime(
                     hour = simpleAlarmViewModel.currentAlarmHour.value,
@@ -244,16 +240,9 @@ class SimpleAlarmActivity : AppCompatActivity() {
                 val setHour = dateData.get(Calendar.HOUR_OF_DAY)
                 val setMin = dateData.get(Calendar.MINUTE)
 
-                val calendar = Calendar.getInstance()
-                val currentDay = calendar.get(Calendar.DAY_OF_YEAR)
-                val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-                val currentMin = calendar.get(Calendar.MINUTE)
-                val currentSecond = calendar.get(Calendar.SECOND)
+                val alarmCode = getNewAlarmCode()
 
-                val requestCode = currentDay.toString() + currentHour.toString() +
-                        currentMin.toString() + currentSecond.toString()
-
-                setAlarm(this, requestCode.toInt(), setHour, setMin)
+                setAlarm(this, alarmCode.toInt(), setHour, setMin)
 
                 finish()
             } else {

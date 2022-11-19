@@ -7,13 +7,13 @@ import android.graphics.Color
 import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import com.easyo.pairalarm.R
-import com.easyo.pairalarm.alarm.cancelAlarm
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.AlarmItemBinding
+import com.easyo.pairalarm.extensions.lastClickTime
+import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
-import com.easyo.pairalarm.util.ControlDialog
-import com.easyo.pairalarm.util.setOnSingleCheckedChangeListener
-import com.easyo.pairalarm.util.setOnSingleClickExt
+import com.easyo.pairalarm.util.SimpleDialog
+import com.easyo.pairalarm.util.cancelAlarm
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.databinding.BindableItem
 
@@ -30,8 +30,6 @@ class AlarmGroupie(
         if (alarmData.name.isNotEmpty()) {
             binding.alarmNameText.isSelected = true
         }
-
-        var lastClickTime = 0L
 
         // 시간 표기
         binding.hourText.text = alarmData.hour.toString()
@@ -142,20 +140,20 @@ class AlarmGroupie(
             )
         }
 
-        binding.root.setOnSingleClickExt {
+        binding.root.setOnSingleClickListener {
             openNormalAlarmActivity()
         }
 
         // 삭제 버튼 클릭
-        binding.deleteImage.setOnSingleClickExt {
-            ControlDialog.make(
+        binding.deleteImage.setOnSingleClickListener {
+            SimpleDialog.make(
                 context,
                 context.getString(R.string.dialog_delete_title),
                 context.getString(R.string.dialog_delete_content),
                 null,
                 positive = {
-                    alarmViewModel.delete(alarmData)
-                    cancelAlarm(context, alarmData.requestCode)
+                    alarmViewModel.deleteAlarmData(alarmData)
+                    cancelAlarm(context, alarmData.alarmCode)
                 },
                 negative = { }
             )
@@ -166,10 +164,10 @@ class AlarmGroupie(
 
         binding.onOffSwitch.setOnCheckedChangeListener { _, isChecked ->
             // 한 번만 클릭되는 기능을 넣지 않으면 혼자서 여러번 클릭됨
-            if (com.easyo.pairalarm.util.lastClickTime < System.currentTimeMillis() - 300) {
-                com.easyo.pairalarm.util.lastClickTime = System.currentTimeMillis()
+            if (lastClickTime < System.currentTimeMillis() - 300) {
+                lastClickTime = System.currentTimeMillis()
                 alarmData.button = isChecked
-                alarmViewModel.update(alarmData)
+                alarmViewModel.updateAlarData(alarmData)
                 Log.d("AlarmGroupie", "update alarmData: $alarmData")
             }
         }
@@ -177,7 +175,7 @@ class AlarmGroupie(
 
     private fun openNormalAlarmActivity() {
         val intent = Intent(context, NormalAlarmActivity::class.java)
-        intent.putExtra("requestCode", alarmData.requestCode)
+        intent.putExtra("alarmCode", alarmData.alarmCode)
         context.startActivity(intent)
     }
 

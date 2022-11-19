@@ -13,22 +13,21 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
-import com.easyo.pairalarm.alarm.setAlarm
 import com.easyo.pairalarm.database.table.AlarmData
-import com.easyo.pairalarm.ui.dialog.BellSelect
+import com.easyo.pairalarm.extensions.setOnSingleClickListener
+import com.easyo.pairalarm.ui.dialog.BellSelectDialog
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.util.*
 
 @AndroidEntryPoint
 class NormalAlarmActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMakeAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
-    private lateinit var currentAlarmDataFlowList: Flow<List<AlarmData>>
+    private lateinit var currentAlarmFlowData: Flow<AlarmData>
     private lateinit var currentAlarmData: AlarmData
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +35,7 @@ class NormalAlarmActivity : AppCompatActivity() {
         binding = ActivityMakeAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // TODO: 피커들 BindingAdapter에서 초기화 하게 바꾸기
         // numberPicker의 시간 부분 최대, 최소값 설정
         binding.numberPickerHour.maxValue = 12
         binding.numberPickerHour.minValue = 1
@@ -44,99 +44,94 @@ class NormalAlarmActivity : AppCompatActivity() {
         binding.numberPickerMin.maxValue = 59
         binding.numberPickerMin.minValue = 0
 
-        // numberPicker에 오전 오후 텍스트 세팅..
+        // numberPicker에 오전 오후 텍스트 세팅
         val arg1 = arrayOf(getString(R.string.alarmSet_AM), getString(R.string.alarmSet_PM))
         binding.numberPickerAMPM.minValue = 0
         binding.numberPickerAMPM.maxValue = arg1.size - 1
         binding.numberPickerAMPM.displayedValues = arg1
 
-        val bellSelectDialog = BellSelect(this)
+        val bellSelectDialog = BellSelectDialog(this)
 
-        val makeAnimation = AlarmAnimation()
-
-        var requestCode = intent.getStringExtra("requestCode")
-        currentAlarmDataFlowList = if (requestCode != null) {
-            val clickedAlarmData = alarmViewModel.searchRequestCode(requestCode)
-            clickedAlarmData
+        var alarmCode = intent.getStringExtra("alarmCode")
+        currentAlarmFlowData = if (alarmCode != null) {
+            alarmViewModel.searchAlarmCode(alarmCode)
         } else {
             initCurrentAlarmData()
         }
 
-        // alarmData의 requestCode 값이 0이면 새로운 알람 생성
-        if (requestCode == null) {
+        // alarmData의 alarmCode 값이 0이면 새로운 알람 생성
+        if (alarmCode == null) {
             binding.saveButton.text = getString(R.string.save)
         }
 
         lifecycleScope.launch {
-            currentAlarmDataFlowList.collectLatest {
-                it[0].let { alarmData ->
-                    currentAlarmData = alarmData
-                    Log.d("NormalAlarmActivity", "alarmData: $alarmData")
+            currentAlarmFlowData.collectLatest { alarmData ->
+                currentAlarmData = alarmData
+                Log.d("NormalAlarmActivity", "alarmData: $alarmData")
 
-                    binding.alarmNameEditText.setText(alarmData.name)
+                binding.alarmNameEditText.setText(alarmData.name)
 
-                    if (alarmData.hour > 12) {
-                        binding.numberPickerHour.value = alarmData.hour - 12
-                        binding.numberPickerAMPM.value = 1
-                    } else {
-                        binding.numberPickerHour.value = alarmData.hour
-                        binding.numberPickerAMPM.value = 0
-                    }
-
-                    binding.numberPickerMin.value = alarmData.minute
-
-                    if (alarmData.volume == 0) {
-                        binding.imageVolume.setImageDrawable(
-                            AppCompatResources.getDrawable(
-                                this@NormalAlarmActivity,
-                                R.drawable.volume_mute
-                            )
-                        )
-                    } else {
-                        binding.imageVolume.setImageDrawable(
-                            AppCompatResources.getDrawable(
-                                this@NormalAlarmActivity,
-                                R.drawable.volume_icon
-                            )
-                        )
-                    }
-
-                    binding.volumeSeekBar.progress = alarmData.volume
-
-                    setAlarmBellText(alarmData.bell)
-                    AlarmBell.setBellIndex(alarmData.bell)
-
-                    setAlarmModeText(alarmData.mode)
-
-                    when (alarmData.vibration) {
-                        0 -> binding.imageVibration.setImageDrawable(
-                            AppCompatResources.getDrawable(
-                                this@NormalAlarmActivity,
-                                R.drawable.ic_no_vib
-                            )
-                        )
-                        1 -> binding.imageVibration.setImageDrawable(
-                            AppCompatResources.getDrawable(
-                                this@NormalAlarmActivity,
-                                R.drawable.ic_vib_1
-                            )
-                        )
-                        2 -> binding.imageVibration.setImageDrawable(
-                            AppCompatResources.getDrawable(
-                                this@NormalAlarmActivity,
-                                R.drawable.ic_vib_2
-                            )
-                        )
-                    }
-
-                    binding.monButton.setStrokeColorInButton(null, alarmData.Mon)
-                    binding.tueButton.setStrokeColorInButton(null, alarmData.Tue)
-                    binding.wedButton.setStrokeColorInButton(null, alarmData.Wed)
-                    binding.thurButton.setStrokeColorInButton(null, alarmData.Thu)
-                    binding.friButton.setStrokeColorInButton(null, alarmData.Fri)
-                    binding.satButton.setStrokeColorInButton("Sat", alarmData.Sat)
-                    binding.sunButton.setStrokeColorInButton("Sun", alarmData.Sun)
+                if (alarmData.hour > 12) {
+                    binding.numberPickerHour.value = alarmData.hour - 12
+                    binding.numberPickerAMPM.value = 1
+                } else {
+                    binding.numberPickerHour.value = alarmData.hour
+                    binding.numberPickerAMPM.value = 0
                 }
+
+                binding.numberPickerMin.value = alarmData.minute
+
+                if (alarmData.volume == 0) {
+                    binding.imageVolume.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            this@NormalAlarmActivity,
+                            R.drawable.volume_mute
+                        )
+                    )
+                } else {
+                    binding.imageVolume.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            this@NormalAlarmActivity,
+                            R.drawable.volume_icon
+                        )
+                    )
+                }
+
+                binding.volumeSeekBar.progress = alarmData.volume
+
+                setAlarmBellText(alarmData.bell)
+                AlarmBell.setBellIndex(alarmData.bell)
+
+                setAlarmModeText(alarmData.mode)
+
+                when (alarmData.vibration) {
+                    0 -> binding.imageVibration.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            this@NormalAlarmActivity,
+                            R.drawable.ic_no_vib
+                        )
+                    )
+                    1 -> binding.imageVibration.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            this@NormalAlarmActivity,
+                            R.drawable.ic_vib_1
+                        )
+                    )
+                    2 -> binding.imageVibration.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            this@NormalAlarmActivity,
+                            R.drawable.ic_vib_2
+                        )
+                    )
+                }
+
+                binding.monButton.setStrokeColorInButton(null, alarmData.Mon)
+                binding.tueButton.setStrokeColorInButton(null, alarmData.Tue)
+                binding.wedButton.setStrokeColorInButton(null, alarmData.Wed)
+                binding.thurButton.setStrokeColorInButton(null, alarmData.Thu)
+                binding.friButton.setStrokeColorInButton(null, alarmData.Fri)
+                binding.satButton.setStrokeColorInButton("Sat", alarmData.Sat)
+                binding.sunButton.setStrokeColorInButton("Sun", alarmData.Sun)
             }
         }
 
@@ -155,12 +150,12 @@ class NormalAlarmActivity : AppCompatActivity() {
         }
 
         // AlarmBell 설정 버튼 눌렀을 때
-        binding.selectBellButton.setOnSingleClickExt {
+        binding.selectBellButton.setOnSingleClickListener {
             bellSelectDialog.show()
         }
 
         // AlarmMode 설정 버튼 눌렀을 때
-        binding.selectModeButton.setOnSingleClickExt {
+        binding.selectModeButton.setOnSingleClickListener {
             // ** 항목 선택 Dialog 설정
             val modeItems = arrayOf(
                 getString(R.string.alarmSet_alarmModeItem1),
@@ -194,7 +189,7 @@ class NormalAlarmActivity : AppCompatActivity() {
         }
 
         // save 버튼 눌렀을 때
-        binding.saveButton.setOnSingleClickExt {
+        binding.saveButton.setOnSingleClickListener {
             // 요일을 하나라도 선택해야한다
             if (currentAlarmData.Mon ||
                 currentAlarmData.Tue ||
@@ -216,17 +211,10 @@ class NormalAlarmActivity : AppCompatActivity() {
                         binding.numberPickerHour.value
                     }
 
-                // currentAlarmRequestCode를 보고 새로운 알람 생성인지 수정인지 판단
-                if (requestCode == null
+                // currentAlarmCode를 보고 새로운 알람 생성인지 수정인지 판단
+                if (alarmCode == null
                 ) {
-                    val calendar = Calendar.getInstance()
-                    val currentDay = calendar.get(Calendar.DAY_OF_YEAR)
-                    val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-                    val currentMin = calendar.get(Calendar.MINUTE)
-                    val currentSecond = calendar.get(Calendar.SECOND)
-
-                    requestCode = currentDay.toString() + currentHour.toString() +
-                            currentMin.toString() + currentSecond.toString()
+                    alarmCode = getNewAlarmCode()
 
                     // DB에 넣을 Data set
                     val alarmData = AlarmData(
@@ -248,14 +236,14 @@ class NormalAlarmActivity : AppCompatActivity() {
                         mode = currentAlarmData.mode,
                         vibration = currentAlarmData.vibration,
                         name = binding.alarmNameEditText.text.toString(),
-                        requestCode = requestCode!!
+                        alarmCode = alarmCode!!
                     )
 
                     // DB에 데이터 삽입
-                    alarmViewModel.insert(alarmData)
+                    alarmViewModel.insertAlarmData(alarmData)
 
                     // 브로드캐스트에 알람 예약하기
-                    setAlarm(this, requestCode!!.toInt(), hour, binding.numberPickerMin.value)
+                    setAlarm(this, alarmCode!!.toInt(), hour, binding.numberPickerMin.value)
                 }
                 // 데이터를 수정 했을 경우
                 else {
@@ -278,12 +266,12 @@ class NormalAlarmActivity : AppCompatActivity() {
                         mode = currentAlarmData.mode,
                         vibration = currentAlarmData.vibration,
                         name = binding.alarmNameEditText.text.toString(),
-                        requestCode = requestCode!!
+                        alarmCode = alarmCode!!
                     )
 
                     // DB 업데이트
-                    alarmViewModel.update(alarmData)
-                    setAlarm(this, requestCode!!.toInt(), hour, binding.numberPickerMin.value)
+                    alarmViewModel.updateAlarData(alarmData)
+                    setAlarm(this, alarmCode!!.toInt(), hour, binding.numberPickerMin.value)
                 }
 
                 finish()
@@ -293,7 +281,7 @@ class NormalAlarmActivity : AppCompatActivity() {
         }
 
         // cancel 버튼 눌렀을 때
-        binding.cancelButton.setOnSingleClickExt {
+        binding.cancelButton.setOnSingleClickListener {
             finish()
         }
 
@@ -318,7 +306,7 @@ class NormalAlarmActivity : AppCompatActivity() {
                                 R.drawable.ic_vib_2
                             )
                         )
-                        makeAnimation.swing(this).start()
+                        AlarmAnimation.swing(this).start()
                     }
                     2 -> {
                         binding.imageVibration.setImageDrawable(
@@ -389,11 +377,11 @@ class NormalAlarmActivity : AppCompatActivity() {
                 if (!currentAlarmData.Mon) {
                     currentAlarmData.Mon = true
                     // 점프 애니메이션
-                    makeAnimation.jump(this).start()
+                    AlarmAnimation.jump(this).start()
                 } else {
                     currentAlarmData.Mon = false
                     // 털어내는 애니메이션
-                    makeAnimation.swing(this).start()
+                    AlarmAnimation.swing(this).start()
                 }
                 setStrokeColorInButton(null, currentAlarmData.Mon)
             }
@@ -404,10 +392,10 @@ class NormalAlarmActivity : AppCompatActivity() {
             setOnClickListener {
                 if (!currentAlarmData.Tue) {
                     currentAlarmData.Tue = true
-                    makeAnimation.jump(this).start()
+                    AlarmAnimation.jump(this).start()
                 } else {
                     currentAlarmData.Tue = false
-                    makeAnimation.swing(this).start()
+                    AlarmAnimation.swing(this).start()
                 }
                 setStrokeColorInButton(null, currentAlarmData.Tue)
             }
@@ -418,11 +406,11 @@ class NormalAlarmActivity : AppCompatActivity() {
             setOnClickListener {
                 if (!currentAlarmData.Wed) {
                     currentAlarmData.Wed = true
-                    makeAnimation.jump(this).start()
+                    AlarmAnimation.jump(this).start()
                 } else {
                     currentAlarmData.Wed = false
                     setStrokeColorResource(R.color.background)
-                    makeAnimation.swing(this).start()
+                    AlarmAnimation.swing(this).start()
                 }
                 setStrokeColorInButton(null, currentAlarmData.Wed)
             }
@@ -433,10 +421,10 @@ class NormalAlarmActivity : AppCompatActivity() {
             setOnClickListener {
                 if (!currentAlarmData.Thu) {
                     currentAlarmData.Thu = true
-                    makeAnimation.jump(this).start()
+                    AlarmAnimation.jump(this).start()
                 } else {
                     currentAlarmData.Thu = false
-                    makeAnimation.swing(this).start()
+                    AlarmAnimation.swing(this).start()
                 }
                 setStrokeColorInButton(null, currentAlarmData.Thu)
             }
@@ -447,10 +435,10 @@ class NormalAlarmActivity : AppCompatActivity() {
             setOnClickListener {
                 if (!currentAlarmData.Fri) {
                     currentAlarmData.Fri = true
-                    makeAnimation.jump(this).start()
+                    AlarmAnimation.jump(this).start()
                 } else {
                     currentAlarmData.Fri = false
-                    makeAnimation.swing(this).start()
+                    AlarmAnimation.swing(this).start()
                 }
                 setStrokeColorInButton(null, currentAlarmData.Fri)
             }
@@ -461,10 +449,10 @@ class NormalAlarmActivity : AppCompatActivity() {
             setOnClickListener {
                 if (!currentAlarmData.Sat) {
                     currentAlarmData.Sat = true
-                    makeAnimation.jump(this).start()
+                    AlarmAnimation.jump(this).start()
                 } else {
                     currentAlarmData.Sat = false
-                    makeAnimation.swing(this).start()
+                    AlarmAnimation.swing(this).start()
                 }
                 setStrokeColorInButton("Sat", currentAlarmData.Sat)
             }
@@ -475,40 +463,38 @@ class NormalAlarmActivity : AppCompatActivity() {
             setOnClickListener {
                 if (!currentAlarmData.Sun) {
                     currentAlarmData.Sun = true
-                    makeAnimation.jump(this).start()
+                    AlarmAnimation.jump(this).start()
                 } else {
                     currentAlarmData.Sun = false
                     setStrokeColorResource(R.color.background)
-                    makeAnimation.swing(this).start()
+                    AlarmAnimation.swing(this).start()
                 }
                 setStrokeColorInButton("Sun", currentAlarmData.Sun)
             }
         }
     }
 
-    private fun initCurrentAlarmData(): Flow<List<AlarmData>> {
+    private fun initCurrentAlarmData(): Flow<AlarmData> {
         return flowOf(
-            listOf(
-                AlarmData(
-                    id = null,
-                    button = true,
-                    Sun = false,
-                    Mon = false,
-                    Tue = false,
-                    Wed = false,
-                    Thu = false,
-                    Fri = false,
-                    Sat = false,
-                    vibration = 0,
-                    requestCode = "",
-                    mode = 0,
-                    hour = getCurrentHour(),
-                    minute = getCurrentMinute(),
-                    quick = false,
-                    volume = 100,
-                    bell = 0,
-                    name = ""
-                )
+            AlarmData(
+                id = null,
+                button = true,
+                Sun = false,
+                Mon = false,
+                Tue = false,
+                Wed = false,
+                Thu = false,
+                Fri = false,
+                Sat = false,
+                vibration = 0,
+                alarmCode = "",
+                mode = 0,
+                hour = getCurrentHour(),
+                minute = getCurrentMinute(),
+                quick = false,
+                volume = 100,
+                bell = 0,
+                name = ""
             )
         )
     }

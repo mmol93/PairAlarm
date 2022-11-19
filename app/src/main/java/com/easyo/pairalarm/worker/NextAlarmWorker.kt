@@ -23,11 +23,11 @@ class NextAlarmWorker @AssistedInject constructor(
     private val alarmDao: AlarmDAO
 ) : CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result {
-        alarmDao.getAllAlarms().collectLatest {alarmData->
+        alarmDao.getAllAlarms().collectLatest { alarmData ->
             val transformedNextAlarm = getNextAlarm(alarmData)
-            if(transformedNextAlarm.isNullOrEmpty()){
+            if (transformedNextAlarm.isNullOrEmpty()) {
                 cancelAlarmNotification(applicationContext)
-            }else{
+            } else {
                 makeAlarmNotification(applicationContext, transformedNextAlarm.toString())
             }
         }

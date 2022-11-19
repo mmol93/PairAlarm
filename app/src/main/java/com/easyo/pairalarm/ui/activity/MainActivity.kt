@@ -1,13 +1,11 @@
-package com.easyo.pairalarm
+package com.easyo.pairalarm.ui.activity
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityMainBinding
 import com.easyo.pairalarm.ui.fragment.AlarmFragment
 import com.easyo.pairalarm.ui.fragment.CommunityFragment
@@ -51,14 +49,19 @@ class MainActivity : AppCompatActivity() {
 
         // tab과 viewPager2를 연결시킨다
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab: TabLayout.Tab, i: Int ->
-            if (i == 0) {
-                tab.icon = getDrawable(R.drawable.ic_clock)
-            } else if (i == 1) {
-                tab.icon = getDrawable(R.drawable.ic_baseline_people)
-            } else if (i == 2) {
-                tab.icon = getDrawable(R.drawable.ic_cloud)
-            } else if (i == 3) {
-                tab.icon = getDrawable(R.drawable.ic_baseline_setting)
+            when (i) {
+                0 -> {
+                    tab.icon = getDrawable(R.drawable.ic_clock)
+                }
+                1 -> {
+                    tab.icon = getDrawable(R.drawable.ic_baseline_people)
+                }
+                2 -> {
+                    tab.icon = getDrawable(R.drawable.ic_cloud)
+                }
+                3 -> {
+                    tab.icon = getDrawable(R.drawable.ic_baseline_setting)
+                }
             }
         }.attach()
     }

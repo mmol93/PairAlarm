@@ -22,7 +22,7 @@ class SimpleAlarmViewModel @Inject constructor(private val alarmRepository: Alar
 
     // SimpleAlarmViewModel에서는 insert만 사용한다
     fun insert(alarmData: AlarmData) = viewModelScope.launch {
-        alarmRepository.insert(alarmData)
+        alarmRepository.insertAlarmData(alarmData)
         Log.d("AlarmViewModel", "inserted: $alarmData")
     }
 }

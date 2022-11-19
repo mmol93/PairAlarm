@@ -3,12 +3,9 @@ package com.easyo.pairalarm.extensions
 import android.view.View
 
 var lastClickTime = 0L
-fun View.setOnClickExt(onClick: View.OnClickListener) {
-
-}
-fun View.setOnClickExt(onClick: (view: View) -> Unit) {
+fun View.setOnSingleClickListener(onClick: (view: View) -> Unit) {
     setOnClickListener {
-        if (lastClickTime < System.currentTimeMillis() - 1000) {
+        if (lastClickTime < System.currentTimeMillis() - 500) {
             lastClickTime = System.currentTimeMillis()
             onClick(this)
         }

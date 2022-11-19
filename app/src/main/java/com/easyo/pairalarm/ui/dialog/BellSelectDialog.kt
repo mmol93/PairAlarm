@@ -8,12 +8,12 @@ import android.os.Bundle
 import android.util.Log
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.DialogBellSetBinding
+import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.util.AlarmBell
 import com.easyo.pairalarm.util.AlarmMusic
 import com.easyo.pairalarm.util.selectMusic
-import com.easyo.pairalarm.util.setOnSingleClickExt
 
-class BellSelect(
+class BellSelectDialog(
     context: Context
 ) : Dialog(context) {
     private lateinit var binding: DialogBellSetBinding
@@ -44,7 +44,7 @@ class BellSelect(
         }
 
         // Play 버튼
-        binding.playButton.setOnSingleClickExt {
+        binding.playButton.setOnSingleClickListener {
             if (AlarmMusic.getCurrentMusic() == null) {
                 AlarmMusic.setCurrentMusic(selectMusic(context, bellIndex))
             }
@@ -69,7 +69,7 @@ class BellSelect(
         }
 
         // Save 버튼
-        binding.saveButton.setOnSingleClickExt {
+        binding.saveButton.setOnSingleClickListener {
             AlarmBell.setBellIndex(bellIndex)
             dismiss()
         }
@@ -91,6 +91,7 @@ class BellSelect(
     }
 
     private fun mediaStop(dialogClose: Boolean) {
+        // 무언가 미디어에서 재생중일 때
         if (AlarmMusic.getCurrentMusic() != null) {
             // 음악 재생중 + Dialog를 완전히 닫았을 때
             if (AlarmMusic.getCurrentMusic()!!.isPlaying || dialogClose) {
