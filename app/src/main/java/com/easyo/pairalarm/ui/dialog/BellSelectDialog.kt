@@ -13,7 +13,7 @@ import com.easyo.pairalarm.util.AlarmBell
 import com.easyo.pairalarm.util.AlarmMusic
 import com.easyo.pairalarm.util.selectMusic
 
-class BellSelect(
+class BellSelectDialog(
     context: Context
 ) : Dialog(context) {
     private lateinit var binding: DialogBellSetBinding
@@ -91,6 +91,7 @@ class BellSelect(
     }
 
     private fun mediaStop(dialogClose: Boolean) {
+        // 무언가 미디어에서 재생중일 때
         if (AlarmMusic.getCurrentMusic() != null) {
             // 음악 재생중 + Dialog를 완전히 닫았을 때
             if (AlarmMusic.getCurrentMusic()!!.isPlaying || dialogClose) {

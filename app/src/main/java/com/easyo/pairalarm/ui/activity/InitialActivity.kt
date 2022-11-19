@@ -12,7 +12,6 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
-import com.easyo.pairalarm.MainActivity
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityInitialBinding
 import com.easyo.pairalarm.eventbus.EventBus

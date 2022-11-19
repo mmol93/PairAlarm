@@ -8,7 +8,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.WorkManager
-import com.easyo.pairalarm.MainActivity
+import com.easyo.pairalarm.ui.activity.MainActivity
 import com.easyo.pairalarm.R
 
 fun makeAlarmNotification(context: Context, messageBody: String) {

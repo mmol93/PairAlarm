@@ -14,7 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivitySimpleAlarmBinding
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
-import com.easyo.pairalarm.ui.dialog.BellSelect
+import com.easyo.pairalarm.ui.dialog.BellSelectDialog
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.SimpleAlarmViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -188,7 +188,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
 
         // AlarmBell 설정 버튼 눌렀을 때
         binding.selectBellButton.setOnSingleClickListener {
-            val bellSelectDialog = BellSelect(this)
+            val bellSelectDialog = BellSelectDialog(this)
             bellSelectDialog.show()
         }
 

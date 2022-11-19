@@ -15,7 +15,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
-import com.easyo.pairalarm.ui.dialog.BellSelect
+import com.easyo.pairalarm.ui.dialog.BellSelectDialog
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.google.android.material.button.MaterialButton
@@ -50,7 +50,7 @@ class NormalAlarmActivity : AppCompatActivity() {
         binding.numberPickerAMPM.maxValue = arg1.size - 1
         binding.numberPickerAMPM.displayedValues = arg1
 
-        val bellSelectDialog = BellSelect(this)
+        val bellSelectDialog = BellSelectDialog(this)
 
         var alarmCode = intent.getStringExtra("alarmCode")
         currentAlarmFlowData = if (alarmCode != null) {
