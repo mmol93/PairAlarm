@@ -4,6 +4,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.View
 
+// TODO: 이 부분 ViewExt으로 바꾸기
 object AlarmAnimation {
     lateinit var animatorSet: AnimatorSet
 
