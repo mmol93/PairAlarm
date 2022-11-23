@@ -2,20 +2,20 @@ package com.easyo.pairalarm.ui.activity
 
 import android.content.Context
 import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.easyo.pairalarm.R
-import com.easyo.pairalarm.databinding.ActivityMakeAlarmBinding
 import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
+import com.easyo.pairalarm.R
 import com.easyo.pairalarm.database.table.AlarmData
+import com.easyo.pairalarm.databinding.ActivityMakeAlarmBinding
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
-import com.easyo.pairalarm.ui.dialog.BellSelectDialog
+import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.google.android.material.button.MaterialButton
@@ -50,7 +50,7 @@ class NormalAlarmActivity : AppCompatActivity() {
         binding.numberPickerAMPM.maxValue = arg1.size - 1
         binding.numberPickerAMPM.displayedValues = arg1
 
-        val bellSelectDialog = BellSelectDialog(this)
+        val bellSelectDialog = BellSelectDialogFragment()
 
         var alarmCode = intent.getStringExtra("alarmCode")
         currentAlarmFlowData = if (alarmCode != null) {
@@ -62,6 +62,17 @@ class NormalAlarmActivity : AppCompatActivity() {
         // alarmData의 alarmCode 값이 0이면 새로운 알람 생성
         if (alarmCode == null) {
             binding.saveButton.text = getString(R.string.save)
+        }
+
+        // bellDialog에서 변경한 bellIndex를 받아온다
+        lifecycleScope.launch {
+            alarmViewModel.currentAlarmBell.collectLatest { bellIndex ->
+                Log.d(this@NormalAlarmActivity.javaClass.simpleName, "bellIndex: $bellIndex")
+                setAlarmBellText(AlarmBell.getBellIndex())
+                if (::currentAlarmData.isInitialized){
+                    currentAlarmData.bell = AlarmBell.getBellIndex()
+                }
+            }
         }
 
         lifecycleScope.launch {
@@ -135,11 +146,6 @@ class NormalAlarmActivity : AppCompatActivity() {
             }
         }
 
-        bellSelectDialog.setOnDismissListener {
-            setAlarmBellText(AlarmBell.getBellIndex())
-            currentAlarmData.bell = AlarmBell.getBellIndex()
-        }
-
         // editText의 외부를 클릭했을 때는 키보드랑 Focus 제거하기
         binding.rootLayout.setOnClickListener {
             val imm =
@@ -151,11 +157,13 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         // AlarmBell 설정 버튼 눌렀을 때
         binding.selectBellButton.setOnSingleClickListener {
-            bellSelectDialog.show()
+            bellSelectDialog.show(supportFragmentManager, null)
         }
 
         // AlarmMode 설정 버튼 눌렀을 때
         binding.selectModeButton.setOnSingleClickListener {
+            // TODo: 이 부분 전체 공통화 작업 해놓기
+            // TODO: 이 부분 enum이나 data class로 변경해서 사용하기(SimpleAlarm 부분도 동일하게 적용)
             // ** 항목 선택 Dialog 설정
             val modeItems = arrayOf(
                 getString(R.string.alarmSet_alarmModeItem1),
