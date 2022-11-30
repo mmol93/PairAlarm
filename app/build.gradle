@@ -113,4 +113,7 @@ dependencies {
 
     // FitButton - https://github.com/nikartm/FitButton
     implementation 'io.github.nikartm:fit-button:2.0.0'
+
+    // timber - https://github.com/JakeWharton/timber.git
+    implementation 'com.jakewharton.timber:timber:5.0.1'
 }

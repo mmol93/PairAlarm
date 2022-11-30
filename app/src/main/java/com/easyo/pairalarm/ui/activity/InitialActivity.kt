@@ -16,10 +16,12 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityInitialBinding
 import com.easyo.pairalarm.eventbus.EventBus
 import com.easyo.pairalarm.eventbus.InitDataEvent
+import com.easyo.pairalarm.util.MyTimber
 import com.easyo.pairalarm.worker.InitAlarmDataWorker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class InitialActivity : AppCompatActivity() {
@@ -30,6 +32,7 @@ class InitialActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityInitialBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Timber.plant(MyTimber())
 
         // Lottie 애니메이션이 끝났을 때 MainActivity 열기
         binding.lottieView.addAnimatorListener(object : Animator.AnimatorListener {
@@ -39,7 +42,7 @@ class InitialActivity : AppCompatActivity() {
             override fun onAnimationEnd(animation: Animator) {
                 isDoneLottieAnimation = true
                 // 애니메이션이 끝나고 DB를 다 불러 왔을 때만 MainActivity을 연다
-                if (isDoneLottieAnimation && isDoneDatabaseLoad){
+                if (isDoneDatabaseLoad){
                     openMainActivity()
                 }
             }
