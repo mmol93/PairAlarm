@@ -61,7 +61,7 @@ class InitialActivity : AppCompatActivity() {
         // InitDataEvent를 subscribe하여 EventBus의 post의 신호를 감지한다
         lifecycleScope.launch {
             EventBus.subscribe<InitDataEvent>().collectLatest {
-                Log.d("InitActivity", "EventBus collected")
+                Timber.d("EventBus collected")
                 updateProgress(it)
             }
         }

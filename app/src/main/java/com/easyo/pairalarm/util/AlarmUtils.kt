@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.room.Room
 import com.easyo.pairalarm.database.AppDatabase
 import com.easyo.pairalarm.database.table.AlarmData
@@ -13,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 
 fun setAlarm(context: Context, alarmCode: Int, hour: Int, min: Int) {
@@ -45,8 +45,8 @@ fun setAlarm(context: Context, alarmCode: Int, hour: Int, min: Int) {
     )
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val alarmInfo = AlarmManager.AlarmClockInfo(calendarMillis, pendingIntent)
-    Log.d("Alarm", "set alarmCode: $alarmCode")
-    Log.d("Alarm", "set alarm(mills): ${transMillisToTime(calendarMillis)}")
+    Timber.d("set alarmCode: $alarmCode")
+    Timber.d("set alarm(mills): " + transMillisToTime(calendarMillis))
     alarmManager.setAlarmClock(alarmInfo, pendingIntent)
 }
 
@@ -57,7 +57,7 @@ fun resetAlarm(context: Context?) {
         CoroutineScope(Dispatchers.IO).launch {
             alarmData.alarmDao().getAllAlarms().collectLatest {
                 it.forEach { alarmData ->
-                    Log.d("Alarm", "reset alarm: ${alarmData.alarmCode}")
+                    Timber.d("reset alarm: " + alarmData.alarmCode)
                     setAlarm(
                         context,
                         alarmData.alarmCode.toInt(),
