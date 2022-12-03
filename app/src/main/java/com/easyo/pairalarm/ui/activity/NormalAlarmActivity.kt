@@ -22,6 +22,7 @@ import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class NormalAlarmActivity : AppCompatActivity() {
@@ -67,9 +68,9 @@ class NormalAlarmActivity : AppCompatActivity() {
         // bellDialog에서 변경한 bellIndex를 받아온다
         lifecycleScope.launch {
             alarmViewModel.currentAlarmBell.collectLatest { bellIndex ->
-                Log.d(this@NormalAlarmActivity.javaClass.simpleName, "bellIndex: $bellIndex")
+                Timber.d("bellIndex: $bellIndex")
                 setAlarmBellText(AlarmBell.getBellIndex())
-                if (::currentAlarmData.isInitialized){
+                if (::currentAlarmData.isInitialized) {
                     currentAlarmData.bell = AlarmBell.getBellIndex()
                 }
             }
@@ -78,7 +79,7 @@ class NormalAlarmActivity : AppCompatActivity() {
         lifecycleScope.launch {
             currentAlarmFlowData.collectLatest { alarmData ->
                 currentAlarmData = alarmData
-                Log.d("NormalAlarmActivity", "alarmData: $alarmData")
+                Timber.d("alarmData: $alarmData")
 
                 binding.alarmNameEditText.setText(alarmData.name)
 
@@ -530,7 +531,7 @@ class NormalAlarmActivity : AppCompatActivity() {
     }
 
     private fun setAlarmBellText(bellIndex: Int) {
-        Log.d("NormalAlarmActivity", "current bell index: $bellIndex")
+        Timber.d("current bell index: $bellIndex")
         when (bellIndex) {
             0 -> binding.textCurrentBell.text =
                 getString(R.string.bellType_Normal_Walking)

@@ -25,6 +25,7 @@ import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class AlarmFragment : Fragment(R.layout.fragment_alarm) {
@@ -49,7 +50,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         // Groupie - RecyclerView 데이터 입력
         lifecycleScope.launch {
             alarmViewModel.getAllAlarmData().collectLatest { alarmDataList ->
-                Log.d("AlarmFragment", "AlarmData: $alarmDataList")
+                Timber.d("AlarmData: $alarmDataList")
                 alarmDataList.map { AlarmGroupie(requireContext(), it, alarmViewModel) }
                     .also { alarmRecyclerAdapter.update(it) }
 
@@ -116,7 +117,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 Uri.parse("package:${requireContext().packageName}")
             )
             startActivityForResult(intent, OVERLAY_CODE)
-            Log.d("mainActivity", "오버레이 intent 호출")
+            Timber.d("오버레이 intent 호출")
             false
         } else {
             true

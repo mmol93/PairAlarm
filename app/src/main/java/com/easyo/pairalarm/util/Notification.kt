@@ -5,14 +5,14 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.WorkManager
 import com.easyo.pairalarm.ui.activity.MainActivity
 import com.easyo.pairalarm.R
+import timber.log.Timber
 
 fun makeAlarmNotification(context: Context, messageBody: String) {
-    Log.d("notification", "make notification")
+    Timber.d("make notification")
     // noti 클릭 시 MainActivity를 열게 한다
     val intent = Intent(context, MainActivity::class.java)
     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -49,7 +49,7 @@ fun makeAlarmNotification(context: Context, messageBody: String) {
 }
 
 fun cancelAlarmNotification(context: Context) {
-    Log.d("notification", "cancel notification")
+    Timber.d("cancel notification")
     val notificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     notificationManager.cancel(ALARM_NOTI_ID)

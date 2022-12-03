@@ -16,6 +16,7 @@ import com.easyo.pairalarm.util.SimpleDialog
 import com.easyo.pairalarm.util.cancelAlarm
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.databinding.BindableItem
+import timber.log.Timber
 
 class AlarmGroupie(
     val context: Context,
@@ -168,7 +169,7 @@ class AlarmGroupie(
                 lastClickTime = System.currentTimeMillis()
                 alarmData.button = isChecked
                 alarmViewModel.updateAlarData(alarmData)
-                Log.d("AlarmGroupie", "update alarmData: $alarmData")
+                Timber.d("update alarmData: $alarmData")
             }
         }
     }

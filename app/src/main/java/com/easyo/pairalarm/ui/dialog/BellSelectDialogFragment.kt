@@ -16,6 +16,7 @@ import com.easyo.pairalarm.util.AlarmBell
 import com.easyo.pairalarm.util.AlarmMusic
 import com.easyo.pairalarm.util.selectMusic
 import com.easyo.pairalarm.viewModel.AlarmViewModel
+import timber.log.Timber
 
 class BellSelectDialogFragment : DialogFragment() {
     private lateinit var binding: DialogBellSetBinding
@@ -57,8 +58,7 @@ class BellSelectDialogFragment : DialogFragment() {
             if (AlarmMusic.getCurrentMusic()!!.isPlaying) {
                 mediaStop()
                 binding.playButton.text = requireContext().getString(R.string.play)
-
-                Log.d("BellSelect", "playing stop")
+                Timber.d("playing stop")
             }
             // 음악 재생중 아닐 때 -> 음악 시작
             else {
@@ -96,5 +96,10 @@ class BellSelectDialogFragment : DialogFragment() {
             }
             AlarmMusic.setCurrentMusic(null)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaStop()
     }
 }
