@@ -50,7 +50,8 @@ class InitialActivity : AppCompatActivity() {
             override fun onAnimationCancel(animation: Animator) {
             }
 
-            override fun onAnimationRepeat(p0: Animator?) {
+            override fun onAnimationRepeat(animation: Animator) {
+
             }
         })
     }

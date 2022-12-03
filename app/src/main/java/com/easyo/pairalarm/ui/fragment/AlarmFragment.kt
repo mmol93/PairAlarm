@@ -123,6 +123,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         // 오버레이 권한 설정에서 돌아왔을 때
