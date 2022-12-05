@@ -11,7 +11,7 @@ object SimpleDialog {
              message: String,
              icon: Int?,
              positive:(() -> Unit),
-             negative:((String) -> Unit)
+             negative:(() -> Unit)
     ) {
         val dialogBuilder = AlertDialog.Builder(context)
 
@@ -22,19 +22,19 @@ object SimpleDialog {
         }
 
         // Dialog의 No 버튼 - 주로 Toast 메시지 출력
-        dialogBuilder.setNegativeButton(context.getString(R.string.no)) { dialogInterface: DialogInterface, i: Int ->
+        dialogBuilder.setNegativeButton(context.getString(R.string.no)) { _: DialogInterface, _: Int ->
             // Toast의 실제 메시지는 여기서 넣는게 아니라 메서드를 정의하는 쪽에서 직접 정의한다
-            negative.invoke("")
+            negative.invoke()
         }
 
         // Dialog의 Yes 버튼 - 주로 특정 메서드 실행
-        dialogBuilder.setNeutralButton(context.getString(R.string.yes)){ dialogInterface: DialogInterface, i: Int ->
+        dialogBuilder.setNeutralButton(context.getString(R.string.yes)){ _: DialogInterface, _: Int ->
             positive.invoke()
         }
 
         // Dialog를 취소했을 때도 No랑 똑같이 취급
         dialogBuilder.setOnCancelListener {
-            negative.invoke("")
+            negative.invoke()
         }
 
         dialogBuilder.show()
