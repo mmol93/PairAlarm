@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.work.*
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityOnAlarmBinding
+import com.easyo.pairalarm.extensions.displayOn
 import com.easyo.pairalarm.util.getCurrentHourDoubleDigitWithString
 import com.easyo.pairalarm.util.getCurrentMinuteDoubleDigitWithString
 import com.easyo.pairalarm.util.makeToast
@@ -33,6 +34,10 @@ class OnAlarmActivity : AppCompatActivity() {
             val goesOffAlarmData = alarmViewModel.searchAlarmCode(alarmCode.toString())
             lifecycleScope.launch {
                 goesOffAlarmData.collectLatest { alarmData ->
+
+                    // 현재 화면이 자동으로 꺼지지 않게 유지 & 잠금화면에 액티비티 띄우기
+                    displayOn()
+
                     binding.hour.text = getCurrentHourDoubleDigitWithString()
                     binding.min.text = getCurrentMinuteDoubleDigitWithString()
 
