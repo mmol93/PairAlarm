@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
 import androidx.activity.viewModels
@@ -21,6 +20,7 @@ import com.easyo.pairalarm.viewModel.AlarmViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
@@ -76,7 +76,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
                 launch {
                     // 벨
                     alarmViewModel.currentAlarmBell.collectLatest {
-                        Log.d(this@SimpleAlarmActivity.javaClass.simpleName, "bellIndex: $it")
+                        Timber.d("bellIndex: $it")
                         when (it) {
                             0 -> binding.textCurrentBell.text =
                                 getString(R.string.bellType_Normal_Walking)
