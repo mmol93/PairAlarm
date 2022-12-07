@@ -3,7 +3,6 @@ package com.easyo.pairalarm.ui.activity
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
 import androidx.activity.viewModels

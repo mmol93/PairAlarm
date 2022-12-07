@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.BindingAdapter
 import com.easyo.pairalarm.R
-import org.w3c.dom.Text
+import com.google.android.material.button.MaterialButton
 
 object BindingAdapter {
     /**
@@ -93,6 +93,34 @@ object BindingAdapter {
             0 -> context.getString(R.string.alarmSet_alarmModeItem1)
             1 -> context.getString(R.string.alarmSet_alarmModeItem2)
             else -> context.getString(R.string.alarmSet_alarmModeItem1)
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("week", "weekClicked")
+    fun MaterialButton.setColorStroke(week: String?, weekClicked: Boolean) {
+        when (week) {
+            null -> {
+                if (weekClicked) {
+                    this.setStrokeColorResource(R.color.deep_yellow)
+                } else {
+                    this.setStrokeColorResource(R.color.background)
+                }
+            }
+            "Sat" -> {
+                if (weekClicked) {
+                    setStrokeColorResource(R.color.light_blue)
+                } else {
+                    setStrokeColorResource(R.color.background)
+                }
+            }
+            "Sun" -> {
+                if (weekClicked) {
+                    setStrokeColorResource(R.color.red)
+                } else {
+                    setStrokeColorResource(R.color.background)
+                }
+            }
         }
     }
 }
