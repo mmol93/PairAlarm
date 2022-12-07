@@ -1,6 +1,5 @@
 package com.easyo.pairalarm.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.easyo.pairalarm.database.table.AlarmData
@@ -8,6 +7,7 @@ import com.easyo.pairalarm.repository.AlarmRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,7 +24,7 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
 
     fun insertAlarmData(alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.insertAlarmData(alarmData)
-        Log.d("AlarmViewModel", "inserted: $alarmData")
+        Timber.d("inserted: $alarmData")
     }
 
     fun updateAlarData(alarmData: AlarmData) = viewModelScope.launch {

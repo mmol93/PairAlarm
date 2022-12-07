@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.database.table.AlarmData
@@ -22,8 +21,7 @@ class AlarmGroupie(
     val context: Context,
     val alarmData: AlarmData,
     private val alarmViewModel: AlarmViewModel
-) :
-    BindableItem<AlarmItemBinding>(alarmData.hashCode().toLong()) {
+) : BindableItem<AlarmItemBinding>(alarmData.hashCode().toLong()) {
 
     @SuppressLint("SetTextI18n")
     override fun bind(binding: AlarmItemBinding, position: Int) {
