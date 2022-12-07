@@ -54,6 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    app:hour="@{alarmData.hour}"
                     android:theme="@style/numberPickerCustomTheme" />
 
                 <TextView
@@ -70,6 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:value="@{alarmData.minute}"
                     android:theme="@style/numberPickerCustomTheme" />
 
                 <NumberPicker
@@ -77,6 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
+                    app:hourForAMPM="@{alarmData.hour}"
                     android:theme="@style/numberPickerCustomTheme" />
             </LinearLayout>
 
@@ -215,6 +218,7 @@
                     android:layout_width="35dp"
                     android:layout_height="55dp"
                     android:layout_weight="1"
+                    app:vibrateMode="@{alarmData.vibration}"
                     app:srcCompat="@drawable/ic_no_vib" />
 
                 <ImageView
@@ -222,6 +226,7 @@
                     android:layout_width="35dp"
                     android:layout_height="55dp"
                     android:layout_weight="1"
+                    app:volume="@{alarmData.volume}"
                     app:srcCompat="@drawable/volume_icon" />
 
                 <SeekBar

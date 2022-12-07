@@ -97,6 +97,16 @@ object BindingAdapter {
     }
 
     @JvmStatic
+    @BindingAdapter("vibrateMode")
+    fun ImageView.setVibrateMode(vibrateMode: Int) {
+        when (vibrateMode) {
+            0 -> this.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_no_vib))
+            1 -> this.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_vib_1))
+            2 -> this.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_vib_2))
+        }
+    }
+
+    @JvmStatic
     @BindingAdapter("week", "weekClicked")
     fun MaterialButton.setColorStroke(week: String?, weekClicked: Boolean) {
         when (week) {

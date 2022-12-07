@@ -78,35 +78,10 @@ class NormalAlarmActivity : AppCompatActivity() {
         lifecycleScope.launch {
             currentAlarmFlowData.collectLatest { alarmData ->
                 currentAlarmData = alarmData
+                binding.alarmData = alarmData
                 Timber.d("alarmData: $alarmData")
 
                 binding.alarmNameEditText.setText(alarmData.name)
-
-                if (alarmData.hour > 12) {
-                    binding.numberPickerHour.value = alarmData.hour - 12
-                    binding.numberPickerAMPM.value = 1
-                } else {
-                    binding.numberPickerHour.value = alarmData.hour
-                    binding.numberPickerAMPM.value = 0
-                }
-
-                binding.numberPickerMin.value = alarmData.minute
-
-                if (alarmData.volume == 0) {
-                    binding.imageVolume.setImageDrawable(
-                        AppCompatResources.getDrawable(
-                            this@NormalAlarmActivity,
-                            R.drawable.volume_mute
-                        )
-                    )
-                } else {
-                    binding.imageVolume.setImageDrawable(
-                        AppCompatResources.getDrawable(
-                            this@NormalAlarmActivity,
-                            R.drawable.volume_icon
-                        )
-                    )
-                }
 
                 binding.volumeSeekBar.progress = alarmData.volume
 
@@ -114,27 +89,6 @@ class NormalAlarmActivity : AppCompatActivity() {
                 AlarmBell.setBellIndex(alarmData.bell)
 
                 setAlarmModeText(alarmData.mode)
-
-                when (alarmData.vibration) {
-                    0 -> binding.imageVibration.setImageDrawable(
-                        AppCompatResources.getDrawable(
-                            this@NormalAlarmActivity,
-                            R.drawable.ic_no_vib
-                        )
-                    )
-                    1 -> binding.imageVibration.setImageDrawable(
-                        AppCompatResources.getDrawable(
-                            this@NormalAlarmActivity,
-                            R.drawable.ic_vib_1
-                        )
-                    )
-                    2 -> binding.imageVibration.setImageDrawable(
-                        AppCompatResources.getDrawable(
-                            this@NormalAlarmActivity,
-                            R.drawable.ic_vib_2
-                        )
-                    )
-                }
 
                 binding.monButton.setStrokeColorInButton(null, alarmData.Mon)
                 binding.tueButton.setStrokeColorInButton(null, alarmData.Tue)
