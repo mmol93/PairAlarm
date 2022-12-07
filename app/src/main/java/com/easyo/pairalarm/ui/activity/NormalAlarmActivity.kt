@@ -221,10 +221,8 @@ class NormalAlarmActivity : AppCompatActivity() {
                     }
 
                 // currentAlarmCode를 보고 새로운 알람 생성인지 수정인지 판단
-                if (alarmCode == null
-                ) {
+                if (alarmCode == null) {
                     alarmCode = getNewAlarmCode()
-
                     // DB에 넣을 Data set
                     val alarmData = AlarmData(
                         // autoGenerate가 true이기 때문에 null을 넣으면 알아서 값이 들어간다
