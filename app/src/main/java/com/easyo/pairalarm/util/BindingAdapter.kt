@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.BindingAdapter
 import com.easyo.pairalarm.R
+import com.easyo.pairalarm.database.table.Weekend
 import com.google.android.material.button.MaterialButton
 
 object BindingAdapter {
@@ -107,28 +108,38 @@ object BindingAdapter {
     }
 
     @JvmStatic
+    @BindingAdapter("alarmCode")
+    fun MaterialButton.saveOrUpdateText(alarmCode: String?) {
+        this.text = if (alarmCode.isNullOrBlank()) {
+            context.getString(R.string.save)
+        }else{
+            context.getString(R.string.update)
+        }
+    }
+
+    @JvmStatic
     @BindingAdapter("week", "weekClicked")
-    fun MaterialButton.setColorStroke(week: String?, weekClicked: Boolean) {
+    fun MaterialButton.setColorStroke(week: Weekend, weekClicked: Boolean) {
         when (week) {
-            null -> {
-                if (weekClicked) {
-                    this.setStrokeColorResource(R.color.deep_yellow)
-                } else {
-                    this.setStrokeColorResource(R.color.background)
-                }
-            }
-            "Sat" -> {
+            Weekend.SAT -> {
                 if (weekClicked) {
                     setStrokeColorResource(R.color.light_blue)
                 } else {
                     setStrokeColorResource(R.color.background)
                 }
             }
-            "Sun" -> {
+            Weekend.SUN -> {
                 if (weekClicked) {
                     setStrokeColorResource(R.color.red)
                 } else {
                     setStrokeColorResource(R.color.background)
+                }
+            }
+            Weekend.WEEK -> {
+                if (weekClicked) {
+                    this.setStrokeColorResource(R.color.deep_yellow)
+                } else {
+                    this.setStrokeColorResource(R.color.background)
                 }
             }
         }

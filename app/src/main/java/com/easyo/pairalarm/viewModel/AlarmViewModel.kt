@@ -4,8 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.repository.AlarmRepository
+import com.easyo.pairalarm.util.getCurrentHour
+import com.easyo.pairalarm.util.getCurrentMinute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -36,4 +40,37 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
     }
 
     fun searchAlarmCode(alarmCode: String) = alarmRepository.searchWithAlarmCode(alarmCode)
+
+    fun getAlarmData(alarmCode: String?): Flow<AlarmData> {
+        return if (alarmCode != null){
+            alarmRepository.searchWithAlarmCode(alarmCode)
+        }else{
+            initCurrentAlarmData()
+        }
+    }
+
+    private fun initCurrentAlarmData(): Flow<AlarmData> {
+        return flowOf(
+            AlarmData(
+                id = null,
+                button = true,
+                Sun = false,
+                Mon = false,
+                Tue = false,
+                Wed = false,
+                Thu = false,
+                Fri = false,
+                Sat = false,
+                vibration = 0,
+                alarmCode = "",
+                mode = 0,
+                hour = getCurrentHour(),
+                minute = getCurrentMinute(),
+                quick = false,
+                volume = 100,
+                bell = 0,
+                name = ""
+            )
+        )
+    }
 }

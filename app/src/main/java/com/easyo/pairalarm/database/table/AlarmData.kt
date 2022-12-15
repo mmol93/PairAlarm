@@ -27,3 +27,9 @@ data class AlarmData(
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "alarmCode") var alarmCode: String
 )
+
+enum class Weekend{
+    SAT,
+    SUN,
+    WEEK
+}
