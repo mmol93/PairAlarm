@@ -3,7 +3,6 @@ package com.easyo.pairalarm.ui.dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,7 @@ import timber.log.Timber
 class BellSelectDialogFragment : DialogFragment() {
     private lateinit var binding: DialogBellSetBinding
     private val viewModel: AlarmViewModel by activityViewModels()
-    private var bellIndex = 0
+    private var bellIndex: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +28,7 @@ class BellSelectDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DialogBellSetBinding.inflate(inflater, container, false)
+        bellIndex = arguments?.getInt("bellIndex") ?: 0
         return binding.root
     }
 
@@ -36,6 +36,15 @@ class BellSelectDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         // 배경 투명하게 만들기
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // 벨 인덱스 값에 따라 라디오 버튼 초기화 하기
+        when (bellIndex) {
+            0 -> binding.radioButtonN1.isChecked = true
+            1 -> binding.radioButtonN2.isChecked = true
+            2 -> binding.radioButtonN3.isChecked = true
+            3 -> binding.radioButtonN4.isChecked = true
+            else -> binding.radioButtonN1.isChecked = true
+        }
 
         // 라디오 버튼 클릭에 따라 인덱스 값 지정하기
         binding.RadioGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -51,7 +60,7 @@ class BellSelectDialogFragment : DialogFragment() {
         // Play 버튼
         binding.playButton.setOnSingleClickListener {
             if (AlarmMusic.getCurrentMusic() == null) {
-                AlarmMusic.setCurrentMusic(selectMusic(requireContext(), bellIndex))
+                bellIndex?.let { AlarmMusic.setCurrentMusic(selectMusic(requireContext(), it)) }
             }
 
             // 음악 재생중일 때 -> 음악 정지
@@ -62,7 +71,7 @@ class BellSelectDialogFragment : DialogFragment() {
             }
             // 음악 재생중 아닐 때 -> 음악 시작
             else {
-                AlarmMusic.setCurrentMusic(selectMusic(requireContext(), bellIndex))
+                bellIndex?.let { AlarmMusic.setCurrentMusic(selectMusic(requireContext(), it)) }
                 AlarmMusic.getCurrentMusic()!!.run {
                     setVolume(1f, 1f)
                     isLooping = true
@@ -74,9 +83,11 @@ class BellSelectDialogFragment : DialogFragment() {
 
         // Save 버튼
         binding.saveButton.setOnSingleClickListener {
-            AlarmBell.setBellIndex(bellIndex)
-            viewModel.currentAlarmBell.value = bellIndex
-            dismiss()
+            bellIndex?.let {
+                AlarmBell.setBellIndex(it)
+                viewModel.currentAlarmBell.value = it
+                dismiss()
+            }
         }
     }
 
@@ -84,12 +95,12 @@ class BellSelectDialogFragment : DialogFragment() {
         // 무언가 미디어에서 재생중일 때
         AlarmMusic.getCurrentMusic()?.let {
             // 음악 재생중
-            if (it.isPlaying){
+            if (it.isPlaying) {
                 it.apply {
                     stop()
                     release()
                 }
-            }else{
+            } else {
                 it.apply {
                     release()
                 }
