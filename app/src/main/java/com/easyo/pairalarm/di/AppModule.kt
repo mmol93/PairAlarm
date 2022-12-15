@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.easyo.pairalarm.database.AppDatabase
 import com.easyo.pairalarm.database.dao.AlarmDAO
 import com.easyo.pairalarm.repository.AlarmRepository
+import com.easyo.pairalarm.util.ALARM_DB_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +22,7 @@ class AppModule {
     }
     @Provides
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
-        return Room.databaseBuilder(context, AppDatabase::class.java, "alarm_data_database").build()
+        return Room.databaseBuilder(context, AppDatabase::class.java, ALARM_DB_NAME).build()
     }
 
     @Provides

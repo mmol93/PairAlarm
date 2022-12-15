@@ -31,11 +31,10 @@ fun setAlarm(context: Context, alarmCode: Int, hour: Int, min: Int) {
         calendarMillis += intervalOneDay
     }
 
-    val intent = Intent("com.easyo.pairalarm")
+    val intent = Intent(context.packageName)
     intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
-    intent.component =
-        ComponentName("com.easyo.pairalarm", "com.easyo.pairalarm.broadcast.MyReceiver")
-    intent.putExtra("alarmCode", "$alarmCode")
+    intent.component = ComponentName(context.packageName, "com.easyo.pairalarm.broadcast.MyReceiver")
+    intent.putExtra(ALARM_CODE_TEXT, "$alarmCode")
 
     val pendingIntent = PendingIntent.getBroadcast(
         context,
@@ -53,7 +52,7 @@ fun setAlarm(context: Context, alarmCode: Int, hour: Int, min: Int) {
 fun resetAlarm(context: Context?) {
     if (context != null) {
         val alarmData: AppDatabase =
-            Room.databaseBuilder(context, AppDatabase::class.java, "alarm_data_database").build()
+            Room.databaseBuilder(context, AppDatabase::class.java, ALARM_DB_NAME).build()
         CoroutineScope(Dispatchers.IO).launch {
             alarmData.alarmDao().getAllAlarms().collectLatest {
                 it.forEach { alarmData ->
@@ -72,9 +71,9 @@ fun resetAlarm(context: Context?) {
 }
 
 fun cancelAlarm(context: Context, alarmCode: String) {
-    val intent = Intent("com.easyo.pairalarm")
+    val intent = Intent(context.packageName)
     intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
-    intent.component = ComponentName("com.easyo.pairalarm", "com.easyo.pairalarm.MyReceiver")
+    intent.component = ComponentName(context.packageName, "com.easyo.pairalarm.MyReceiver")
     val pendingIntent = PendingIntent.getBroadcast(
         context,
         alarmCode.toInt(),
