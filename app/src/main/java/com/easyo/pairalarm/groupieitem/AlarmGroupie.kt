@@ -11,6 +11,7 @@ import com.easyo.pairalarm.databinding.AlarmItemBinding
 import com.easyo.pairalarm.extensions.lastClickTime
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
+import com.easyo.pairalarm.util.ALARM_CODE_TEXT
 import com.easyo.pairalarm.util.SimpleDialog
 import com.easyo.pairalarm.util.cancelAlarm
 import com.easyo.pairalarm.viewModel.AlarmViewModel
@@ -174,7 +175,7 @@ class AlarmGroupie(
 
     private fun openNormalAlarmActivity() {
         val intent = Intent(context, NormalAlarmActivity::class.java)
-        intent.putExtra("alarmCode", alarmData.alarmCode)
+        intent.putExtra(ALARM_CODE_TEXT, alarmData.alarmCode)
         context.startActivity(intent)
     }
 

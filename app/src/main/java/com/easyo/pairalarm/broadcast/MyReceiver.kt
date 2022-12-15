@@ -3,8 +3,8 @@ package com.easyo.pairalarm.broadcast
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.work.*
+import com.easyo.pairalarm.util.ALARM_CODE_TEXT
 import com.easyo.pairalarm.util.resetAlarm
 import com.easyo.pairalarm.worker.ReceiverAlarmWorker
 import timber.log.Timber
@@ -24,11 +24,11 @@ class MyReceiver : BroadcastReceiver() {
         }
         // 내가 설정한 알람이 울렸을 때
         else {
-            val alarmCode = intent.getStringExtra("alarmCode")
+            val alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
             Timber.d("alarmCode: $alarmCode")
 
             if (alarmCode != null) {
-                val workData = workDataOf("alarmCode" to alarmCode)
+                val workData = workDataOf(ALARM_CODE_TEXT to alarmCode)
                 val receiverAlarmWorkRequest: WorkRequest =
                     OneTimeWorkRequestBuilder<ReceiverAlarmWorker>()
                         .setInputData(workData)

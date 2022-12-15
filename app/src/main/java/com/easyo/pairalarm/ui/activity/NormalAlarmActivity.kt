@@ -51,7 +51,7 @@ class NormalAlarmActivity : AppCompatActivity() {
 
         val bellSelectDialog = BellSelectDialogFragment()
 
-        var alarmCode = intent.getStringExtra("alarmCode")
+        var alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
         currentAlarmFlowData = if (alarmCode != null) {
             alarmViewModel.searchAlarmCode(alarmCode)
         } else {

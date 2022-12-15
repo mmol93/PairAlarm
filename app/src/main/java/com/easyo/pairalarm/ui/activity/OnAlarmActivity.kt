@@ -8,10 +8,7 @@ import androidx.work.*
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityOnAlarmBinding
 import com.easyo.pairalarm.extensions.displayOn
-import com.easyo.pairalarm.util.getCurrentHourDoubleDigitWithString
-import com.easyo.pairalarm.util.getCurrentMinuteDoubleDigitWithString
-import com.easyo.pairalarm.util.makeToast
-import com.easyo.pairalarm.util.setAlarm
+import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.easyo.pairalarm.worker.NextAlarmWorker
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +24,7 @@ class OnAlarmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOnAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val alarmCode = intent.getStringExtra("alarmCode")
+        val alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
 
         if (alarmCode != null) {
             stopOnAlarmWorkManager()
