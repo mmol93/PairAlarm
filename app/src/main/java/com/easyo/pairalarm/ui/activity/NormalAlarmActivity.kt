@@ -62,8 +62,8 @@ class NormalAlarmActivity : AppCompatActivity() {
             displayedValues = arg1
         }
 
-        var alarmCode = intent.getStringExtra("alarmCode")
         // alarmData를 사용하여 UI를 초기화
+        var alarmCode = intent.getStringExtra("alarmCode")
         lifecycleScope.launch {
             alarmViewModel.getAlarmData(alarmCode).collectLatest {
                 binding.alarmData = it
@@ -71,7 +71,7 @@ class NormalAlarmActivity : AppCompatActivity() {
             }
         }
 
-        // bellDialog에서 변경한 bellIndex를 받아온다
+        // bellDialog에서 변경한 bellIndex를 갱신한다
         lifecycleScope.launch {
             alarmViewModel.currentAlarmBell.collectLatest { bellIndex ->
                 if (binding.alarmData != null) {

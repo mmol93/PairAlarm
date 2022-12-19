@@ -8,9 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivitySimpleAlarmBinding
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
@@ -35,79 +33,41 @@ class SimpleAlarmActivity : AppCompatActivity() {
 
         // UI 초기화
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    // 알람 이름
-                    alarmViewModel.currentAlarmName.collectLatest {
-                        binding.alarmNameEditText.setText(it)
+            launch {
+                alarmViewModel.getAlarmData(null).collectLatest {
+                    binding.alarmData = it
+                    Timber.d("selected alarmData: $it")
+                }
+            }
+            launch {
+                // 시간
+                alarmViewModel.currentAlarmHour.collectLatest {
+                    if (it >= 10) {
+                        binding.plusHourText.text = it.toString()
+                    } else {
+                        binding.plusHourText.text = "0$it"
                     }
                 }
-                launch {
-                    // 시간
-                    alarmViewModel.currentAlarmHour.collectLatest {
-                        if (it >= 10) {
-                            binding.plusHourText.text = it.toString()
-                        } else {
-                            binding.plusHourText.text = "0$it"
-                        }
+            }
+            launch {
+                // 분
+                alarmViewModel.currentAlarmMin.collectLatest {
+                    if (it >= 60) {
+                        alarmViewModel.currentAlarmMin.value -= 60
+                        alarmViewModel.currentAlarmHour.value += 1
+                    }
+                    if (it >= 10) {
+                        binding.plusMinText.text = it.toString()
+                    } else {
+                        binding.plusMinText.text = "0$it"
                     }
                 }
-                launch {
-                    // 분
-                    alarmViewModel.currentAlarmMin.collectLatest {
-                        if (it >= 60) {
-                            alarmViewModel.currentAlarmMin.value -= 60
-                            alarmViewModel.currentAlarmHour.value += 1
-                        }
-                        if (it >= 10) {
-                            binding.plusMinText.text = it.toString()
-                        } else {
-                            binding.plusMinText.text = "0$it"
-                        }
-
-                    }
-                }
-                launch {
-                    // 볼륨
-                    alarmViewModel.currentAlarmVolume.collectLatest {
-                        binding.volumeSeekBar.progress = it
-                    }
-                }
-                launch {
-                    // 벨
-                    alarmViewModel.currentAlarmBell.collectLatest {
-                        Timber.d("bellIndex: $it")
-                        when (it) {
-                            0 -> binding.textCurrentBell.text =
-                                getString(R.string.bellType_Normal_Walking)
-                            1 -> binding.textCurrentBell.text =
-                                getString(R.string.bellType_Normal_PianoMan)
-                            2 -> binding.textCurrentBell.text =
-                                getString(R.string.bellType_Normal_Happy)
-                            3 -> binding.textCurrentBell.text =
-                                getString(R.string.bellType_Normal_Lonely)
-                        }
-                    }
-                }
-                launch {
-                    // 알람 모드
-                    alarmViewModel.currentAlarmMode.collectLatest {
-                        when (it) {
-                            0 -> binding.textCurrentMode.text =
-                                getString(R.string.alarmSet_alarmModeItem1)
-                            1 -> binding.textCurrentMode.text =
-                                getString(R.string.alarmSet_alarmModeItem2)
-                        }
-                    }
-                }
-                launch {
-                    // 진동
-                    alarmViewModel.currentAlarmVibration.collectLatest {
-                        when (it) {
-                            0 -> binding.imageVibration.setImageDrawable(getDrawable(R.drawable.ic_no_vib))
-                            1 -> binding.imageVibration.setImageDrawable(getDrawable(R.drawable.ic_vib_1))
-                            2 -> binding.imageVibration.setImageDrawable(getDrawable(R.drawable.ic_vib_2))
-                        }
+            }
+            launch {
+                // bellDialog에서 변경한 bellIndex를 갱신한다
+                alarmViewModel.currentAlarmBell.collectLatest { bellIndex ->
+                    if (binding.alarmData != null) {
+                        binding.alarmData = binding.alarmData?.copy(bell = bellIndex)
                     }
                 }
             }
@@ -152,7 +112,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                alarmViewModel.currentAlarmVolume.value = seekBar!!.progress
+                binding.alarmData = seekBar?.progress?.let { binding.alarmData!!.copy(volume = it) }
             }
         })
 
@@ -186,6 +146,8 @@ class SimpleAlarmActivity : AppCompatActivity() {
                         alarmViewModel.currentAlarmMode.value = 1
                     }
                 }
+                binding.alarmData =
+                    binding.alarmData?.copy(mode = alarmViewModel.currentAlarmMode.value)
             }
             builder.show()
         }
@@ -198,20 +160,16 @@ class SimpleAlarmActivity : AppCompatActivity() {
         // 진동 버튼을 눌렀을 때
         binding.imageVibration.apply {
             setOnClickListener {
-                when (alarmViewModel.currentAlarmVibration.value) {
+                when (binding.alarmData!!.vibration) {
                     0 -> {
-                        alarmViewModel.currentAlarmVibration.value = 1
+                        binding.alarmData = binding.alarmData!!.copy(vibration = 1)
                     }
                     1 -> {
-                        lifecycleScope.launchWhenStarted {
-                            alarmViewModel.currentAlarmVibration.emit(2)
-                        }
+                        binding.alarmData = binding.alarmData!!.copy(vibration = 2)
                         AlarmAnimation.swing(this).start()
                     }
                     2 -> {
-                        lifecycleScope.launchWhenStarted {
-                            alarmViewModel.currentAlarmVibration.emit(0)
-                        }
+                        binding.alarmData = binding.alarmData!!.copy(vibration = 0)
                     }
                 }
             }
@@ -219,10 +177,10 @@ class SimpleAlarmActivity : AppCompatActivity() {
 
         // 볼륨 이미지를 클릭했을 때
         binding.imageVolume.setOnClickListener {
-            if (alarmViewModel.currentAlarmVolume.value > 0) {
-                alarmViewModel.currentAlarmVolume.value = 0
+            if (binding.alarmData!!.volume > 0) {
+                binding.alarmData = binding.alarmData!!.copy(volume = 0)
             } else {
-                alarmViewModel.currentAlarmVolume.value = 100
+                binding.alarmData = binding.alarmData!!.copy(volume = 100)
             }
         }
 
@@ -237,7 +195,11 @@ class SimpleAlarmActivity : AppCompatActivity() {
                     min = alarmViewModel.currentAlarmMin.value
                 )
 
-                val alarmData = makeAlarmData(dateData, binding.alarmNameEditText.text.toString(), alarmViewModel)
+                val alarmData = makeAlarmData(
+                    calendar = dateData,
+                    alarmName = binding.alarmNameEditText.text.toString(),
+                    alarmData = binding.alarmData!!
+                )
                 alarmViewModel.insertAlarmData(alarmData)
 
                 val setHour = dateData.get(Calendar.HOUR_OF_DAY)

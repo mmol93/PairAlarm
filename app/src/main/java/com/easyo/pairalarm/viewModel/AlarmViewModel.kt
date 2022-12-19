@@ -16,13 +16,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepository) : ViewModel() {
-    val currentAlarmName = MutableStateFlow("")
-    val currentAlarmVibration = MutableStateFlow(0)
     val currentAlarmHour = MutableStateFlow(0)
     val currentAlarmMin = MutableStateFlow(0)
     val currentAlarmBell = MutableStateFlow(0)
     val currentAlarmMode = MutableStateFlow(0)
-    val currentAlarmVolume = MutableStateFlow(100)
 
     fun getAllAlarmData() = alarmRepository.getAllAlarm()
 
@@ -42,35 +39,39 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
     fun searchAlarmCode(alarmCode: String) = alarmRepository.searchWithAlarmCode(alarmCode)
 
     fun getAlarmData(alarmCode: String?): Flow<AlarmData> {
-        return if (alarmCode != null){
+        return if (alarmCode != null) {
             alarmRepository.searchWithAlarmCode(alarmCode)
-        }else{
-            initCurrentAlarmData()
+        } else {
+            initCurrentAlarmDataFlow()
         }
     }
 
-    private fun initCurrentAlarmData(): Flow<AlarmData> {
+    private fun initCurrentAlarmDataFlow(): Flow<AlarmData> {
         return flowOf(
-            AlarmData(
-                id = null,
-                button = true,
-                Sun = false,
-                Mon = false,
-                Tue = false,
-                Wed = false,
-                Thu = false,
-                Fri = false,
-                Sat = false,
-                vibration = 0,
-                alarmCode = "",
-                mode = 0,
-                hour = getCurrentHour(),
-                minute = getCurrentMinute(),
-                quick = false,
-                volume = 100,
-                bell = 0,
-                name = ""
-            )
+            initCurrentAlarmData()
+        )
+    }
+
+    private fun initCurrentAlarmData(): AlarmData {
+        return AlarmData(
+            id = null,
+            button = true,
+            Sun = false,
+            Mon = false,
+            Tue = false,
+            Wed = false,
+            Thu = false,
+            Fri = false,
+            Sat = false,
+            vibration = 0,
+            alarmCode = "",
+            mode = 0,
+            hour = getCurrentHour(),
+            minute = getCurrentMinute(),
+            quick = false,
+            volume = 100,
+            bell = 0,
+            name = ""
         )
     }
 }

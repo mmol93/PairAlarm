@@ -5,7 +5,6 @@ import android.media.MediaPlayer
 import android.widget.Toast
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.database.table.AlarmData
-import com.easyo.pairalarm.viewModel.AlarmViewModel
 import java.util.*
 
 fun getNewAlarmCode(): String {
@@ -48,22 +47,16 @@ fun getAddedTime(hour: Int, min: Int): Calendar {
 fun makeAlarmData(
     calendar: Calendar,
     alarmName: String,
-    alarmViewModel: AlarmViewModel
+    alarmData: AlarmData
 ): AlarmData {
     val setWeek = calendar.get(Calendar.DAY_OF_WEEK)
-    val vibration = alarmViewModel.currentAlarmVibration.value
+    val vibration = alarmData.vibration
     val hour = calendar.get(Calendar.HOUR_OF_DAY)
     val min = calendar.get(Calendar.MINUTE)
-    val volume = alarmViewModel.currentAlarmVolume.value
-    val bell = alarmViewModel.currentAlarmBell.value
-    val mode = alarmViewModel.currentAlarmMode.value
-    val currentCalendar = Calendar.getInstance()
-    val currentDay = currentCalendar.get(Calendar.DAY_OF_YEAR)
-    val currentHour = currentCalendar.get(Calendar.HOUR_OF_DAY)
-    val currentMin = currentCalendar.get(Calendar.MINUTE)
-    val currentSecond = currentCalendar.get(Calendar.SECOND)
-    val alarmCode = currentDay.toString() + currentHour.toString() +
-            currentMin.toString() + currentSecond.toString()
+    val volume = alarmData.volume
+    val bell = alarmData.bell
+    val mode = alarmData.mode
+    val alarmCode = getNewAlarmCode()
 
     // 모든 요일이 false인 상태
     val defaultAlarmData = AlarmData(
