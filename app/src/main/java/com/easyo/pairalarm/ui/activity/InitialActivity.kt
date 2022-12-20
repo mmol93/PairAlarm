@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.animation.Animator
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder

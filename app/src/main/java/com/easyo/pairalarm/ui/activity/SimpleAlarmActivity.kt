@@ -1,16 +1,15 @@
 package com.easyo.pairalarm.ui.activity
 
-import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivitySimpleAlarmBinding
+import com.easyo.pairalarm.extensions.clearKeyBoardFocus
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
 import com.easyo.pairalarm.util.*
@@ -75,11 +74,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
 
         // editText의 외부를 클릭했을 때는 키보드랑 Focus 제거하기
         binding.rootLayout.setOnClickListener {
-            val imm =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-
-            binding.alarmNameEditTextLayout.clearFocus()
+            clearKeyBoardFocus(binding.rootLayout)
         }
 
         // 분 +에 대한 조작

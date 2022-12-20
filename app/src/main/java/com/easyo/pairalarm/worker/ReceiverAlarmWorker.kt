@@ -8,9 +8,11 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.easyo.pairalarm.database.dao.AlarmDAO
 import com.easyo.pairalarm.ui.activity.OnAlarmActivity
+import com.easyo.pairalarm.util.ALARM_CODE_TEXT
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 import java.util.*
 
 @HiltWorker
@@ -20,15 +22,15 @@ class ReceiverAlarmWorker @AssistedInject constructor(
     private val alarmDao: AlarmDAO
 ) : CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result {
-        val alarmCode = inputData.getString("alarmCode")
-        Log.d("ReceiverAlarmWorker", "alarmCode: $alarmCode")
+        val alarmCode = inputData.getString(ALARM_CODE_TEXT)
+        Timber.d("alarmCode: $alarmCode")
 
         if (alarmCode != null) {
             val targetAlarmData = alarmDao.searchAlarmDataWithAlarmCode(alarmCode.toString())
             targetAlarmData.collectLatest { alarmData ->
-                Log.d("ReceiverAlarmWorker", "Called alarm data: $alarmData")
+                Timber.d("Called alarm data: $alarmData")
                 val todayWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-                Log.d("ReceiverAlarmWorker", "today week: $todayWeek")
+                Timber.d("today week: $todayWeek")
 
                 when (todayWeek) {
                     1 -> {
@@ -76,6 +78,6 @@ class ReceiverAlarmWorker @AssistedInject constructor(
 fun openOnAlarmActivity(context: Context, alarmCode: String) {
     val onAlarmActivity = Intent(context, OnAlarmActivity::class.java)
     onAlarmActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    onAlarmActivity.putExtra("alarmCode", alarmCode)
+    onAlarmActivity.putExtra(ALARM_CODE_TEXT, alarmCode)
     context.startActivity(onAlarmActivity)
 }
