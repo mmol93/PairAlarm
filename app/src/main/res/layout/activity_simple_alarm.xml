@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
             name="alarmData"
             type="com.easyo.pairalarm.database.table.AlarmData" />
     </data>
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
         android:id="@+id/scrollLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        tools:context="com.easyo.pairalarm.ui.activity.NormalAlarmActivity">
+        >
 
         <LinearLayout
             android:id="@+id/rootLayout"
@@ -188,14 +188,16 @@
                     android:layout_width="35dp"
                     android:layout_height="55dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_no_vib" />
+                    app:srcCompat="@drawable/ic_no_vib"
+                    app:vibrateMode="@{alarmData.vibration}" />
 
                 <ImageView
                     android:id="@+id/image_volume"
                     android:layout_width="35dp"
                     android:layout_height="55dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/volume_icon" />
+                    app:srcCompat="@drawable/volume_icon"
+                    app:volume="@{alarmData.volume}" />
 
                 <SeekBar
                     android:id="@+id/volumeSeekBar"
@@ -205,7 +207,7 @@
                     android:layout_weight="6"
                     android:max="100"
                     android:min="0"
-                    android:progress="100"
+                    android:progress="@{alarmData.volume}"
                     android:theme="@style/seekbarTheme"
                     android:thumb="?android:attr/textSelectHandle" />
             </LinearLayout>
@@ -309,7 +311,8 @@
                     android:gravity="center"
                     android:text="@string/alarmSet_selectBellTextTitle"
                     android:textColor="@color/white"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    app:bellIndex="@{alarmData.bell}" />
 
                 <TextView
                     android:id="@+id/text_currentMode"
@@ -320,7 +323,8 @@
                     android:gravity="center"
                     android:text="@string/alarmSet_selectModeTextTitle"
                     android:textColor="@color/white"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    app:alarmMode="@{alarmData.mode}" />
             </LinearLayout>
 
             <LinearLayout
