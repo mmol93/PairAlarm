@@ -1,11 +1,14 @@
 package com.easyo.pairalarm.viewModel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.repository.AlarmRepository
+import com.easyo.pairalarm.util.cancelAlarm
 import com.easyo.pairalarm.util.getCurrentHour
 import com.easyo.pairalarm.util.getCurrentMinute
+import com.easyo.pairalarm.util.setAlarm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,8 +31,15 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
         Timber.d("inserted: $alarmData")
     }
 
-    fun updateAlarData(alarmData: AlarmData) = viewModelScope.launch {
+    fun updateAlarmData(context: Context, alarmData: AlarmData) = viewModelScope.launch {
+        // TODO: 이거 처리 로딩중인거 만들어야할듯
         alarmRepository.updateAlarmData(alarmData)
+        if (alarmData.button){
+            cancelAlarm(context, alarmData.alarmCode)
+            setAlarm(context, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
+        }else{
+            cancelAlarm(context, alarmData.alarmCode)
+        }
     }
 
     fun deleteAlarmData(alarmData: AlarmData) = viewModelScope.launch {

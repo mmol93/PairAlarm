@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+// TODO: 각 파라미터 의미 적어놓기
 @Entity(tableName = "alarm_data")
 data class AlarmData(
     @PrimaryKey(autoGenerate = true)

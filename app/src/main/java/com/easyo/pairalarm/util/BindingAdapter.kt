@@ -31,12 +31,12 @@ object BindingAdapter {
      *  @param hourForAMPM 시간(24시간 포맷)
      */
     @JvmStatic
-    @BindingAdapter("hourForAMPM")
-    fun NumberPicker.setAMPM(hourForAMPM: Int) {
-        this.value = if (hourForAMPM > 12) {
-            1
-        } else {
-            0
+    @BindingAdapter("hourForAMPM", "minForAMPM")
+    fun NumberPicker.setAMPM(hourForAMPM: Int, minForAMPM: Int) {
+        this.value = when {
+            hourForAMPM > 12 -> 1
+            hourForAMPM == 12 && minForAMPM > 0 -> 1
+            else -> 0
         }
     }
 
