@@ -49,6 +49,7 @@ fun setAlarm(context: Context, alarmCode: Int, hour: Int, min: Int) {
     alarmManager.setAlarmClock(alarmInfo, pendingIntent)
 }
 
+// 모든 알람 데이터를 가져와서 전부 다시 셋팅한다
 fun resetAlarm(context: Context?) {
     if (context != null) {
         val alarmData: AppDatabase =

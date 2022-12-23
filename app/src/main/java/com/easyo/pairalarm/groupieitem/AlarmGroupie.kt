@@ -164,10 +164,10 @@ class AlarmGroupie(
 
         binding.onOffSwitch.setOnCheckedChangeListener { _, isChecked ->
             // 한 번만 클릭되는 기능을 넣지 않으면 혼자서 여러번 클릭됨
-            if (lastClickTime < System.currentTimeMillis() - 300) {
+            if (lastClickTime < System.currentTimeMillis() - 500) {
                 lastClickTime = System.currentTimeMillis()
                 alarmData.button = isChecked
-                alarmViewModel.updateAlarData(alarmData)
+                alarmViewModel.updateAlarmData(context, alarmData)
                 Timber.d("update alarmData: $alarmData")
             }
         }

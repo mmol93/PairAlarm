@@ -2,7 +2,6 @@ package com.easyo.pairalarm.ui.activity
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -171,10 +170,8 @@ class NormalAlarmActivity : AppCompatActivity() {
                         alarmCode = alarmCode!!
                     )
                     // DB 업데이트
-                    alarmViewModel.updateAlarData(alarmData)
+                    alarmViewModel.updateAlarmData(this, alarmData.copy(button = true))
                     Timber.d("updated alarmData: $alarmData")
-                    // 브로드캐스트에 알람 예약하기
-                    setAlarm(this, alarmCode!!.toInt(), hour, binding.numberPickerMin.value)
                 }
                 finish()
             } else {

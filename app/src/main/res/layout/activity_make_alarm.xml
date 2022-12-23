@@ -88,7 +88,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
                     android:theme="@style/numberPickerCustomTheme"
-                    app:hourForAMPM="@{alarmData.hour}" />
+                    app:hourForAMPM="@{alarmData.hour}"
+                    app:minForAMPM="@{alarmData.minute}"/>
             </LinearLayout>
 
             <LinearLayout
