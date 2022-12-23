@@ -58,6 +58,15 @@
                 android:orientation="horizontal">
 
                 <NumberPicker
+                    android:id="@+id/numberPickerAMPM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:theme="@style/numberPickerCustomTheme"
+                    app:hourForAMPM="@{alarmData.hour}"
+                    app:minForAMPM="@{alarmData.minute}"/>
+
+                <NumberPicker
                     android:id="@+id/numberPickerHour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -82,14 +91,6 @@
                     android:theme="@style/numberPickerCustomTheme"
                     android:value="@{alarmData.minute}" />
 
-                <NumberPicker
-                    android:id="@+id/numberPickerAMPM"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:theme="@style/numberPickerCustomTheme"
-                    app:hourForAMPM="@{alarmData.hour}"
-                    app:minForAMPM="@{alarmData.minute}"/>
             </LinearLayout>
 
             <LinearLayout

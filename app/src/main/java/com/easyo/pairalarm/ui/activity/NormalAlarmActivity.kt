@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.easyo.pairalarm.R
-import com.easyo.pairalarm.databinding.ActivityMakeAlarmBinding
+import com.easyo.pairalarm.databinding.ActivityNormalAlarmBinding
 import com.easyo.pairalarm.extensions.clearKeyBoardFocus
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
@@ -22,13 +22,13 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class NormalAlarmActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMakeAlarmBinding
+    private lateinit var binding: ActivityNormalAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
     private val bellSelectDialog by lazy { BellSelectDialogFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMakeAlarmBinding.inflate(layoutInflater)
+        binding = ActivityNormalAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // numberPicker의 시간 부분 초기화
