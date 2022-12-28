@@ -13,7 +13,6 @@ import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
 import com.easyo.pairalarm.util.ALARM_CODE_TEXT
 import com.easyo.pairalarm.util.SimpleDialog
-import com.easyo.pairalarm.util.cancelAlarm
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.databinding.BindableItem
 import timber.log.Timber
@@ -152,8 +151,7 @@ class AlarmGroupie(
                 context.getString(R.string.dialog_delete_content),
                 null,
                 positive = {
-                    alarmViewModel.deleteAlarmData(alarmData)
-                    cancelAlarm(context, alarmData.alarmCode)
+                    alarmViewModel.deleteAlarmData(this.context, alarmData)
                 },
                 negative = { }
             )

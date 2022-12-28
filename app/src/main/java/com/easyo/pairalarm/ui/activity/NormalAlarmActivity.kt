@@ -156,10 +156,8 @@ class NormalAlarmActivity : AppCompatActivity() {
                     )
 
                     // DB에 데이터 삽입
-                    alarmViewModel.insertAlarmData(alarmData)
+                    alarmViewModel.insertAlarmData(this, alarmData)
                     Timber.d("saved alarmData: $alarmData")
-                    // 브로드캐스트에 알람 예약하기
-                    setAlarm(this, alarmCode!!.toInt(), hour, binding.numberPickerMin.value)
                 }
                 // 데이터를 수정 했을 경우
                 else {

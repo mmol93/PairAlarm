@@ -1,7 +1,6 @@
 package com.easyo.pairalarm.viewModel
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.repository.AlarmRepository
@@ -14,11 +13,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepository) : ViewModel() {
+class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepository) :
+    BaseViewModel() {
     val currentAlarmHour = MutableStateFlow(0)
     val currentAlarmMin = MutableStateFlow(0)
     val currentAlarmBell = MutableStateFlow(0)
@@ -26,25 +25,33 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
 
     fun getAllAlarmData() = alarmRepository.getAllAlarm()
 
-    fun insertAlarmData(alarmData: AlarmData) = viewModelScope.launch {
+    fun insertAlarmData(context: Context, alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.insertAlarmData(alarmData)
-        Timber.d("inserted: $alarmData")
-    }
+    }.execute(onSuccess = {
+        // 브로드캐스트에 알람 예약하기
+        setAlarm(context, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
+        }
+    )
 
     fun updateAlarmData(context: Context, alarmData: AlarmData) = viewModelScope.launch {
-        // TODO: 이거 처리 로딩중인거 만들어야할듯
         alarmRepository.updateAlarmData(alarmData)
-        if (alarmData.button){
+    }.execute(onSuccess = {
+        // 브로드캐스트에 알람 업데이트
+        if (alarmData.button) {
             cancelAlarm(context, alarmData.alarmCode)
             setAlarm(context, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
-        }else{
+        } else {
             cancelAlarm(context, alarmData.alarmCode)
         }
     }
+    )
 
-    fun deleteAlarmData(alarmData: AlarmData) = viewModelScope.launch {
+    fun deleteAlarmData(context: Context, alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.deleteAlarmData(alarmData)
-    }
+    }.execute(onSuccess = {
+        // 브로드캐스트에 알람 삭제
+        cancelAlarm(context, alarmData.alarmCode)
+    })
 
     fun searchAlarmCode(alarmCode: String) = alarmRepository.searchWithAlarmCode(alarmCode)
 
