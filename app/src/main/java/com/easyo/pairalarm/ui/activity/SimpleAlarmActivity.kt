@@ -195,7 +195,7 @@ class SimpleAlarmActivity : AppCompatActivity() {
                     alarmName = binding.alarmNameEditText.text.toString(),
                     alarmData = binding.alarmData!!
                 )
-                alarmViewModel.insertAlarmData(alarmData)
+                alarmViewModel.insertAlarmData(this, alarmData)
 
                 val setHour = dateData.get(Calendar.HOUR_OF_DAY)
                 val setMin = dateData.get(Calendar.MINUTE)
