@@ -34,6 +34,7 @@ object BindingAdapter {
     @BindingAdapter("hourForAMPM", "minForAMPM")
     fun NumberPicker.setAMPM(hourForAMPM: Int, minForAMPM: Int) {
         this.value = when {
+            this.value == 1 -> 1
             hourForAMPM > 12 -> 1
             hourForAMPM == 12 && minForAMPM > 0 -> 1
             else -> 0
