@@ -39,7 +39,6 @@ fun getAddedTime(hour: Int, min: Int): Calendar {
         add(Calendar.MINUTE, min)
         timeInMillis
     }
-//    Log.d("SimpleAlarmActivity", "calendar.timeInMillis: ${calendar.timeInMillis}")
     return calendar
 }
 

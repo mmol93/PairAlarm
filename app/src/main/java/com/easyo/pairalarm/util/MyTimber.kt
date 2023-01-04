@@ -16,6 +16,6 @@ class MyTimber: Timber.DebugTree() {
 
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         val newMessage = "($fileName:$lineNumber): $message"
-        super.log(priority, tag, newMessage, t)
+        super.log(priority, "custom", newMessage, t)
     }
 }
