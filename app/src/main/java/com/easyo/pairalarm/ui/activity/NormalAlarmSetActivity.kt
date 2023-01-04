@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class NormalAlarmActivity : AppCompatActivity() {
+class NormalAlarmSetActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNormalAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
     private val bellSelectDialog by lazy { BellSelectDialogFragment() }

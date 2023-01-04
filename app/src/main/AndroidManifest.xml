@@ -27,11 +27,11 @@
             android:name=".ui.activity.OnAlarmActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.NormalAlarmActivity"
+            android:name=".ui.activity.NormalAlarmSetActivity"
             android:exported="false"
             android:theme="@style/Theme.PairAlarm.NoActionBar" />
         <activity
-            android:name=".ui.activity.SimpleAlarmActivity"
+            android:name=".ui.activity.SimpleAlarmSetActivity"
             android:exported="false"
             android:theme="@style/Theme.PairAlarm.NoActionBar" />
         <activity

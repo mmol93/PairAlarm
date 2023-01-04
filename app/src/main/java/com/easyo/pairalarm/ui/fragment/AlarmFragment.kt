@@ -11,12 +11,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.work.*
-import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
+import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.groupieitem.AlarmGroupie
-import com.easyo.pairalarm.ui.activity.SimpleAlarmActivity
+import com.easyo.pairalarm.ui.activity.SimpleAlarmSetActivity
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.easyo.pairalarm.worker.NextAlarmWorker
@@ -93,7 +93,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         // 일반 알람 설정
         binding.fab2.setOnSingleClickListener {
             if (checkOverlayPermission()) {
-                val makeNormalAlarmIntent = Intent(activity, NormalAlarmActivity::class.java)
+                val makeNormalAlarmIntent = Intent(activity, NormalAlarmSetActivity::class.java)
                 startActivity(makeNormalAlarmIntent)
             }
         }
@@ -101,7 +101,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         // 간단 알람 설정
         binding.fab3.setOnSingleClickListener {
             if (checkOverlayPermission()) {
-                val makeSimpleAlarmIntent = Intent(activity, SimpleAlarmActivity::class.java)
+                val makeSimpleAlarmIntent = Intent(activity, SimpleAlarmSetActivity::class.java)
                 startActivity(makeSimpleAlarmIntent)
             }
         }

@@ -21,7 +21,7 @@ import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
-class SimpleAlarmActivity : AppCompatActivity() {
+class SimpleAlarmSetActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySimpleAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
