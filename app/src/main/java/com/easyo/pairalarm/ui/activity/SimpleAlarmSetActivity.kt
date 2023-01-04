@@ -35,6 +35,8 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
             launch {
                 alarmViewModel.getAlarmData(null).collectLatest {
                     binding.alarmData = it
+                    alarmViewModel.currentAlarmBell.value = it.bell
+                    alarmViewModel.currentAlarmMode.value = it.mode
                     Timber.d("selected alarmData: $it")
                 }
             }
