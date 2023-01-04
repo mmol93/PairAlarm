@@ -10,7 +10,7 @@ import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.databinding.AlarmItemBinding
 import com.easyo.pairalarm.extensions.lastClickTime
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
-import com.easyo.pairalarm.ui.activity.NormalAlarmActivity
+import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
 import com.easyo.pairalarm.util.ALARM_CODE_TEXT
 import com.easyo.pairalarm.util.SimpleDialog
 import com.easyo.pairalarm.viewModel.AlarmViewModel
@@ -172,7 +172,7 @@ class AlarmGroupie(
     }
 
     private fun openNormalAlarmActivity() {
-        val intent = Intent(context, NormalAlarmActivity::class.java)
+        val intent = Intent(context, NormalAlarmSetActivity::class.java)
         intent.putExtra(ALARM_CODE_TEXT, alarmData.alarmCode)
         context.startActivity(intent)
     }

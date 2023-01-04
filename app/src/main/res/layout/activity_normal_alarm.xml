@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        tools:context="com.easyo.pairalarm.ui.activity.NormalAlarmActivity">
+        tools:context="com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity">
 
         <LinearLayout
             android:id="@+id/rootLayout"

@@ -3,7 +3,6 @@ package com.easyo.pairalarm.ui.dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +35,15 @@ class BellSelectDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         // 배경 투명하게 만들기
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // 라디오 버튼 초기화
+        when (viewModel.currentAlarmBell.value) {
+            0 -> binding.radioButtonN1.isChecked = true
+            1 -> binding.radioButtonN2.isChecked = true
+            2 -> binding.radioButtonN3.isChecked = true
+            3 -> binding.radioButtonN4.isChecked = true
+            else -> binding.radioButtonN1.isChecked = true
+        }
 
         // 라디오 버튼 클릭에 따라 인덱스 값 지정하기
         binding.RadioGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -84,12 +92,12 @@ class BellSelectDialogFragment : DialogFragment() {
         // 무언가 미디어에서 재생중일 때
         AlarmMusic.getCurrentMusic()?.let {
             // 음악 재생중
-            if (it.isPlaying){
+            if (it.isPlaying) {
                 it.apply {
                     stop()
                     release()
                 }
-            }else{
+            } else {
                 it.apply {
                     release()
                 }

@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class NormalAlarmActivity : AppCompatActivity() {
+class NormalAlarmSetActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNormalAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
     private val bellSelectDialog by lazy { BellSelectDialogFragment() }
@@ -30,6 +30,17 @@ class NormalAlarmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNormalAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // alarmData를 사용하여 UI를 초기화
+        var alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
+        lifecycleScope.launch {
+            alarmViewModel.getAlarmData(alarmCode).collectLatest {
+                binding.alarmData = it
+                alarmViewModel.currentAlarmBell.value = it.bell
+                alarmViewModel.currentAlarmMode.value = it.mode
+                Timber.d("selected alarmData: $it")
+            }
+        }
 
         // numberPicker의 시간 부분 초기화
         binding.numberPickerHour.apply {
@@ -59,15 +70,6 @@ class NormalAlarmActivity : AppCompatActivity() {
             maxValue = arg1.size - 1
             minValue = 0
             displayedValues = arg1
-        }
-
-        // alarmData를 사용하여 UI를 초기화
-        var alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
-        lifecycleScope.launch {
-            alarmViewModel.getAlarmData(alarmCode).collectLatest {
-                binding.alarmData = it
-                Timber.d("selected alarmData: $it")
-            }
         }
 
         // bellDialog에서 변경한 bellIndex를 갱신한다

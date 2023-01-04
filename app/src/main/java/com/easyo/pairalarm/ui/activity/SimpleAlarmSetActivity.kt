@@ -21,7 +21,7 @@ import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
-class SimpleAlarmActivity : AppCompatActivity() {
+class SimpleAlarmSetActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySimpleAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +35,8 @@ class SimpleAlarmActivity : AppCompatActivity() {
             launch {
                 alarmViewModel.getAlarmData(null).collectLatest {
                     binding.alarmData = it
+                    alarmViewModel.currentAlarmBell.value = it.bell
+                    alarmViewModel.currentAlarmMode.value = it.mode
                     Timber.d("selected alarmData: $it")
                 }
             }
