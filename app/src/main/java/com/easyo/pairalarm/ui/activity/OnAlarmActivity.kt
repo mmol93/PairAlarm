@@ -2,6 +2,8 @@ package com.easyo.pairalarm.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.work.*
@@ -29,9 +31,19 @@ class OnAlarmActivity : AppCompatActivity() {
         if (alarmCode != null) {
             stopOnAlarmWorkManager()
             val goesOffAlarmData = alarmViewModel.searchAlarmCode(alarmCode.toString())
+            // 현재 시간이 계속 갱신되게한다
+            val handler = Handler(Looper.getMainLooper())
+            val handlerTask = object : Runnable {
+                override fun run() {
+                    handler.postDelayed(this, 3600)
+
+                    binding.hour.text = getCurrentHourDoubleDigitWithString()
+                    binding.min.text = getCurrentMinuteDoubleDigitWithString()
+                }
+            }
+            handler.post(handlerTask)
             lifecycleScope.launch {
                 goesOffAlarmData.collectLatest { alarmData ->
-
                     // 현재 화면이 자동으로 꺼지지 않게 유지 & 잠금화면에 액티비티 띄우기
                     displayOn()
 
@@ -80,6 +92,7 @@ class OnAlarmActivity : AppCompatActivity() {
                             getString(R.string.toast_ten_minute_later)
                         )
 
+                        handler.removeMessages(0)
                         finish()
                     }
                 }
