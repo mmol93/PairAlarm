@@ -7,3 +7,5 @@ const val OVERLAY_CODE = 300
 const val ALARM_NOTI_ID = 10
 const val ALARM_CODE_TEXT = "alarmCode"
 const val ALARM_DB_NAME = "alarm_data_database"
+const val DENIED = "denied"
+const val EXPLAINED = "explained"
