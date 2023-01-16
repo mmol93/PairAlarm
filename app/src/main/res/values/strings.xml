@@ -73,9 +73,9 @@
 
     <!-- notification -->
     <string name="alarm_notification_channel_id">alarmChanel</string>
-    <string name="alarm_notification_channel_name">Nearest Alarm</string>
+    <string name="alarm_notification_channel_name">Next Alarm</string>
     <string name="weather_notification_channel_id">alarmChanel</string>
-    <string name="weather_notification_channel_name">Nearest Alarm</string>
+    <string name="weather_notification_channel_name">Weather Alarm</string>
     <string name="alarm_notification_title">Next alarm</string>
 
     <!-- Toast -->

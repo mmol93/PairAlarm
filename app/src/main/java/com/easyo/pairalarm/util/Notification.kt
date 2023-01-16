@@ -12,7 +12,6 @@ import com.easyo.pairalarm.R
 import timber.log.Timber
 
 fun makeAlarmNotification(context: Context, messageBody: String) {
-    Timber.d("make notification")
     // noti 클릭 시 MainActivity를 열게 한다
     val intent = Intent(context, MainActivity::class.java)
     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -34,8 +33,7 @@ fun makeAlarmNotification(context: Context, messageBody: String) {
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setOngoing(true)   // 알람이 계속 뜬 상태로 있게하기
 
-    val notificationManager =
-        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     val channel = NotificationChannel(
         channelId,
         channelName,
