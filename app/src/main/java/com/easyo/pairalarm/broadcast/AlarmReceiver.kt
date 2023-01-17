@@ -9,7 +9,7 @@ import com.easyo.pairalarm.util.resetAlarm
 import com.easyo.pairalarm.worker.ReceiverAlarmWorker
 import timber.log.Timber
 
-class MyReceiver : BroadcastReceiver() {
+class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
 
         // ** 휴대폰을 재부팅 했을 때 -> 모든 알람을 재설정
