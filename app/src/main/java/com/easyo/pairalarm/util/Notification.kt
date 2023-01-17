@@ -43,7 +43,7 @@ fun makeAlarmNotification(context: Context, messageBody: String) {
     notificationManager.notify(ALARM_NOTI_ID, notificationBuilder.build())
 
     // Worker를 캔슬하지 않으면 notification을 만들고 Worker로 되돌아감(suspend로 만들어서 그럼)
-    WorkManager.getInstance(context).cancelUniqueWork("makeNotification")
+    WorkManager.getInstance(context).cancelUniqueWork(MAKE_NOTIFICATION_WORKER)
 }
 
 fun cancelAlarmNotification(context: Context) {
@@ -51,5 +51,5 @@ fun cancelAlarmNotification(context: Context) {
     val notificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     notificationManager.cancel(ALARM_NOTI_ID)
-    WorkManager.getInstance(context).cancelUniqueWork("makeNotification")
+    WorkManager.getInstance(context).cancelUniqueWork(MAKE_NOTIFICATION_WORKER)
 }

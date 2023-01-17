@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.work.*
 import com.easyo.pairalarm.util.ALARM_CODE_TEXT
+import com.easyo.pairalarm.util.OPEN_ALARM_ACTIVITY_WORKER
 import com.easyo.pairalarm.util.resetAlarm
 import com.easyo.pairalarm.worker.ReceiverAlarmWorker
 import timber.log.Timber
@@ -34,7 +35,7 @@ class AlarmReceiver : BroadcastReceiver() {
                         .setInputData(workData)
                         .build()
                 WorkManager.getInstance(context!!).enqueueUniqueWork(
-                    "onAlarmActivity",
+                    OPEN_ALARM_ACTIVITY_WORKER,
                     ExistingWorkPolicy.KEEP,
                     receiverAlarmWorkRequest as OneTimeWorkRequest
                 )

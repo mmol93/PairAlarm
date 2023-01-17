@@ -66,7 +66,7 @@ class OnAlarmActivity : AppCompatActivity() {
                             OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
                         WorkManager.getInstance(this@OnAlarmActivity)
                             .enqueueUniqueWork(
-                                "makeNotification",
+                                MAKE_NOTIFICATION_WORKER,
                                 ExistingWorkPolicy.KEEP,
                                 alarmTimeWorkRequest as OneTimeWorkRequest
                             )
@@ -104,6 +104,6 @@ class OnAlarmActivity : AppCompatActivity() {
     }
 
     private fun stopOnAlarmWorkManager() {
-        WorkManager.getInstance(this).cancelUniqueWork("onAlarmActivity")
+        WorkManager.getInstance(this).cancelUniqueWork(OPEN_ALARM_ACTIVITY_WORKER)
     }
 }
