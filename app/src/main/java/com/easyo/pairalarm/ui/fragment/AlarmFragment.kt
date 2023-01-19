@@ -42,6 +42,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         },
         notGranted = {
             // 1개라도 허락되지 않은 권한이 있을 때
+            // TODO: Dialog 공통화 하기
             SimpleDialog.make(
                 requireContext(),
                 getString(R.string.dialog_permission_title),
@@ -83,12 +84,10 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 if (alarmDataList.isEmpty()) {
                     cancelAlarmNotification(requireContext())
                 } else {
-                    val alarmTimeWorkRequest: WorkRequest =
-                        OneTimeWorkRequestBuilder<NextAlarmWorker>()
-                            .build()
+                    val alarmTimeWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
                     WorkManager.getInstance(requireContext())
                         .enqueueUniqueWork(
-                            MAKE_NOTIFICATION_WORKER,
+                            MAKE_ALARM_WORKER,
                             ExistingWorkPolicy.KEEP,
                             alarmTimeWorkRequest as OneTimeWorkRequest
                         )
@@ -97,9 +96,8 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         }
 
         // FAB의 간격 조절
-        var interval = 0f
         val metrics = this.resources.displayMetrics
-        interval = when {
+        val interval = when {
             // mdpi
             metrics.densityDpi <= 160 -> 55f
             // hdpi

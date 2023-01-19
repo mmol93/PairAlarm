@@ -77,6 +77,9 @@
     <string name="weather_notification_channel_id">alarmChanel</string>
     <string name="weather_notification_channel_name">Weather Alarm</string>
     <string name="alarm_notification_title">Next alarm</string>
+    <string name="actionButton1">+10Min</string>
+    <string name="actionButton2">+15Min</string>
+    <string name="actionButton3">+30Min</string>
 
     <!-- Toast -->
     <string name="toast_set_minimum_time">Please set at least one minute</string>
