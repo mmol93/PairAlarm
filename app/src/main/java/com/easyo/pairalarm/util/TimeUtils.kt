@@ -1,6 +1,8 @@
 package com.easyo.pairalarm.util
 
 import android.annotation.SuppressLint
+import com.easyo.pairalarm.database.table.AlarmData
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -50,4 +52,26 @@ fun getMillisWithCalendar(hour: Int, min: Int, dayOfWeek: Int): Long {
     }
 
     return calendar.timeInMillis
+}
+
+fun getAlarmDataFromTimeMillis(timeInterval: Long): AlarmData {
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis += timeInterval
+    val hourSet = calendar.get(Calendar.HOUR_OF_DAY)
+    val minSet = calendar.get(Calendar.MINUTE)
+    var alarmSet = initCurrentAlarmData(hour = hourSet, min = minSet, isQuick = true, getNewAlarmCode())
+    Timber.d("hourSet: $hourSet")
+    Timber.d("minSet: $minSet")
+    // 요일 데이터는 Int형으로 가져온다 (일요일:1 ~ 토요일:7)
+    when (calendar.get(Calendar.DAY_OF_WEEK)) {
+        1 -> alarmSet = alarmSet.copy(Sun = true)
+        2 -> alarmSet = alarmSet.copy(Mon = true)
+        3 -> alarmSet = alarmSet.copy(Tue = true)
+        4 -> alarmSet = alarmSet.copy(Wed = true)
+        5 -> alarmSet = alarmSet.copy(Thu = true)
+        6 -> alarmSet = alarmSet.copy(Fri = true)
+        7 -> alarmSet = alarmSet.copy(Sat = true)
+    }
+
+    return alarmSet
 }

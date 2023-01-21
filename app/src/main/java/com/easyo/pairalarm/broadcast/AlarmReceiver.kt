@@ -33,7 +33,7 @@ class AlarmReceiver : BroadcastReceiver() {
                         .build()
                 // TODO: 이 부분에서 에러 났을 경우 액티비티는 띄우되(알람 울렸으니) 에러메시지도 같이 액티비티에 띄우기
                 WorkManager.getInstance(context!!).enqueueUniqueWork(
-                    OPEN_ALARM_ACTIVITY_WORKER,
+                    RECEIVER_ALARM_WORKER,
                     ExistingWorkPolicy.KEEP,
                     receiverAlarmWorkRequest as OneTimeWorkRequest
                 )
@@ -64,7 +64,7 @@ class AlarmReceiver : BroadcastReceiver() {
                     .build()
             WorkManager.getInstance(it)
                 .enqueueUniqueWork(
-                    MAKE_ALARM_WORKER,
+                    NEXT_ALARM_WORKER,
                     ExistingWorkPolicy.KEEP,
                     alarmTimeWorkRequest as OneTimeWorkRequest
                 )

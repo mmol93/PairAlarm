@@ -199,13 +199,6 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
                 )
                 alarmViewModel.insertAlarmData(this, alarmData)
 
-                val setHour = dateData.get(Calendar.HOUR_OF_DAY)
-                val setMin = dateData.get(Calendar.MINUTE)
-
-                val alarmCode = getNewAlarmCode()
-
-                setAlarm(this, alarmCode.toInt(), setHour, setMin)
-
                 finish()
             } else {
                 makeToast(this, getString(R.string.toast_set_minimum_time))

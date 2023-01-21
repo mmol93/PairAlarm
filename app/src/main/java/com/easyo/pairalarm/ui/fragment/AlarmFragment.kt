@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.work.*
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
 import com.easyo.pairalarm.extensions.getPermissionActivityResultLauncher
@@ -21,7 +20,6 @@ import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
 import com.easyo.pairalarm.ui.activity.SimpleAlarmSetActivity
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
-import com.easyo.pairalarm.worker.NextAlarmWorker
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -84,13 +82,8 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 if (alarmDataList.isEmpty()) {
                     cancelAlarmNotification(requireContext())
                 } else {
-                    val alarmTimeWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
-                    WorkManager.getInstance(requireContext())
-                        .enqueueUniqueWork(
-                            MAKE_ALARM_WORKER,
-                            ExistingWorkPolicy.KEEP,
-                            alarmTimeWorkRequest as OneTimeWorkRequest
-                        )
+                    val nextAlarm = getNextAlarm(alarmDataList)
+                    makeAlarmNotification(requireContext(), nextAlarm.toString())
                 }
             }
         }

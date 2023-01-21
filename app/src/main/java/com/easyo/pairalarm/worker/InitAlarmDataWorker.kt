@@ -16,6 +16,7 @@ class InitAlarmDataWorker @AssistedInject constructor(
     @Assisted workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result {
+        // TODO: 여기서 데이터 읽어오는 처리 필요함
         EventBus.post(InitDataEvent(Int.MAX_VALUE, applicationContext.getString(R.string.progressInit)))
         return Result.success()
     }
