@@ -5,22 +5,21 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.work.*
-import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
 import com.easyo.pairalarm.extensions.getPermissionActivityResultLauncher
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.groupieitem.AlarmGroupie
+import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
+import com.easyo.pairalarm.ui.activity.SimpleAlarmSetActivity
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
-import com.easyo.pairalarm.worker.NextAlarmWorker
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -30,20 +29,31 @@ import timber.log.Timber
 @AndroidEntryPoint
 class AlarmFragment : Fragment(R.layout.fragment_alarm) {
     private lateinit var binding: FragmentAlarmBinding
+    private lateinit var alarmActivityIntent: Intent
     private val alarmViewModel: AlarmViewModel by activityViewModels()
     private val permissionRequest = getPermissionActivityResultLauncher(
         allGranted = {
             // 모든 권한이 확인되어 있을 때
-            if (checkOverlayPermission()) {
-                val makeNormalAlarmIntent = Intent(activity, NormalAlarmSetActivity::class.java)
-                startActivity(makeNormalAlarmIntent)
+            if (checkOverlayPermission() && ::alarmActivityIntent.isInitialized) {
+                startActivity(alarmActivityIntent)
             }
         },
         notGranted = {
             // 1개라도 허락되지 않은 권한이 있을 때
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            intent.data = Uri.parse("package:${requireActivity().packageName}")
-            startActivity(intent)
+            // TODO: Dialog 공통화 하기
+            SimpleDialog.make(
+                requireContext(),
+                getString(R.string.dialog_permission_title),
+                getString(R.string.dialog_notification_permission_message),
+                null,
+                positive = { },
+                negative = {
+                    makeToast(
+                        requireContext(),
+                        getString(R.string.dialog_notification_permission_message)
+                    )
+                }
+            )
         }
     )
 
@@ -72,48 +82,39 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 if (alarmDataList.isEmpty()) {
                     cancelAlarmNotification(requireContext())
                 } else {
-                    val alarmTimeWorkRequest: WorkRequest =
-                        OneTimeWorkRequestBuilder<NextAlarmWorker>()
-                            .build()
-                    WorkManager.getInstance(requireContext())
-                        .enqueueUniqueWork(
-                            "makeNotification",
-                            ExistingWorkPolicy.KEEP,
-                            alarmTimeWorkRequest as OneTimeWorkRequest
-                        )
+                    val nextAlarm = getNextAlarm(alarmDataList)
+                    makeAlarmNotification(requireContext(), nextAlarm.toString())
                 }
             }
         }
 
         // FAB의 간격 조절
-        var interval = 0f
         val metrics = this.resources.displayMetrics
-        // TODO: When으로 바꾸기
-        if (metrics.densityDpi <= 160) {
+        val interval = when {
             // mdpi
-            interval = 55f
-        } else if (metrics.densityDpi <= 240) {
+            metrics.densityDpi <= 160 -> 55f
             // hdpi
-            interval = 105f
-        } else if (metrics.densityDpi <= 320) {
+            metrics.densityDpi <= 240 -> 105f
             // xhdpi
-            interval = 155f
-        } else if (metrics.densityDpi <= 480) {
+            metrics.densityDpi <= 320 -> 155f
             // xxhdpi
-            interval = 205f
-        } else if (metrics.densityDpi <= 640) {
+            metrics.densityDpi <= 480 -> 205f
             // xxxhdpi
-            interval = 255f
+            else -> 255f
+
         }
+
         binding.fabLayout.animationSize = interval
 
         // 일반 알람 설정
         binding.fab2.setOnSingleClickListener {
+            alarmActivityIntent = Intent(activity, NormalAlarmSetActivity::class.java)
             checkEssentialPermission()
         }
 
         // 간단 알람 설정
         binding.fab3.setOnSingleClickListener {
+            alarmActivityIntent = Intent(activity, SimpleAlarmSetActivity::class.java)
             checkEssentialPermission()
         }
     }
@@ -127,10 +128,9 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                     android.Manifest.permission.POST_NOTIFICATIONS
                 )
             )
-        }else{
-            if (checkOverlayPermission()) {
-                val makeNormalAlarmIntent = Intent(activity, NormalAlarmSetActivity::class.java)
-                startActivity(makeNormalAlarmIntent)
+        } else {
+            if (checkOverlayPermission() && ::alarmActivityIntent.isInitialized) {
+                startActivity(alarmActivityIntent)
             }
         }
     }
@@ -151,7 +151,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         }
     }
 
-    // TODO: 이 부분 어떻게 할지 생각하기
+    // TODO: 이 부분 나중에 registerForActivityResult에 통합하기
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

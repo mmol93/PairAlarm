@@ -15,6 +15,9 @@ import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 import java.util.*
 
+/**
+ * 알람이 울렸을 경우 해당 알람의 정보를 습득하고 지금 울릴 알람이 맞는지 확인한다
+ * */
 @HiltWorker
 class ReceiverAlarmWorker @AssistedInject constructor(
     @Assisted appContext: Context,

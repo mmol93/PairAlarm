@@ -62,11 +62,10 @@ class OnAlarmActivity : AppCompatActivity() {
                             )
                         }
 
-                        val alarmTimeWorkRequest: WorkRequest =
-                            OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
+                        val alarmTimeWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
                         WorkManager.getInstance(this@OnAlarmActivity)
                             .enqueueUniqueWork(
-                                "makeNotification",
+                                NEXT_ALARM_WORKER,
                                 ExistingWorkPolicy.KEEP,
                                 alarmTimeWorkRequest as OneTimeWorkRequest
                             )
@@ -104,6 +103,6 @@ class OnAlarmActivity : AppCompatActivity() {
     }
 
     private fun stopOnAlarmWorkManager() {
-        WorkManager.getInstance(this).cancelUniqueWork("onAlarmActivity")
+        WorkManager.getInstance(this).cancelUniqueWork(RECEIVER_ALARM_WORKER)
     }
 }

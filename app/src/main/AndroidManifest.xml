@@ -52,7 +52,7 @@
         </activity>
 
         <receiver
-            android:name=".broadcast.MyReceiver"
+            android:name=".broadcast.AlarmReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.easyo.pairalarm" />

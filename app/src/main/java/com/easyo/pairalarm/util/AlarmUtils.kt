@@ -33,7 +33,7 @@ fun setAlarm(context: Context, alarmCode: Int, hour: Int, min: Int) {
 
     val intent = Intent(context.packageName)
     intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
-    intent.component = ComponentName(context.packageName, "com.easyo.pairalarm.broadcast.MyReceiver")
+    intent.component = ComponentName(context.packageName, "com.easyo.pairalarm.broadcast.AlarmReceiver")
     intent.putExtra(ALARM_CODE_TEXT, "$alarmCode")
 
     val pendingIntent = PendingIntent.getBroadcast(
@@ -44,8 +44,8 @@ fun setAlarm(context: Context, alarmCode: Int, hour: Int, min: Int) {
     )
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val alarmInfo = AlarmManager.AlarmClockInfo(calendarMillis, pendingIntent)
-    Timber.d("set alarmCode: $alarmCode")
-    Timber.d("set alarm(mills): " + transMillisToTime(calendarMillis))
+    Timber.d("set broadcast alarmCode: $alarmCode")
+    Timber.d("set broadcast alarm(mills): " + transMillisToTime(calendarMillis))
     alarmManager.setAlarmClock(alarmInfo, pendingIntent)
 }
 
@@ -74,7 +74,7 @@ fun resetAlarm(context: Context?) {
 fun cancelAlarm(context: Context, alarmCode: String) {
     val intent = Intent(context.packageName)
     intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
-    intent.component = ComponentName(context.packageName, "com.easyo.pairalarm.MyReceiver")
+    intent.component = ComponentName(context.packageName, "com.easyo.pairalarm.AlarmReceiver")
     val pendingIntent = PendingIntent.getBroadcast(
         context,
         alarmCode.toInt(),
@@ -91,7 +91,7 @@ fun cancelAlarm(context: Context, alarmCode: String) {
 fun getNextAlarm(alarmList: List<AlarmData>): String? {
     val milliSecondForAlarmList = mutableListOf<Long>()
     alarmList.forEach { alarmData ->
-        if (alarmData.button){
+        if (alarmData.button) {
             if (alarmData.Sun) {
                 milliSecondForAlarmList.add(getMillisWithCalendar(alarmData.hour, alarmData.minute, 1))
             }
@@ -116,4 +116,32 @@ fun getNextAlarm(alarmList: List<AlarmData>): String? {
         }
     }
     return milliSecondForAlarmList.minOrNull()?.let { transMillisToTime(it) }
+}
+
+fun initCurrentAlarmData(
+    hour: Int = 0,
+    min: Int = 0,
+    isQuick: Boolean = false,
+    alarmCode: String = ""
+): AlarmData {
+    return AlarmData(
+        id = null,
+        button = true,
+        Sun = false,
+        Mon = false,
+        Tue = false,
+        Wed = false,
+        Thu = false,
+        Fri = false,
+        Sat = false,
+        vibration = 0,
+        alarmCode = alarmCode,
+        mode = 0,
+        hour = if (hour != 0) hour else getCurrentHour(),
+        minute = if (min != 0) min else getCurrentMinute(),
+        quick = isQuick,
+        volume = 100,
+        bell = 0,
+        name = ""
+    )
 }

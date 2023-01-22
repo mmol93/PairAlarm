@@ -4,10 +4,7 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.repository.AlarmRepository
-import com.easyo.pairalarm.util.cancelAlarm
-import com.easyo.pairalarm.util.getCurrentHour
-import com.easyo.pairalarm.util.getCurrentMinute
-import com.easyo.pairalarm.util.setAlarm
+import com.easyo.pairalarm.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +33,7 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
     fun updateAlarmData(context: Context, alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.updateAlarmData(alarmData)
     }.execute(onSuccess = {
-        // 브로드캐스트에 알람 업데이트
+        // 브로드캐스트에 기존 알람 삭제 및 새로운 알람 추가
         if (alarmData.button) {
             cancelAlarm(context, alarmData.alarmCode)
             setAlarm(context, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
@@ -66,29 +63,6 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
     private fun initCurrentAlarmDataFlow(): Flow<AlarmData> {
         return flowOf(
             initCurrentAlarmData()
-        )
-    }
-
-    private fun initCurrentAlarmData(): AlarmData {
-        return AlarmData(
-            id = null,
-            button = true,
-            Sun = false,
-            Mon = false,
-            Tue = false,
-            Wed = false,
-            Thu = false,
-            Fri = false,
-            Sat = false,
-            vibration = 0,
-            alarmCode = "",
-            mode = 0,
-            hour = getCurrentHour(),
-            minute = getCurrentMinute(),
-            quick = false,
-            volume = 100,
-            bell = 0,
-            name = ""
         )
     }
 }
