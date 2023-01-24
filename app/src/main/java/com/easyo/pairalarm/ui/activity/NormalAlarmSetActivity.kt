@@ -147,7 +147,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
                     else -> binding.numberPickerHour.value
                 }
 
-                // currentAlarmCode를 보고 새로운 알람 생성인지 수정인지 판단
+                // 새로운 알람일 경우
                 if (alarmCode == null) {
                     alarmCode = getNewAlarmCode()
                     // DB에 넣을 Data set

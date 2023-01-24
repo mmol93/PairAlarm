@@ -61,22 +61,23 @@ class BellSelectDialogFragment : DialogFragment() {
             if (AlarmMusic.getCurrentMusic() == null) {
                 AlarmMusic.setCurrentMusic(selectMusic(requireContext(), bellIndex))
             }
-
-            // 음악 재생중일 때 -> 음악 정지
-            if (AlarmMusic.getCurrentMusic()!!.isPlaying) {
-                mediaStop()
-                binding.playButton.text = requireContext().getString(R.string.play)
-                Timber.d("playing stop")
-            }
-            // 음악 재생중 아닐 때 -> 음악 시작
-            else {
-                AlarmMusic.setCurrentMusic(selectMusic(requireContext(), bellIndex))
-                AlarmMusic.getCurrentMusic()!!.run {
-                    setVolume(1f, 1f)
-                    isLooping = true
-                    start()
+            AlarmMusic.getCurrentMusic()?.let { currentMusic ->
+                // 음악 재생중일 때 -> 음악 정지
+                if (currentMusic.isPlaying) {
+                    mediaStop()
+                    binding.playButton.text = requireContext().getString(R.string.play)
+                    Timber.d("playing stop")
                 }
-                binding.playButton.text = requireContext().getString(R.string.stop)
+                // 음악 재생중 아닐 때 -> 음악 시작
+                else {
+                    AlarmMusic.setCurrentMusic(selectMusic(requireContext(), bellIndex))
+                    currentMusic.run {
+                        setVolume(1f, 1f)
+                        isLooping = true
+                        start()
+                    }
+                    binding.playButton.text = requireContext().getString(R.string.stop)
+                }
             }
         }
 
