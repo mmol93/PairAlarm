@@ -25,6 +25,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNormalAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
     private val bellSelectDialog by lazy { BellSelectDialogFragment() }
+    private val alarmModeDialog by lazy { AlertDialog.Builder(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,17 +101,16 @@ class NormalAlarmSetActivity : AppCompatActivity() {
                 getString(R.string.alarmSet_alarmModeItem1),
                 getString(R.string.alarmSet_alarmModeItem2)
             )
-            val builder = AlertDialog.Builder(this)
 
-            builder.setTitle(getString(R.string.alarmSet_selectBellDialogTitle))
-            builder.setSingleChoiceItems(
+            alarmModeDialog.setTitle(getString(R.string.alarmSet_selectBellDialogTitle))
+            alarmModeDialog.setSingleChoiceItems(
                 modeItems,
                 binding.alarmData!!.mode,
                 null
             )
-            builder.setNeutralButton(getString(R.string.cancel), null)
+            alarmModeDialog.setNeutralButton(getString(R.string.cancel), null)
 
-            builder.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
+            alarmModeDialog.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
                 val alert = dialogInterface as AlertDialog
                 when (alert.listView.checkedItemPosition) {
                     // Normal 클릭 시
@@ -125,7 +125,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
                 binding.alarmData =
                     binding.alarmData?.copy(mode = alarmViewModel.currentAlarmMode.value)
             }
-            builder.show()
+            alarmModeDialog.show()
         }
 
         // save 버튼 눌렀을 때

@@ -12,7 +12,7 @@ import com.easyo.pairalarm.extensions.lastClickTime
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
 import com.easyo.pairalarm.util.ALARM_CODE_TEXT
-import com.easyo.pairalarm.util.SimpleDialog
+import com.easyo.pairalarm.ui.dialog.SimpleDialog
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.databinding.BindableItem
 import timber.log.Timber
