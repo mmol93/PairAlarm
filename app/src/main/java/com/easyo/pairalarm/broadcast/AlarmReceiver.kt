@@ -15,41 +15,42 @@ class AlarmReceiver : BroadcastReceiver() {
         val alarmCode = intent?.getStringExtra(ALARM_CODE_TEXT)
         val actionButtonCode = intent?.getStringExtra(ACTION_BUTTON)
 
-        when {
-            // ** 휴대폰을 재부팅 했을 때 & 앱을 업데이트 했을 때-> 모든 알람을 재설정
-            intent!!.action == "android.intent.action.BOOT_COMPLETED" ||
-                    intent.action == "android.intent.action.QUICKBOOT_POWERON" ||
-                    intent.action == "android.intent.action.MY_PACKAGE_REPLACED" -> {
-                Timber.d("reset alarm")
-                resetAlarm(context)
-            }
+        if (intent != null && context != null){
+            when {
+                // ** 휴대폰을 재부팅 했을 때 & 앱을 업데이트 했을 때-> 모든 알람을 재설정
+                intent.action == "android.intent.action.BOOT_COMPLETED" ||
+                        intent.action == "android.intent.action.QUICKBOOT_POWERON" ||
+                        intent.action == "android.intent.action.MY_PACKAGE_REPLACED" -> {
+                    Timber.d("reset alarm")
+                    resetAlarm(context)
+                }
 
-            // 내가 설정한 알람이 울렸을 때
-            alarmCode != null -> {
-                val workData = workDataOf(ALARM_CODE_TEXT to alarmCode)
-                val receiverAlarmWorkRequest: WorkRequest =
-                    OneTimeWorkRequestBuilder<ReceiverAlarmWorker>()
-                        .setInputData(workData)
-                        .build()
-                // TODO: 이 부분에서 에러 났을 경우 액티비티는 띄우되(알람 울렸으니) 에러메시지도 같이 액티비티에 띄우기
-                WorkManager.getInstance(context!!).enqueueUniqueWork(
-                    RECEIVER_ALARM_WORKER,
-                    ExistingWorkPolicy.KEEP,
-                    receiverAlarmWorkRequest as OneTimeWorkRequest
-                )
-            }
+                // 내가 설정한 알람이 울렸을 때
+                alarmCode != null -> {
+                    val workData = workDataOf(ALARM_CODE_TEXT to alarmCode)
+                    val receiverAlarmWorkRequest: WorkRequest =
+                        OneTimeWorkRequestBuilder<ReceiverAlarmWorker>()
+                            .setInputData(workData)
+                            .build()
+                    WorkManager.getInstance(context).enqueueUniqueWork(
+                        RECEIVER_ALARM_WORKER,
+                        ExistingWorkPolicy.KEEP,
+                        receiverAlarmWorkRequest as OneTimeWorkRequest
+                    )
+                }
 
-            // Notification에 있는 actionButton을 눌렀을 때
-            actionButtonCode != null -> {
-                when (actionButtonCode) {
-                    NOTI_ACTION1 -> {
-                        doNextWorkAlarm(context, NOTI_ACTION1_REQUEST_CODE)
-                    }
-                    NOTI_ACTION2 -> {
-                        doNextWorkAlarm(context, NOTI_ACTION2_REQUEST_CODE)
-                    }
-                    NOTI_ACTION3 -> {
-                        doNextWorkAlarm(context, NOTI_ACTION3_REQUEST_CODE)
+                // Notification에 있는 actionButton을 눌렀을 때
+                actionButtonCode != null -> {
+                    when (actionButtonCode) {
+                        NOTI_ACTION1 -> {
+                            doNextWorkAlarm(context, NOTI_ACTION1_REQUEST_CODE)
+                        }
+                        NOTI_ACTION2 -> {
+                            doNextWorkAlarm(context, NOTI_ACTION2_REQUEST_CODE)
+                        }
+                        NOTI_ACTION3 -> {
+                            doNextWorkAlarm(context, NOTI_ACTION3_REQUEST_CODE)
+                        }
                     }
                 }
             }
