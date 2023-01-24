@@ -18,6 +18,7 @@ import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.groupieitem.AlarmGroupie
 import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
 import com.easyo.pairalarm.ui.activity.SimpleAlarmSetActivity
+import com.easyo.pairalarm.ui.dialog.SimpleDialog
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.GroupieAdapter

@@ -1,4 +1,4 @@
-package com.easyo.pairalarm.util
+package com.easyo.pairalarm.ui.dialog
 
 import android.app.AlertDialog
 import android.content.Context
@@ -23,7 +23,6 @@ object SimpleDialog {
 
         // Dialog의 No 버튼 - 주로 Toast 메시지 출력
         dialogBuilder.setNegativeButton(context.getString(R.string.no)) { _: DialogInterface, _: Int ->
-            // Toast의 실제 메시지는 여기서 넣는게 아니라 메서드를 정의하는 쪽에서 직접 정의한다
             negative.invoke()
         }
 

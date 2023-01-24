@@ -18,17 +18,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.*
 
 @AndroidEntryPoint
 class SimpleAlarmSetActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySimpleAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
+    private val bellSelectDialog by lazy { BellSelectDialogFragment() }
+    private val alarmModeDialog by lazy { AlertDialog.Builder(this) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySimpleAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val bellSelectDialog = BellSelectDialogFragment()
 
         // UI 초기화
         lifecycleScope.launch {
@@ -120,19 +121,18 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
                 getString(R.string.alarmSet_alarmModeItem1),
                 getString(R.string.alarmSet_alarmModeItem2)
             )
-            val builder = AlertDialog.Builder(this)
 
-            builder.setTitle(getString(R.string.alarmSet_selectBellDialogTitle))
-            builder.setSingleChoiceItems(
+            alarmModeDialog.setTitle(getString(R.string.alarmSet_selectBellDialogTitle))
+            alarmModeDialog.setSingleChoiceItems(
                 modeItem,
                 alarmViewModel.currentAlarmMode.value,
                 null
             )
-            builder.setNeutralButton(getString(R.string.cancel), null)
+            alarmModeDialog.setNeutralButton(getString(R.string.cancel), null)
 
-            builder.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
+            alarmModeDialog.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
                 val alert = dialogInterface as AlertDialog
-                // * 선택된 아이템의 position에 따라 행동 조건 넣기
+                // 선택된 아이템의 position에 따라 행동 조건 넣기
                 when (alert.listView.checkedItemPosition) {
                     // Normal 클릭 시
                     0 -> {
@@ -143,10 +143,9 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
                         alarmViewModel.currentAlarmMode.value = 1
                     }
                 }
-                binding.alarmData =
-                    binding.alarmData?.copy(mode = alarmViewModel.currentAlarmMode.value)
+                binding.alarmData = binding.alarmData?.copy(mode = alarmViewModel.currentAlarmMode.value)
             }
-            builder.show()
+            alarmModeDialog.show()
         }
 
         // AlarmBell 설정 버튼 눌렀을 때
