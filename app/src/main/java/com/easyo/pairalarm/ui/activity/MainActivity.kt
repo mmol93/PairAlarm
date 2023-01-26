@@ -22,12 +22,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        // TODO: 나중에 추가할 내용
         val alarmFragment = AlarmFragment()
-        val communityFragment = CommunityFragment()
-        val weatherFragment = WeatherFragment()
+//        val communityFragment = CommunityFragment()
+//        val weatherFragment = WeatherFragment()
         val settingFragment = SettingFragment()
 
-        val fragments = arrayListOf(alarmFragment, communityFragment, weatherFragment, settingFragment)
+        val fragments = arrayListOf(alarmFragment, settingFragment)
 
         // viewPager2에서 사용할 adapter
         val viewPagerAdapter = object : FragmentStateAdapter(this) {
@@ -54,12 +55,6 @@ class MainActivity : AppCompatActivity() {
                     tab.icon = getDrawable(R.drawable.ic_clock)
                 }
                 1 -> {
-                    tab.icon = getDrawable(R.drawable.ic_baseline_people)
-                }
-                2 -> {
-                    tab.icon = getDrawable(R.drawable.ic_cloud)
-                }
-                3 -> {
                     tab.icon = getDrawable(R.drawable.ic_baseline_setting)
                 }
             }
