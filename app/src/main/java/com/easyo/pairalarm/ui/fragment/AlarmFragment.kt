@@ -1,11 +1,13 @@
 package com.easyo.pairalarm.ui.fragment
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -41,7 +43,6 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         },
         notGranted = {
             // 1개라도 허락되지 않은 권한이 있을 때
-            // TODO: Dialog 공통화 하기
             SimpleDialog.make(
                 requireContext(),
                 getString(R.string.dialog_permission_title),
@@ -58,6 +59,29 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         }
     )
 
+    private var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            // 오버레이 권한 설정에서 돌아왔을 때
+            Timber.d("resultCode: ${result.resultCode}")
+            // 오버레이 권한은 설정 후 Back키로 돌아오기 때문에 RESULT_CANCELED가 찍힌다
+            if (result.resultCode == Activity.RESULT_CANCELED) {
+                SimpleDialog.make(
+                    requireContext(),
+                    getString(R.string.dialog_permission_title),
+                    getString(R.string.dialog_overlay_message),
+                    null,
+                    positive = { checkOverlayPermission() },
+                    negative = {
+                        makeToast(
+                            requireContext(),
+                            getString(R.string.dialog_permission_overlay_no)
+                        )
+                    }
+                )
+            }
+        }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         DataBindingUtil.bind<FragmentAlarmBinding>(view)?.let { binding = it } ?: return
@@ -69,8 +93,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         val alarmRecyclerAdapter = GroupieAdapter()
         binding.alarmRecycler.run {
             adapter = alarmRecyclerAdapter
-            layoutManager =
-                GridLayoutManager(context, recyclerViewSpan, GridLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(context, recyclerViewSpan, GridLayoutManager.VERTICAL, false)
         }
 
         // Groupie - RecyclerView 데이터 입력
@@ -124,13 +147,11 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
     // TODO: Dialog로 어떤 권한이 왜 필요한지 설명하기
     private fun checkEssentialPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permissionRequest.launch(
-                arrayOf(
-                    android.Manifest.permission.POST_NOTIFICATIONS
-                )
-            )
+            if (checkOverlayPermission()){
+                permissionRequest.launch(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS))
+            }
         } else {
-            if (checkOverlayPermission() && ::alarmActivityIntent.isInitialized) {
+            if (checkOverlayPermission()) {
                 startActivity(alarmActivityIntent)
             }
         }
@@ -144,33 +165,10 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Uri.parse("package:${requireContext().packageName}")
             )
-            startActivityForResult(intent, OVERLAY_CODE)
-            Timber.d("오버레이 intent 호출")
+            resultLauncher.launch(intent)
             false
         } else {
             true
-        }
-    }
-
-    // TODO: 이 부분 나중에 registerForActivityResult에 통합하기
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        // 오버레이 권한 설정에서 돌아왔을 때
-        if (requestCode == OVERLAY_CODE) {
-            SimpleDialog.make(
-                requireContext(),
-                getString(R.string.dialog_permission_title),
-                getString(R.string.dialog_overlay_message),
-                null,
-                positive = { },
-                negative = {
-                    makeToast(
-                        requireContext(),
-                        getString(R.string.dialog_permission_overlay_no)
-                    )
-                }
-            )
         }
     }
 }
