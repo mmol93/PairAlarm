@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Setting -->
+    <string-array name="setting_item_alarm_text_array">
+        <item>QuickAlarm Setting</item>
+    </string-array>
+
+    <string-array name="setting_item_ect_text_array">
+        <item>App Info</item>
+        <item>Report</item>
+    </string-array>
+</resources>

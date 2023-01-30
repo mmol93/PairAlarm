@@ -15,7 +15,7 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@drawable/rounded_corner_clear"
+        android:background="@drawable/item_rounded_corner_clear"
         android:orientation="vertical"
         android:padding="15dp">
 
@@ -37,7 +37,7 @@
                 android:singleLine="true"
                 android:text="TextView"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/deleteImage"
                 app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +73,7 @@
                 android:gravity="center"
                 android:text="00"
                 android:textColor="@color/white"
-                android:textSize="30dp" />
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/Textview"
@@ -84,7 +84,7 @@
                 android:gravity="center"
                 android:text=":"
                 android:textColor="@color/white"
-                android:textSize="25dp" />
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/minText"
@@ -95,7 +95,7 @@
                 android:gravity="center"
                 android:text="00"
                 android:textColor="@color/white"
-                android:textSize="30dp" />
+                android:textSize="30sp" />
 
         </LinearLayout>
 
@@ -114,7 +114,7 @@
                 android:gravity="center"
                 android:text="@string/monday_short"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="19dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tueText"
@@ -125,7 +125,7 @@
                 android:gravity="center"
                 android:text="@string/tuesday_short"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="19dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/wedText"
@@ -136,7 +136,7 @@
                 android:gravity="center"
                 android:text="@string/wednesday_short"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="19dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/thuText"
@@ -147,7 +147,7 @@
                 android:gravity="center"
                 android:text="@string/thursday_short"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="19dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/friText"
@@ -158,7 +158,7 @@
                 android:gravity="center"
                 android:text="@string/friday_short"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="19dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/satText"
@@ -169,7 +169,7 @@
                 android:gravity="center"
                 android:text="@string/saturday_short"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="19dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/sunText"
@@ -180,7 +180,7 @@
                 android:gravity="center"
                 android:text="@string/sunday_short"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="19dp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

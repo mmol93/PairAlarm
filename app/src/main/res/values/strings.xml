@@ -85,7 +85,4 @@
     <string name="toast_set_minimum_time">Please set at least one minute</string>
     <string name="toast_ten_minute_later">Alarm goes off 10minutes later</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

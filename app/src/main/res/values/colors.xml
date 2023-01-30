@@ -11,6 +11,8 @@
     <color name="mainColor">#FFBB86FC</color>
     <color name="background">#1D1D23</color>
     <color name="itemBackground">#34344A</color>
+    <color name="sub_item_background">#5e5e76</color>
+    <color name="sub_item_text_color">#ede7f6</color>
     <color name="red">#ff0000</color>
     <color name="deep_yellow">#F5D042</color>
     <color name="new_subTextColor">#949494</color>
