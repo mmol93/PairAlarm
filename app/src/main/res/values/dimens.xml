@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="element_spacing_xxxlarge">40dp</dimen>
+    <dimen name="element_spacing_xxlarge">32dp</dimen>
+    <dimen name="element_spacing_xlarge">24dp</dimen>
+    <dimen name="element_spacing_large">16dp</dimen>
+    <dimen name="element_spacing_xxnormal">14dp</dimen>
+    <dimen name="element_spacing_xnormal">12dp</dimen>
+    <dimen name="element_spacing_normal">8dp</dimen>
+    <dimen name="element_spacing_xsmall">6dp</dimen>
+    <dimen name="element_spacing_small">4dp</dimen>
+    <dimen name="element_spacing_tiny">2dp</dimen>
+    <dimen name="element_spacing_none">0dp</dimen>
+</resources>

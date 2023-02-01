@@ -17,7 +17,7 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
 import com.easyo.pairalarm.extensions.getPermissionActivityResultLauncher
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
-import com.easyo.pairalarm.groupieitem.AlarmListAdapter
+import com.easyo.pairalarm.groupieitem.AlarmItem
 import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
 import com.easyo.pairalarm.ui.activity.SimpleAlarmSetActivity
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
@@ -100,7 +100,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         lifecycleScope.launch {
             alarmViewModel.getAllAlarmData().collectLatest { alarmDataList ->
                 Timber.d("AlarmData: $alarmDataList")
-                alarmDataList.map { AlarmListAdapter(requireContext(), it, alarmViewModel) }
+                alarmDataList.map { AlarmItem(requireContext(), it, alarmViewModel) }
                     .also { alarmRecyclerAdapter.update(it) }
 
                 if (alarmDataList.isEmpty()) {

@@ -113,6 +113,10 @@ dependencies {
 
     // timber - https://github.com/JakeWharton/timber.git
     implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    // datastore - https://developer.android.com/topic/libraries/architecture/datastore?hl=ko#prefs-vs-proto
+    implementation "androidx.datastore:datastore-preferences:1.1.0-alpha01"
+    implementation "androidx.datastore:datastore-core:1.1.0-alpha01"
 }
 
 kapt {

@@ -1,13 +1,19 @@
 package com.easyo.pairalarm.util
 
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.updateLayoutParams
 import androidx.databinding.BindingAdapter
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.database.table.Weekend
 import com.google.android.material.button.MaterialButton
+import kotlin.math.roundToInt
+
 
 object BindingAdapter {
     /**
@@ -102,7 +108,12 @@ object BindingAdapter {
     @BindingAdapter("vibrateMode")
     fun ImageView.setVibrateMode(vibrateMode: Int) {
         when (vibrateMode) {
-            0 -> this.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_no_vib))
+            0 -> this.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    context,
+                    R.drawable.ic_no_vib
+                )
+            )
             1 -> this.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_vib_1))
             2 -> this.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_vib_2))
         }
@@ -113,7 +124,7 @@ object BindingAdapter {
     fun MaterialButton.saveOrUpdateText(alarmCode: String?) {
         this.text = if (alarmCode.isNullOrBlank()) {
             context.getString(R.string.save)
-        }else{
+        } else {
             context.getString(R.string.update)
         }
     }
@@ -144,5 +155,31 @@ object BindingAdapter {
                 }
             }
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("visible")
+    fun View.setVisible(visible: Boolean) {
+        visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
+    @JvmStatic
+    @BindingAdapter("setMarginTop")
+    fun View.setMarginTop(marginTop: Float) {
+        val layoutParams = layoutParams as MarginLayoutParams
+        updateLayoutParams<MarginLayoutParams> {
+            topMargin = marginTop.toInt()
+        }
+        this.layoutParams = layoutParams
+    }
+
+    @JvmStatic
+    @BindingAdapter("setMarginBottom")
+    fun View.setMarginBottom(marginBottom: Float) {
+        val layoutParams = layoutParams as MarginLayoutParams
+        updateLayoutParams<MarginLayoutParams> {
+            bottomMargin = marginBottom.toInt()
+        }
+        this.layoutParams = layoutParams
     }
 }

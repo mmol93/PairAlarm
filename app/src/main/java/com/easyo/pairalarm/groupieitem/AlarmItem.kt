@@ -17,7 +17,7 @@ import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.databinding.BindableItem
 import timber.log.Timber
 
-class AlarmListAdapter(
+class AlarmItem(
     val context: Context,
     val alarmData: AlarmData,
     private val alarmViewModel: AlarmViewModel
