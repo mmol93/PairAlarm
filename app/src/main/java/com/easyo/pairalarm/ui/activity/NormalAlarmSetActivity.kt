@@ -1,6 +1,5 @@
 package com.easyo.pairalarm.ui.activity
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.SeekBar
 import androidx.activity.viewModels
@@ -12,11 +11,12 @@ import com.easyo.pairalarm.databinding.ActivityNormalAlarmBinding
 import com.easyo.pairalarm.extensions.clearKeyBoardFocus
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
+import com.easyo.pairalarm.ui.dialog.SimpleDialog
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -24,8 +24,11 @@ import timber.log.Timber
 class NormalAlarmSetActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNormalAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
-    private val bellSelectDialog by lazy { BellSelectDialogFragment() }
-    private val alarmModeDialog by lazy { AlertDialog.Builder(this) }
+    private val bellSelectDialog by lazy {
+        BellSelectDialogFragment(alarmViewModel.currentAlarmBell.value) { bellIndex ->
+            alarmViewModel.currentAlarmBell.value = bellIndex
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,30 +105,27 @@ class NormalAlarmSetActivity : AppCompatActivity() {
                 getString(R.string.alarmSet_alarmModeItem2)
             )
 
-            alarmModeDialog.setTitle(getString(R.string.alarmSet_selectBellDialogTitle))
-            alarmModeDialog.setSingleChoiceItems(
+            SimpleDialog.make(
+                this,
+                getString(R.string.alarmSet_selectBellDialogTitle),
                 modeItems,
                 binding.alarmData!!.mode,
-                null
-            )
-            alarmModeDialog.setNeutralButton(getString(R.string.cancel), null)
-
-            alarmModeDialog.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
-                val alert = dialogInterface as AlertDialog
-                when (alert.listView.checkedItemPosition) {
-                    // Normal 클릭 시
-                    0 -> {
-                        alarmViewModel.currentAlarmMode.value = 0
+                positive = { dialogInterface ->
+                    val alert = dialogInterface as AlertDialog
+                    when (alert.listView.checkedItemPosition) {
+                        // Normal 클릭 시
+                        0 -> {
+                            alarmViewModel.currentAlarmMode.value = 0
+                        }
+                        // Calculate 클릭 시
+                        1 -> {
+                            alarmViewModel.currentAlarmMode.value = 1
+                        }
                     }
-                    // Calculate 클릭 시
-                    1 -> {
-                        alarmViewModel.currentAlarmMode.value = 1
-                    }
+                    binding.alarmData =
+                        binding.alarmData?.copy(mode = alarmViewModel.currentAlarmMode.value)
                 }
-                binding.alarmData =
-                    binding.alarmData?.copy(mode = alarmViewModel.currentAlarmMode.value)
-            }
-            alarmModeDialog.show()
+            )
         }
 
         // save 버튼 눌렀을 때

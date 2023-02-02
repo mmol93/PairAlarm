@@ -21,7 +21,10 @@ import com.easyo.pairalarm.groupieitem.AlarmItem
 import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
 import com.easyo.pairalarm.ui.activity.SimpleAlarmSetActivity
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
-import com.easyo.pairalarm.util.*
+import com.easyo.pairalarm.util.cancelAlarmNotification
+import com.easyo.pairalarm.util.getNextAlarm
+import com.easyo.pairalarm.util.makeAlarmNotification
+import com.easyo.pairalarm.util.makeToast
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,7 +50,6 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 requireContext(),
                 getString(R.string.dialog_permission_title),
                 getString(R.string.dialog_notification_permission_message),
-                null,
                 positive = { },
                 negative = {
                     makeToast(
@@ -69,7 +71,6 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                     requireContext(),
                     getString(R.string.dialog_permission_title),
                     getString(R.string.dialog_overlay_message),
-                    null,
                     positive = { checkOverlayPermission() },
                     negative = {
                         makeToast(
@@ -147,7 +148,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
     // TODO: Dialog로 어떤 권한이 왜 필요한지 설명하기
     private fun checkEssentialPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (checkOverlayPermission()){
+            if (checkOverlayPermission()) {
                 permissionRequest.launch(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS))
             }
         } else {

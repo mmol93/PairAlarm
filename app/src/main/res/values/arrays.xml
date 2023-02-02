@@ -2,7 +2,8 @@
 <resources>
     <!-- Setting -->
     <string-array name="setting_item_alarm_text_array">
-        <item>QuickAlarm Setting</item>
+        <item>QuickAlarm Bell</item>
+        <item>QuickAlarm Mode</item>
     </string-array>
 
     <string-array name="setting_item_ect_text_array">

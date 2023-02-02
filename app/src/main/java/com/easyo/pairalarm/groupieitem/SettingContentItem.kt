@@ -1,10 +1,13 @@
 package com.easyo.pairalarm.groupieitem
 
 import android.content.Context
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.SettingItemBinding
+import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.model.SettingContentType
+import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
 import com.xwray.groupie.databinding.BindableItem
 
 class SettingContentItem(
@@ -13,9 +16,9 @@ class SettingContentItem(
     private val settingContentType: SettingContentType,
     private val onlyHasTwoData: Boolean = false,
 ) : BindableItem<SettingItemBinding>(title.hashCode().toLong()) {
+
     override fun bind(binding: SettingItemBinding, position: Int) {
         binding.title = title
-
         when (settingContentType) {
             SettingContentType.SINGLE -> {
                 binding.settingItemLayout.background = ContextCompat.getDrawable(context, R.drawable.item_small_rounded_corner_clear)
@@ -28,6 +31,10 @@ class SettingContentItem(
                 binding.settingItemLayout.background = ContextCompat.getDrawable(context, R.drawable.item_under_small_rounded_corner_clear)
                 binding.isLastItem = true
             }
+        }
+
+        binding.settingItemLayout.setOnSingleClickListener {
+
         }
     }
 

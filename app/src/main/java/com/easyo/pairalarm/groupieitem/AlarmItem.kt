@@ -149,11 +149,9 @@ class AlarmItem(
                 context,
                 context.getString(R.string.dialog_delete_title),
                 context.getString(R.string.dialog_delete_content),
-                null,
                 positive = {
                     alarmViewModel.deleteAlarmData(this.context, alarmData)
-                },
-                negative = { }
+                }
             )
         }
 

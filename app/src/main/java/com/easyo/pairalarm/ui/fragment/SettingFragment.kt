@@ -13,7 +13,6 @@ import com.easyo.pairalarm.groupieitem.SettingContentItem
 import com.easyo.pairalarm.groupieitem.SpacerItem
 import com.easyo.pairalarm.model.SettingContentType
 import com.xwray.groupie.GroupieAdapter
-import com.xwray.groupie.Section
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -41,12 +40,12 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
 
-        addList(alarmSettingList)
-        addList(emptyArray())
-        addList(etcSettingList)
+        setupSettingData(alarmSettingList)
+        setupSettingData(emptyArray())
+        setupSettingData(etcSettingList)
     }
 
-    private fun addList(dataList: Array<String>) {
+    private fun setupSettingData(dataList: Array<String>) {
         when {
             dataList.size == 1 -> {
                 dataList.map { data ->

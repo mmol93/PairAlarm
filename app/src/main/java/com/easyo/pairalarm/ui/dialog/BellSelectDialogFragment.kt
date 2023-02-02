@@ -7,19 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.DialogBellSetBinding
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.util.AlarmBell
 import com.easyo.pairalarm.util.AlarmMusic
 import com.easyo.pairalarm.util.selectMusic
-import com.easyo.pairalarm.viewModel.AlarmViewModel
 import timber.log.Timber
 
-class BellSelectDialogFragment : DialogFragment() {
+class BellSelectDialogFragment(
+    private val selectedBellIndex: Int,
+    private val clickSaveButton: (clickedBellIndex: Int) -> Unit
+) : DialogFragment() {
     private lateinit var binding: DialogBellSetBinding
-    private val viewModel: AlarmViewModel by activityViewModels()
     private var bellIndex = 0
 
     override fun onCreateView(
@@ -37,7 +37,7 @@ class BellSelectDialogFragment : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         // 라디오 버튼 초기화
-        when (viewModel.currentAlarmBell.value) {
+        when (selectedBellIndex) {
             0 -> binding.radioButtonN1.isChecked = true
             1 -> binding.radioButtonN2.isChecked = true
             2 -> binding.radioButtonN3.isChecked = true
@@ -84,7 +84,7 @@ class BellSelectDialogFragment : DialogFragment() {
         // Save 버튼
         binding.saveButton.setOnSingleClickListener {
             AlarmBell.setBellIndex(bellIndex)
-            viewModel.currentAlarmBell.value = bellIndex
+            clickSaveButton.invoke(bellIndex)
             dismiss()
         }
     }

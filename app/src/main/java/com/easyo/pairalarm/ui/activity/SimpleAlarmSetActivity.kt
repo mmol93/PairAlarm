@@ -1,18 +1,21 @@
 package com.easyo.pairalarm.ui.activity
 
-import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.SeekBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivitySimpleAlarmBinding
 import com.easyo.pairalarm.extensions.clearKeyBoardFocus
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
-import com.easyo.pairalarm.util.*
+import com.easyo.pairalarm.ui.dialog.SimpleDialog
+import com.easyo.pairalarm.util.AlarmAnimation
+import com.easyo.pairalarm.util.getAddedTime
+import com.easyo.pairalarm.util.makeAlarmData
+import com.easyo.pairalarm.util.makeToast
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -23,8 +26,11 @@ import timber.log.Timber
 class SimpleAlarmSetActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySimpleAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
-    private val bellSelectDialog by lazy { BellSelectDialogFragment() }
-    private val alarmModeDialog by lazy { AlertDialog.Builder(this) }
+    private val bellSelectDialog by lazy {
+        BellSelectDialogFragment(alarmViewModel.currentAlarmBell.value) { bellIndex ->
+            alarmViewModel.currentAlarmBell.value = bellIndex
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,35 +123,33 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
         // 모드 버튼을 눌렀을 때
         binding.selectModeButton.setOnSingleClickListener {
             // ** 항목 선택 Dialog 설정
-            val modeItem = arrayOf(
+            val modeItems = arrayOf(
                 getString(R.string.alarmSet_alarmModeItem1),
                 getString(R.string.alarmSet_alarmModeItem2)
             )
 
-            alarmModeDialog.setTitle(getString(R.string.alarmSet_selectBellDialogTitle))
-            alarmModeDialog.setSingleChoiceItems(
-                modeItem,
+            SimpleDialog.make(
+                this,
+                getString(R.string.alarmSet_selectBellDialogTitle),
+                modeItems,
                 alarmViewModel.currentAlarmMode.value,
-                null
-            )
-            alarmModeDialog.setNeutralButton(getString(R.string.cancel), null)
-
-            alarmModeDialog.setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
-                val alert = dialogInterface as AlertDialog
-                // 선택된 아이템의 position에 따라 행동 조건 넣기
-                when (alert.listView.checkedItemPosition) {
-                    // Normal 클릭 시
-                    0 -> {
-                        alarmViewModel.currentAlarmMode.value = 0
+                positive = { dialogInterface ->
+                    val alert = dialogInterface as AlertDialog
+                    // 선택된 아이템의 position에 따라 행동 조건 넣기
+                    when (alert.listView.checkedItemPosition) {
+                        // Normal 클릭 시
+                        0 -> {
+                            alarmViewModel.currentAlarmMode.value = 0
+                        }
+                        // Calculate 클릭 시
+                        1 -> {
+                            alarmViewModel.currentAlarmMode.value = 1
+                        }
                     }
-                    // Calculate 클릭 시
-                    1 -> {
-                        alarmViewModel.currentAlarmMode.value = 1
-                    }
+                    binding.alarmData =
+                        binding.alarmData?.copy(mode = alarmViewModel.currentAlarmMode.value)
                 }
-                binding.alarmData = binding.alarmData?.copy(mode = alarmViewModel.currentAlarmMode.value)
-            }
-            alarmModeDialog.show()
+            )
         }
 
         // AlarmBell 설정 버튼 눌렀을 때
