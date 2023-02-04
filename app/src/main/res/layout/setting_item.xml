@@ -14,10 +14,6 @@
             type="String" />
 
         <variable
-            name="isFirstItem"
-            type="Boolean" />
-
-        <variable
             name="isLastItem"
             type="Boolean" />
 
@@ -29,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/itemBackground"
+        android:clickable="true"
         android:orientation="horizontal">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,14 +34,13 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="@dimen/element_spacing_xnormal"
-            android:layout_marginBottom="@dimen/element_spacing_xnormal"
             android:background="@drawable/sub_item_rounded_corner_clear"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="12dp"
             android:paddingVertical="12dp"
-            app:setMarginBottom="@{isFirstItem ? @dimen/element_spacing_none : @dimen/element_spacing_xnormal}"
-            app:setMarginTop="@{isLastItem ? @dimen/element_spacing_none : @dimen/element_spacing_xnormal}">
+            app:setMarginBottom="@{isLastItem ? @dimen/element_spacing_xnormal : @dimen/element_spacing_none}"
+            >
 
             <ImageView
                 android:id="@+id/setting_sub_item_image"

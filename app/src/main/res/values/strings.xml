@@ -84,5 +84,6 @@
     <!-- Toast -->
     <string name="toast_set_minimum_time">Please set at least one minute</string>
     <string name="toast_ten_minute_later">Alarm goes off 10minutes later</string>
+    <string name="toast_get_dataStore_error">Fail to get data from dataStore</string>
 
 </resources>

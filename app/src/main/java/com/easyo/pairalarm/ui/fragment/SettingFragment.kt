@@ -3,18 +3,15 @@ package com.easyo.pairalarm.ui.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
-import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.easyo.pairalarm.AppClass.Companion.dataStore
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.FragmentSettingBinding
 import com.easyo.pairalarm.groupieitem.SettingContentItem
 import com.easyo.pairalarm.groupieitem.SpacerItem
 import com.easyo.pairalarm.model.SettingContentType
+import com.easyo.pairalarm.model.SettingContents
 import com.xwray.groupie.GroupieAdapter
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class SettingFragment : Fragment(R.layout.fragment_setting) {
     private lateinit var binding: FragmentSettingBinding
@@ -24,15 +21,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         super.onViewCreated(view, savedInstanceState)
         DataBindingUtil.bind<FragmentSettingBinding>(view)?.let { binding = it } ?: return
 
-        val alarmSettingList = resources.getStringArray(R.array.setting_item_alarm_text_array)
-        val etcSettingList = resources.getStringArray(R.array.setting_item_ect_text_array)
-
-        val EXAMPLE_COUNTER = intPreferencesKey("example_counter")
-        val exampleCounterFlow: Flow<Int> = requireContext().dataStore.data
-            .map { preferences ->
-                // No type safety.
-                preferences[EXAMPLE_COUNTER] ?: 0
-            }
+        val settingItemList = SettingContents.values().map { it.title }
 
         binding.settingRecycler.apply {
             adapter = settingRecyclerAdapter
@@ -40,12 +29,10 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
 
-        setupSettingData(alarmSettingList)
-        setupSettingData(emptyArray())
-        setupSettingData(etcSettingList)
+        setupSettingData(settingItemList)
     }
 
-    private fun setupSettingData(dataList: Array<String>) {
+    private fun setupSettingData(dataList: List<String>) {
         when {
             dataList.size == 1 -> {
                 dataList.map { data ->
@@ -55,34 +42,38 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
             }
             dataList.size > 1 -> {
                 dataList.mapIndexed { index, data ->
-                    when(index) {
-                        0 -> {
-                            if (dataList.size == 2){
-                                setupItem(data, SettingContentType.FIRST, true)
-                            }else{
-                                setupItem(data, SettingContentType.FIRST)
+                    if (data.isEmpty()) {
+                        setupItem()
+                    } else {
+                        when {
+                            // 첫 번째 항목이거나 직전 값이 빈칸일 경우
+                            index == 0 || (dataList[index - 1].isEmpty()) -> {
+                                if (dataList.size == 2) {
+                                    setupItem(data, SettingContentType.FIRST)
+                                } else {
+                                    setupItem(data, SettingContentType.FIRST)
+                                }
+                            }
+                            // 마지막 항목이거나 이후 값이 빈칸일 경우
+                            index == dataList.size - 1 || (dataList[index + 1].isEmpty()) -> {
+                                setupItem(data, SettingContentType.LAST)
+                            }
+                            else -> {
+                                setupItem(data)
                             }
                         }
-                        dataList.size - 1 ->{
-                            setupItem(data, SettingContentType.LAST)
-                        }
-                        else -> {}
                     }
                 }
             }
-            dataList.isEmpty() -> {
-                setupItem()
-            }
         }
     }
-    private fun setupItem(data: String? = null, contentType: SettingContentType? = null, onlyHasTwoData: Boolean = false) {
-        if (data.isNullOrBlank()){
+
+    private fun setupItem(data: String? = null, contentType: SettingContentType? = null) {
+        if (data.isNullOrBlank()) {
             SpacerItem.xnormal().also { settingRecyclerAdapter.add(it) }
-        }else{
-            contentType?.let {
-                SettingContentItem(requireContext(), data, it, onlyHasTwoData)
-                    .also { settingRecyclerAdapter.add(it) }
-            }
+        } else {
+            SettingContentItem(requireContext(), data, contentType)
+                .also { settingRecyclerAdapter.add(it) }
         }
     }
 }
