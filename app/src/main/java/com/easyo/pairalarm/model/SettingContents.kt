@@ -5,6 +5,5 @@ enum class SettingContents(val title: String) {
     QUICKALARM_MODE("QuickAlarm Mode"),
     BLANK(""),
     APP_INFO("App Info"),
-    REPORT("Report"),
-    REPORT2("Report"),
+    REPORT("Report")
 }

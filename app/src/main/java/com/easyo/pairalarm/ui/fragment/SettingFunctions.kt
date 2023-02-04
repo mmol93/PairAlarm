@@ -6,6 +6,6 @@ interface SettingFunctions {
 
     fun setQuickAlarmBell(title: String)
     fun setQuickAlarmMode(title: String)
-    fun openAppInfo(title: String)
-    fun reportAboutApp(title: String)
+    fun openAppInfo()
+    fun reportAboutApp()
 }

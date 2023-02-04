@@ -7,6 +7,7 @@ import com.easyo.pairalarm.dataStore.DataStoreTool
 import com.easyo.pairalarm.databinding.SettingItemBinding
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.model.SettingContentType
+import com.easyo.pairalarm.model.SettingContents
 import com.easyo.pairalarm.ui.fragment.SettingFunctions
 import com.xwray.groupie.databinding.BindableItem
 import kotlinx.coroutines.CoroutineScope
@@ -54,36 +55,36 @@ class SettingContentItem(
 
         binding.root.setOnSingleClickListener {
             when (title) {
-
+                SettingContents.QUICKALARM_BELL.title -> {
+                    setQuickAlarmBell(title)
+                }
+                SettingContents.QUICKALARM_MODE.title -> {
+                    setQuickAlarmMode(title)
+                }
+                SettingContents.APP_INFO.title -> {
+                    openAppInfo()
+                }
+                SettingContents.REPORT.title -> {
+                    reportAboutApp()
+                }
             }
         }
     }
 
-    fun settingItemFunctions(title: String, functions: Map<String, () -> Unit>) {
-        val functions2 = mapOf(
-            "QuickAlarm Bell" to fun(title: String) {
-                setQuickAlarmBell(title)
-            },
-
-            )
-
-        functions2[title]?.invoke(title)
-    }
-
     override fun setQuickAlarmBell(title: String) {
-        TODO("Not yet implemented")
+
     }
 
     override fun setQuickAlarmMode(title: String) {
-        TODO("Not yet implemented")
+
     }
 
-    override fun openAppInfo(title: String) {
-        TODO("Not yet implemented")
+    override fun openAppInfo() {
+
     }
 
-    override fun reportAboutApp(title: String) {
-        TODO("Not yet implemented")
+    override fun reportAboutApp() {
+
     }
 
     override fun getLayout(): Int = R.layout.setting_item

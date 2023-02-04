@@ -32,30 +32,30 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         setupSettingData(settingItemList)
     }
 
-    private fun setupSettingData(dataList: List<String>) {
+    private fun setupSettingData(settingItemList: List<String>) {
         when {
-            dataList.size == 1 -> {
-                dataList.map { data ->
-                    SettingContentItem(requireContext(), data, SettingContentType.SINGLE)
+            settingItemList.size == 1 -> {
+                settingItemList.map { settingItem ->
+                    SettingContentItem(requireContext(), settingItem, SettingContentType.SINGLE)
                         .also { settingRecyclerAdapter.add(it) }
                 }
             }
-            dataList.size > 1 -> {
-                dataList.mapIndexed { index, data ->
+            settingItemList.size > 1 -> {
+                settingItemList.mapIndexed { index, data ->
                     if (data.isEmpty()) {
                         setupItem()
                     } else {
                         when {
                             // 첫 번째 항목이거나 직전 값이 빈칸일 경우
-                            index == 0 || (dataList[index - 1].isEmpty()) -> {
-                                if (dataList.size == 2) {
+                            index == 0 || (settingItemList[index - 1].isEmpty()) -> {
+                                if (settingItemList.size == 2) {
                                     setupItem(data, SettingContentType.FIRST)
                                 } else {
                                     setupItem(data, SettingContentType.FIRST)
                                 }
                             }
                             // 마지막 항목이거나 이후 값이 빈칸일 경우
-                            index == dataList.size - 1 || (dataList[index + 1].isEmpty()) -> {
+                            index == settingItemList.size - 1 || (settingItemList[index + 1].isEmpty()) -> {
                                 setupItem(data, SettingContentType.LAST)
                             }
                             else -> {
