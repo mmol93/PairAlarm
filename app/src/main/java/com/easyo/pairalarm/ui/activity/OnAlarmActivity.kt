@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.work.*
@@ -22,11 +24,18 @@ import java.util.*
 class OnAlarmActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOnAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOnAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        }
+        this.onBackPressedDispatcher.addCallback(this, callback)
 
         if (alarmCode != null) {
             stopOnAlarmWorkManager()
@@ -53,15 +62,9 @@ class OnAlarmActivity : AppCompatActivity() {
                     binding.ok.setOnClickListener {
                         if (alarmData.quick) {
                             alarmViewModel.deleteAlarmData(this@OnAlarmActivity, alarmData)
-                        } else {
-                            setAlarm(
-                                this@OnAlarmActivity,
-                                alarmData.alarmCode.toInt(),
-                                alarmData.hour,
-                                alarmData.minute
-                            )
                         }
 
+                        // 삭제하거나 변경된 알람들을 반영한다(Noti 등)
                         val alarmTimeWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
                         WorkManager.getInstance(this@OnAlarmActivity)
                             .enqueueUniqueWork(
@@ -69,17 +72,18 @@ class OnAlarmActivity : AppCompatActivity() {
                                 ExistingWorkPolicy.KEEP,
                                 alarmTimeWorkRequest as OneTimeWorkRequest
                             )
-
+                        handler.removeMessages(0)
                         finish()
                     }
 
+                    // +10분 스누즈
                     binding.tenMinutes.setOnClickListener {
                         val calendar = Calendar.getInstance().apply {
                             add(Calendar.MINUTE, 10)
                         }
                         val addHour = calendar.get(Calendar.HOUR_OF_DAY)
                         val addMinute = calendar.get(Calendar.MINUTE)
-                        setAlarm(
+                        setAlarmOnBroadcast(
                             this@OnAlarmActivity,
                             alarmData.alarmCode.toInt(),
                             addHour,

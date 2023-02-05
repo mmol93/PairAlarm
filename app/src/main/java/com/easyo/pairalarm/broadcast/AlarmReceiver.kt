@@ -22,7 +22,7 @@ class AlarmReceiver : BroadcastReceiver() {
                         intent.action == "android.intent.action.QUICKBOOT_POWERON" ||
                         intent.action == "android.intent.action.MY_PACKAGE_REPLACED" -> {
                     Timber.d("reset alarm")
-                    resetAlarm(context)
+                    getAllAlarmResetOnBroadcast(context)
                 }
 
                 // 내가 설정한 알람이 울렸을 때

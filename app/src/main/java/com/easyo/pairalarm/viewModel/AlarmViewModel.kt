@@ -26,7 +26,7 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
         alarmRepository.insertAlarmData(alarmData)
     }.execute(onSuccess = {
         // 브로드캐스트에 알람 예약하기
-        setAlarm(context, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
+        setAlarmOnBroadcast(context, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
         }
     )
 
@@ -36,7 +36,7 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
         // 브로드캐스트에 기존 알람 삭제 및 새로운 알람 추가
         if (alarmData.button) {
             cancelAlarm(context, alarmData.alarmCode)
-            setAlarm(context, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
+            setAlarmOnBroadcast(context, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
         } else {
             cancelAlarm(context, alarmData.alarmCode)
         }

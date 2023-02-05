@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 
-fun setAlarm(context: Context, alarmCode: Int, hour: Int, min: Int) {
+fun setAlarmOnBroadcast(context: Context, alarmCode: Int, hour: Int, min: Int) {
     val setAlarmCalendar = Calendar.getInstance().apply {
         set(Calendar.HOUR_OF_DAY, hour)
         set(Calendar.MINUTE, min)
@@ -50,7 +50,7 @@ fun setAlarm(context: Context, alarmCode: Int, hour: Int, min: Int) {
 }
 
 // 모든 알람 데이터를 가져와서 전부 다시 셋팅한다
-fun resetAlarm(context: Context?, alarmDataList: List<AlarmData>? = null) {
+fun getAllAlarmResetOnBroadcast(context: Context?, alarmDataList: List<AlarmData>? = null) {
     if (context != null) {
         // AlarmData가 없으면 DB에서 새롭게 가져온다
         if (alarmDataList == null){
@@ -60,7 +60,7 @@ fun resetAlarm(context: Context?, alarmDataList: List<AlarmData>? = null) {
                 alarmData.alarmDao().getAllAlarms().collectLatest {
                     it.forEach { alarmData ->
                         Timber.d("reset alarm: " + alarmData.alarmCode)
-                        setAlarm(
+                        setAlarmOnBroadcast(
                             context,
                             alarmData.alarmCode.toInt(),
                             alarmData.hour,
@@ -73,7 +73,7 @@ fun resetAlarm(context: Context?, alarmDataList: List<AlarmData>? = null) {
         }else{
             alarmDataList.forEach { alarmData ->
                 Timber.d("reset alarm: " + alarmData.alarmCode)
-                setAlarm(
+                setAlarmOnBroadcast(
                     context,
                     alarmData.alarmCode.toInt(),
                     alarmData.hour,
