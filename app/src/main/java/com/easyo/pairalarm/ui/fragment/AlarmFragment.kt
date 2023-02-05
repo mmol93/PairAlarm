@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import autoCleared
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
 import com.easyo.pairalarm.extensions.getPermissionActivityResultLauncher
@@ -34,7 +35,7 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class AlarmFragment : Fragment(R.layout.fragment_alarm) {
-    private lateinit var binding: FragmentAlarmBinding
+    private var binding: FragmentAlarmBinding by autoCleared()
     private lateinit var alarmActivityIntent: Intent
     private val alarmViewModel: AlarmViewModel by activityViewModels()
     private val permissionRequest = getPermissionActivityResultLauncher(
