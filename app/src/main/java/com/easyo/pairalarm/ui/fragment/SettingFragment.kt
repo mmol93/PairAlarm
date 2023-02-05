@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import autoCleared
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.FragmentSettingBinding
 import com.easyo.pairalarm.groupieitem.SettingContentItem
@@ -14,7 +15,7 @@ import com.easyo.pairalarm.model.SettingContents
 import com.xwray.groupie.GroupieAdapter
 
 class SettingFragment : Fragment(R.layout.fragment_setting) {
-    private lateinit var binding: FragmentSettingBinding
+    private var binding: FragmentSettingBinding by autoCleared()
     private val settingRecyclerAdapter = GroupieAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
