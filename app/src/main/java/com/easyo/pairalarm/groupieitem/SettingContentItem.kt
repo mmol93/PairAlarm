@@ -1,25 +1,35 @@
 package com.easyo.pairalarm.groupieitem
 
 import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.dataStore.DataStoreTool
 import com.easyo.pairalarm.databinding.SettingItemBinding
+import com.easyo.pairalarm.extensions.getBellIndex
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.model.SettingContentType
 import com.easyo.pairalarm.model.SettingContents
+import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
 import com.easyo.pairalarm.ui.fragment.SettingFunctions
 import com.xwray.groupie.databinding.BindableItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.xwray.groupie.databinding.GroupieViewHolder
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
+
 
 class SettingContentItem(
     override val context: Context,
     override val title: String,
     private val settingContentType: SettingContentType?,
+    override val coroutineContext: CoroutineContext,
+    override val job: Job,
 ) : BindableItem<SettingItemBinding>(title.hashCode().toLong()), DataStoreTool, SettingFunctions {
+    private lateinit var description: String
 
     override fun bind(binding: SettingItemBinding, position: Int) {
         binding.title = title
@@ -47,9 +57,10 @@ class SettingContentItem(
             }
         }
 
-        CoroutineScope(Dispatchers.Main).launch {
-            getStoredDataWithFlow(title).collectLatest {
+        launch {
+            getStoredStringDataWithFlow(title).collectLatest {
                 binding.description = it
+                description = it
             }
         }
 
@@ -71,8 +82,17 @@ class SettingContentItem(
         }
     }
 
-    override fun setQuickAlarmBell(title: String) {
+    override fun onViewDetachedFromWindow(viewHolder: GroupieViewHolder<SettingItemBinding>) {
+        super.onViewDetachedFromWindow(viewHolder)
+        job.cancel()
+    }
 
+    override fun setQuickAlarmBell(title: String) {
+        BellSelectDialogFragment(title.getBellIndex()){
+            launch {
+                saveStringData(title, description)
+            }
+        }.also { it.show((context as AppCompatActivity).supportFragmentManager, null)}
     }
 
     override fun setQuickAlarmMode(title: String) {

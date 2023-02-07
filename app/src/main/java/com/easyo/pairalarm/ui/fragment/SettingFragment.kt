@@ -12,15 +12,19 @@ import com.easyo.pairalarm.groupieitem.SpacerItem
 import com.easyo.pairalarm.model.SettingContentType
 import com.easyo.pairalarm.model.SettingContents
 import com.xwray.groupie.GroupieAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 
 class SettingFragment : Fragment(R.layout.fragment_setting) {
     private lateinit var binding: FragmentSettingBinding
     private val settingRecyclerAdapter = GroupieAdapter()
+    private val job by lazy { Job() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         DataBindingUtil.bind<FragmentSettingBinding>(view)?.let { binding = it } ?: return
 
+        binding.lifecycleOwner = this
         val settingItemList = SettingContents.values().map { it.title }
 
         binding.settingRecycler.apply {
@@ -36,7 +40,13 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         when {
             settingItemList.size == 1 -> {
                 settingItemList.map { settingItem ->
-                    SettingContentItem(requireContext(), settingItem, SettingContentType.SINGLE)
+                    SettingContentItem(
+                        requireContext(),
+                        settingItem,
+                        SettingContentType.SINGLE,
+                        Dispatchers.Main,
+                        job
+                    )
                         .also { settingRecyclerAdapter.add(it) }
                 }
             }
@@ -72,7 +82,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         if (data.isNullOrBlank()) {
             SpacerItem.xnormal().also { settingRecyclerAdapter.add(it) }
         } else {
-            SettingContentItem(requireContext(), data, contentType)
+            SettingContentItem(requireContext(), data, contentType, Dispatchers.Main, job)
                 .also { settingRecyclerAdapter.add(it) }
         }
     }

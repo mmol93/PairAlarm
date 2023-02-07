@@ -34,6 +34,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNormalAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.lifecycleOwner = this
 
         // alarmData를 사용하여 UI를 초기화
         var alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)

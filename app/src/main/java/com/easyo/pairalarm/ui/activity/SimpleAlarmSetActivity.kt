@@ -36,6 +36,7 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySimpleAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.lifecycleOwner = this
 
         // UI 초기화
         lifecycleScope.launch {

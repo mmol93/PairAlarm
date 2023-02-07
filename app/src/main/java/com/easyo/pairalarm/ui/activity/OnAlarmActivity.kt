@@ -26,6 +26,8 @@ class OnAlarmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOnAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.lifecycleOwner = this
+
         val alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
 
         if (alarmCode != null) {

@@ -86,6 +86,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         DataBindingUtil.bind<FragmentAlarmBinding>(view)?.let { binding = it } ?: return
+        binding.lifecycleOwner = this
 
         // TODO: 나중에 화면 사이즈에 맞게 숫자 바뀌게 하기
         val recyclerViewSpan = 2
