@@ -10,6 +10,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.databinding.BindingAdapter
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.database.table.Weekend
+import com.easyo.pairalarm.model.AlarmMode
 import com.easyo.pairalarm.model.BellType
 import com.google.android.material.button.MaterialButton
 
@@ -97,9 +98,9 @@ object BindingAdapter {
     @BindingAdapter("alarmMode")
     fun TextView.setAlarmMode(alarmMode: Int) {
         this.text = when (alarmMode) {
-            0 -> context.getString(R.string.alarmSet_alarmModeItem1)
-            1 -> context.getString(R.string.alarmSet_alarmModeItem2)
-            else -> context.getString(R.string.alarmSet_alarmModeItem1)
+            0 -> AlarmMode.NORMAL.mode
+            1 -> AlarmMode.CALCULATION.mode
+            else -> AlarmMode.NORMAL.mode
         }
     }
 

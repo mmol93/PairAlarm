@@ -10,6 +10,7 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivitySimpleAlarmBinding
 import com.easyo.pairalarm.extensions.clearKeyBoardFocus
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
+import com.easyo.pairalarm.model.AlarmMode
 import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
 import com.easyo.pairalarm.util.AlarmAnimation
@@ -124,15 +125,10 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
         // 모드 버튼을 눌렀을 때
         binding.selectModeButton.setOnSingleClickListener {
             // ** 항목 선택 Dialog 설정
-            val modeItems = arrayOf(
-                getString(R.string.alarmSet_alarmModeItem1),
-                getString(R.string.alarmSet_alarmModeItem2)
-            )
-
             SimpleDialog.make(
                 this,
                 getString(R.string.alarmSet_selectBellDialogTitle),
-                modeItems,
+                AlarmMode.values().map { it.mode }.toTypedArray(),
                 alarmViewModel.currentAlarmMode.value,
                 positive = { dialogInterface ->
                     val alert = dialogInterface as AlertDialog

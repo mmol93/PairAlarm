@@ -5,5 +5,17 @@ enum class SettingContents(val title: String) {
     QUICKALARM_MODE("QuickAlarm Mode"),
     BLANK(""),
     APP_INFO("App Info"),
-    REPORT("Report")
+    REPORT("Report");
+}
+
+enum class BellType(val title: String) {
+    WALKING("Walking"),
+    PINAOMAN("PianoMan"),
+    HAPPYTOWN("HappyTown"),
+    LONELY("Lonely")
+}
+
+enum class AlarmMode(val mode: String) {
+    NORMAL("Normal"),
+    CALCULATION("Calculation")
 }
