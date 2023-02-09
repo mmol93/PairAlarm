@@ -10,6 +10,7 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityNormalAlarmBinding
 import com.easyo.pairalarm.extensions.clearKeyBoardFocus
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
+import com.easyo.pairalarm.model.AlarmMode
 import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
 import com.easyo.pairalarm.util.*
@@ -34,6 +35,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNormalAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.lifecycleOwner = this
 
         // alarmData를 사용하여 UI를 초기화
         var alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
@@ -97,18 +99,11 @@ class NormalAlarmSetActivity : AppCompatActivity() {
 
         // AlarmMode 설정 버튼 눌렀을 때
         binding.selectModeButton.setOnSingleClickListener {
-            // TODo: 이 부분 전체 공통화 작업 해놓기
-            // TODO: 이 부분 enum이나 data class로 변경해서 사용하기(SimpleAlarm 부분도 동일하게 적용)
             // ** 항목 선택 Dialog 설정
-            val modeItems = arrayOf(
-                getString(R.string.alarmSet_alarmModeItem1),
-                getString(R.string.alarmSet_alarmModeItem2)
-            )
-
             SimpleDialog.make(
                 this,
                 getString(R.string.alarmSet_selectBellDialogTitle),
-                modeItems,
+                AlarmMode.values().map { it.mode }.toTypedArray(),
                 binding.alarmData!!.mode,
                 positive = { dialogInterface ->
                     val alert = dialogInterface as AlertDialog

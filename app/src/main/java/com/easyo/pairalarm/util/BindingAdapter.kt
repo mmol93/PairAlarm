@@ -1,7 +1,6 @@
 package com.easyo.pairalarm.util
 
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
 import android.widget.NumberPicker
@@ -11,8 +10,9 @@ import androidx.core.view.updateLayoutParams
 import androidx.databinding.BindingAdapter
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.database.table.Weekend
+import com.easyo.pairalarm.model.AlarmMode
+import com.easyo.pairalarm.model.BellType
 import com.google.android.material.button.MaterialButton
-import kotlin.math.roundToInt
 
 
 object BindingAdapter {
@@ -81,11 +81,11 @@ object BindingAdapter {
     @BindingAdapter("bellIndex")
     fun TextView.setBellText(bellIndex: Int) {
         this.text = when (bellIndex) {
-            0 -> context.getString(R.string.bellType_Normal_Walking)
-            1 -> context.getString(R.string.bellType_Normal_PianoMan)
-            2 -> context.getString(R.string.bellType_Normal_Happy)
-            3 -> context.getString(R.string.bellType_Normal_Lonely)
-            else -> context.getString(R.string.bellType_Normal_Walking)
+            0 -> BellType.WALKING.title
+            1 -> BellType.PINAOMAN.title
+            2 -> BellType.HAPPYTOWN.title
+            3 -> BellType.LONELY.title
+            else -> BellType.WALKING.title
         }
     }
 
@@ -98,9 +98,9 @@ object BindingAdapter {
     @BindingAdapter("alarmMode")
     fun TextView.setAlarmMode(alarmMode: Int) {
         this.text = when (alarmMode) {
-            0 -> context.getString(R.string.alarmSet_alarmModeItem1)
-            1 -> context.getString(R.string.alarmSet_alarmModeItem2)
-            else -> context.getString(R.string.alarmSet_alarmModeItem1)
+            0 -> AlarmMode.NORMAL.mode
+            1 -> AlarmMode.CALCULATION.mode
+            else -> AlarmMode.NORMAL.mode
         }
     }
 

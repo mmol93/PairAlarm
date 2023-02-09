@@ -10,7 +10,6 @@ import androidx.fragment.app.DialogFragment
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.DialogBellSetBinding
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
-import com.easyo.pairalarm.util.AlarmBell
 import com.easyo.pairalarm.util.AlarmMusic
 import com.easyo.pairalarm.util.selectMusic
 import timber.log.Timber
@@ -83,7 +82,6 @@ class BellSelectDialogFragment(
 
         // Save 버튼
         binding.saveButton.setOnSingleClickListener {
-            AlarmBell.setBellIndex(bellIndex)
             clickSaveButton.invoke(bellIndex)
             dismiss()
         }
