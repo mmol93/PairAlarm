@@ -47,7 +47,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         },
         notGranted = {
             // 1개라도 허락되지 않은 권한이 있을 때
-            SimpleDialog.make(
+            SimpleDialog.showSimpleDialog(
                 requireContext(),
                 getString(R.string.dialog_permission_title),
                 getString(R.string.dialog_notification_permission_message),
@@ -68,7 +68,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
             Timber.d("resultCode: ${result.resultCode}")
             // 오버레이 권한은 설정 후 Back키로 돌아오기 때문에 RESULT_CANCELED가 찍힌다
             if (result.resultCode == Activity.RESULT_CANCELED) {
-                SimpleDialog.make(
+                SimpleDialog.showSimpleDialog(
                     requireContext(),
                     getString(R.string.dialog_permission_title),
                     getString(R.string.dialog_overlay_message),

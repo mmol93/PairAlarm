@@ -145,10 +145,10 @@ class AlarmItem(
 
         // 삭제 버튼 클릭
         binding.deleteImage.setOnSingleClickListener {
-            SimpleDialog.make(
+            SimpleDialog.showSimpleDialog(
                 context,
-                context.getString(R.string.dialog_delete_title),
-                context.getString(R.string.dialog_delete_content),
+                title = context.getString(R.string.dialog_delete_title),
+                message = context.getString(R.string.dialog_delete_content),
                 positive = {
                     alarmViewModel.deleteAlarmData(this.context, alarmData)
                 }

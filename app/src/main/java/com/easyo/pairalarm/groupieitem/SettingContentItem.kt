@@ -95,11 +95,9 @@ class SettingContentItem(
     }
 
     override fun setQuickAlarmMode(title: String) {
-        SimpleDialog.make(
+        SimpleDialog.showAlarmModeDialog(
             context,
-            context.getString(R.string.alarmSet_selectBellDialogTitle),
-            AlarmMode.values().map { it.mode }.toTypedArray(),
-            settingDetail.getModeIndex(),
+            clickedItemPosition = settingDetail.getModeIndex(),
             positive = { dialogInterface ->
                 launch {
                     val alert = dialogInterface as AlertDialog

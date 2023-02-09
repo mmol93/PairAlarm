@@ -10,10 +10,12 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityNormalAlarmBinding
 import com.easyo.pairalarm.extensions.clearKeyBoardFocus
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
-import com.easyo.pairalarm.model.AlarmMode
 import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
-import com.easyo.pairalarm.util.*
+import com.easyo.pairalarm.util.ALARM_CODE_TEXT
+import com.easyo.pairalarm.util.AlarmAnimation
+import com.easyo.pairalarm.util.getNewAlarmCode
+import com.easyo.pairalarm.util.makeToast
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -100,11 +102,9 @@ class NormalAlarmSetActivity : AppCompatActivity() {
         // AlarmMode 설정 버튼 눌렀을 때
         binding.selectModeButton.setOnSingleClickListener {
             // ** 항목 선택 Dialog 설정
-            SimpleDialog.make(
+            SimpleDialog.showAlarmModeDialog(
                 this,
-                getString(R.string.alarmSet_selectBellDialogTitle),
-                AlarmMode.values().map { it.mode }.toTypedArray(),
-                binding.alarmData!!.mode,
+                clickedItemPosition = binding.alarmData!!.mode,
                 positive = { dialogInterface ->
                     val alert = dialogInterface as AlertDialog
                     when (alert.listView.checkedItemPosition) {
