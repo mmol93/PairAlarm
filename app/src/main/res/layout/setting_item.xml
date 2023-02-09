@@ -10,7 +10,7 @@
             type="String" />
 
         <variable
-            name="description"
+            name="settingDetail"
             type="String" />
 
         <variable
@@ -83,9 +83,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="@{description}"
+                    android:text="@{settingDetail}"
                     android:textColor="@color/sub_item_text_color"
-                    app:visible="@{!TextUtils.isEmpty(description)}"
+                    app:visible="@{!TextUtils.isEmpty(settingDetail)}"
                     tools:text="Setting description" />
             </LinearLayout>
 
