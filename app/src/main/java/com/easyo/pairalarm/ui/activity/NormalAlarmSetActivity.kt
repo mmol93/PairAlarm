@@ -154,7 +154,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
                     )
 
                     // DB에 데이터 삽입
-                    alarmViewModel.insertAlarmData(this, alarmData)
+                    alarmViewModel.insertAlarmData(alarmData)
                     Timber.d("saved alarmData: $alarmData")
                 }
                 // 데이터를 수정 했을 경우
@@ -166,7 +166,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
                         alarmCode = alarmCode!!
                     )
                     // DB 업데이트
-                    alarmViewModel.updateAlarmData(this, alarmData.copy(button = true))
+                    alarmViewModel.updateAlarmData(alarmData.copy(button = true))
                     Timber.d("updated alarmData: $alarmData")
                 }
                 finish()
