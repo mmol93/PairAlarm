@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.easyo.pairalarm.model.Failure
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
@@ -71,9 +72,4 @@ abstract class BaseViewModel : ViewModel() {
                 }
         }
     }
-
-    data class Failure(
-        val error: Throwable,
-        val retry: (() -> Unit)? = null
-    )
 }

@@ -10,6 +10,7 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityNormalAlarmBinding
 import com.easyo.pairalarm.extensions.clearKeyBoardFocus
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
+import com.easyo.pairalarm.extensions.showErrorSnackBar
 import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
 import com.easyo.pairalarm.util.ALARM_CODE_TEXT
@@ -318,6 +319,10 @@ class NormalAlarmSetActivity : AppCompatActivity() {
                 }
                 setStrokeColorInButton(null, binding.alarmData!!.Sun)
             }
+        }
+
+        alarmViewModel.failure.observe(this){
+            showErrorSnackBar(binding.root, it)
         }
     }
 
