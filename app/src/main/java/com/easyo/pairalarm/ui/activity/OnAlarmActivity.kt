@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -63,7 +62,7 @@ class OnAlarmActivity : AppCompatActivity() {
 
                     binding.ok.setOnClickListener {
                         if (alarmData.quick) {
-                            alarmViewModel.deleteAlarmData(this@OnAlarmActivity, alarmData)
+                            alarmViewModel.deleteAlarmData(alarmData)
                         }
 
                         // 삭제하거나 변경된 알람들을 반영한다(Noti 등)
