@@ -34,7 +34,7 @@ class AlarmReceiver : BroadcastReceiver() {
                             .build()
                     WorkManager.getInstance(context).enqueueUniqueWork(
                         RECEIVER_ALARM_WORKER,
-                        ExistingWorkPolicy.KEEP,
+                        ExistingWorkPolicy.REPLACE,
                         receiverAlarmWorkRequest as OneTimeWorkRequest
                     )
                 }
@@ -66,7 +66,7 @@ class AlarmReceiver : BroadcastReceiver() {
             WorkManager.getInstance(it)
                 .enqueueUniqueWork(
                     NEXT_ALARM_WORKER,
-                    ExistingWorkPolicy.KEEP,
+                    ExistingWorkPolicy.REPLACE,
                     alarmTimeWorkRequest as OneTimeWorkRequest
                 )
         }

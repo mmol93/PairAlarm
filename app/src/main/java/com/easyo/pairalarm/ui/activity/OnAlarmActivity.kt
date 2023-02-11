@@ -1,12 +1,11 @@
 package com.easyo.pairalarm.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.work.*
 import com.easyo.pairalarm.R
@@ -40,7 +39,6 @@ class OnAlarmActivity : AppCompatActivity() {
         this.onBackPressedDispatcher.addCallback(this, callback)
 
         if (alarmCode != null) {
-            stopOnAlarmWorkManager()
             val goesOffAlarmData = alarmViewModel.searchAlarmCode(alarmCode.toString())
             // 현재 시간이 계속 갱신되게한다
             val handler = Handler(Looper.getMainLooper())
@@ -67,11 +65,12 @@ class OnAlarmActivity : AppCompatActivity() {
                         }
 
                         // 삭제하거나 변경된 알람들을 반영한다(Noti 등)
-                        val alarmTimeWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
+                        val alarmTimeWorkRequest: WorkRequest =
+                            OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
                         WorkManager.getInstance(this@OnAlarmActivity)
                             .enqueueUniqueWork(
                                 NEXT_ALARM_WORKER,
-                                ExistingWorkPolicy.KEEP,
+                                ExistingWorkPolicy.REPLACE,
                                 alarmTimeWorkRequest as OneTimeWorkRequest
                             )
                         handler.removeMessages(0)
@@ -106,9 +105,5 @@ class OnAlarmActivity : AppCompatActivity() {
             makeToast(this, getString(R.string.on_alarm_error))
             finish()
         }
-    }
-
-    private fun stopOnAlarmWorkManager() {
-        WorkManager.getInstance(this).cancelUniqueWork(RECEIVER_ALARM_WORKER)
     }
 }
