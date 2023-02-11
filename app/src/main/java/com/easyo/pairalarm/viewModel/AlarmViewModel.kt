@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.repository.AlarmRepository
-import com.easyo.pairalarm.util.*
+import com.easyo.pairalarm.util.cancelAlarm
+import com.easyo.pairalarm.util.initCurrentAlarmData
+import com.easyo.pairalarm.util.setAlarmOnBroadcast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +15,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepository) :
+class AlarmViewModel @Inject constructor(
+    private val alarmRepository: AlarmRepository
+) :
     BaseViewModel() {
     val currentAlarmHour = MutableStateFlow(0)
     val currentAlarmMin = MutableStateFlow(0)
@@ -36,7 +40,12 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
         // 브로드캐스트에 기존 알람 삭제 및 새로운 알람 추가
         if (alarmData.button) {
             cancelAlarm(context, alarmData.alarmCode)
-            setAlarmOnBroadcast(context, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
+            setAlarmOnBroadcast(
+                context,
+                alarmData.alarmCode.toInt(),
+                alarmData.hour,
+                alarmData.minute
+            )
         } else {
             cancelAlarm(context, alarmData.alarmCode)
         }

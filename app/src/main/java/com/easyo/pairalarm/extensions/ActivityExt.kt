@@ -7,6 +7,10 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import com.easyo.pairalarm.R
+import com.easyo.pairalarm.model.Failure
+import com.google.android.material.snackbar.Snackbar
+import timber.log.Timber
 
 // 현재 화면이 자동으로 꺼지지 않게 유지 & 잠금화면에 액티비티 띄우기
 fun AppCompatActivity.displayOn() {
@@ -31,4 +35,10 @@ fun AppCompatActivity.clearKeyBoardFocus(rootView: View) {
     imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 
     rootView.requestFocus()
+}
+
+fun AppCompatActivity.showErrorSnackBar(view: View, error: Failure) {
+    this.let { Snackbar.make(view, R.string.some_error, Snackbar.LENGTH_SHORT) }
+        .also { it.show() }
+    Timber.e("error: ${error.error.message}")
 }

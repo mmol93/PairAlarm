@@ -18,6 +18,7 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
 import com.easyo.pairalarm.extensions.getPermissionActivityResultLauncher
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
+import com.easyo.pairalarm.extensions.showErrorSnackBar
 import com.easyo.pairalarm.groupieitem.AlarmItem
 import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
 import com.easyo.pairalarm.ui.activity.SimpleAlarmSetActivity
@@ -62,8 +63,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         }
     )
 
-    private var resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             // 오버레이 권한 설정에서 돌아왔을 때
             Timber.d("resultCode: ${result.resultCode}")
             // 오버레이 권한은 설정 후 Back키로 돌아오기 때문에 RESULT_CANCELED가 찍힌다
@@ -82,7 +82,6 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 )
             }
         }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -143,6 +142,10 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         binding.fab3.setOnSingleClickListener {
             alarmActivityIntent = Intent(activity, SimpleAlarmSetActivity::class.java)
             checkEssentialPermission()
+        }
+
+        alarmViewModel.failure.observe(viewLifecycleOwner) {
+            showErrorSnackBar(it)
         }
     }
 
