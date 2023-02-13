@@ -55,8 +55,7 @@ fun getAllAlarmResetOnBroadcast(context: Context?, alarmDataList: List<AlarmData
     if (context != null) {
         // AlarmData가 없으면 DB에서 새롭게 가져온다
         if (alarmDataList == null) {
-            val alarmData: AppDatabase =
-                Room.databaseBuilder(context, AppDatabase::class.java, ALARM_DB_NAME).build()
+            val alarmData: AppDatabase = Room.databaseBuilder(context, AppDatabase::class.java, ALARM_DB_NAME).build()
             CoroutineScope(Dispatchers.IO).launch {
                 alarmData.alarmDao().getAllAlarms().collect {
                     it.forEach { alarmData ->
