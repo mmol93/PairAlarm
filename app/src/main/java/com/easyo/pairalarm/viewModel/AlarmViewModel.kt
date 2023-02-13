@@ -1,6 +1,6 @@
 package com.easyo.pairalarm.viewModel
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.repository.AlarmRepository
@@ -13,8 +13,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepository) :
-    BaseViewModel() {
+class AlarmViewModel @Inject constructor(
+    private val alarmRepository: AlarmRepository,
+    private val app:Application
+    ) :
+    BaseViewModel(app) {
     val currentAlarmHour = MutableStateFlow(0)
     val currentAlarmMin = MutableStateFlow(0)
     val currentAlarmBell = MutableStateFlow(0)
@@ -22,32 +25,32 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
 
     fun getAllAlarmData() = alarmRepository.getAllAlarm()
 
-    fun insertAlarmData(context: Context, alarmData: AlarmData) = viewModelScope.launch {
+    fun insertAlarmData(alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.insertAlarmData(alarmData)
     }.execute(onSuccess = {
         // 브로드캐스트에 알람 예약하기
-        setAlarmOnBroadcast(context, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
+        setAlarmOnBroadcast(app.applicationContext, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
         }
     )
 
-    fun updateAlarmData(context: Context, alarmData: AlarmData) = viewModelScope.launch {
+    fun updateAlarmData(alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.updateAlarmData(alarmData)
     }.execute(onSuccess = {
         // 브로드캐스트에 기존 알람 삭제 및 새로운 알람 추가
         if (alarmData.button) {
-            cancelAlarm(context, alarmData.alarmCode)
-            setAlarmOnBroadcast(context, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
+            cancelAlarm(app.applicationContext, alarmData.alarmCode)
+            setAlarmOnBroadcast(app.applicationContext, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
         } else {
-            cancelAlarm(context, alarmData.alarmCode)
+            cancelAlarm(app.applicationContext, alarmData.alarmCode)
         }
     }
     )
 
-    fun deleteAlarmData(context: Context, alarmData: AlarmData) = viewModelScope.launch {
+    fun deleteAlarmData(alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.deleteAlarmData(alarmData)
     }.execute(onSuccess = {
         // 브로드캐스트에 알람 삭제
-        cancelAlarm(context, alarmData.alarmCode)
+        cancelAlarm(app.applicationContext, alarmData.alarmCode)
     })
 
     fun searchAlarmCode(alarmCode: String) = alarmRepository.searchWithAlarmCode(alarmCode)

@@ -150,7 +150,7 @@ class AlarmItem(
                 title = context.getString(R.string.dialog_delete_title),
                 message = context.getString(R.string.dialog_delete_content),
                 positive = {
-                    alarmViewModel.deleteAlarmData(this.context, alarmData)
+                    alarmViewModel.deleteAlarmData(alarmData)
                 }
             )
         }
@@ -163,7 +163,7 @@ class AlarmItem(
             if (lastClickTime < System.currentTimeMillis() - 500) {
                 lastClickTime = System.currentTimeMillis()
                 alarmData.button = isChecked
-                alarmViewModel.updateAlarmData(context, alarmData)
+                alarmViewModel.updateAlarmData(alarmData)
                 Timber.d("update alarmData: $alarmData")
             }
         }

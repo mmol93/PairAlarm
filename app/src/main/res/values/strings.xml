@@ -17,6 +17,7 @@
 
     <!-- error message -->
     <string name="on_alarm_error">Error!!: Could not read alarm data</string>
+    <string name="some_error">Error is occurred. \n please try again.</string>
 
     <!-- Weekend -->
     <string name="monday_short">M</string>

@@ -61,7 +61,7 @@ class OnAlarmActivity : AppCompatActivity() {
 
                     binding.ok.setOnClickListener {
                         if (alarmData.quick) {
-                            alarmViewModel.deleteAlarmData(this@OnAlarmActivity, alarmData)
+                            alarmViewModel.deleteAlarmData(alarmData)
                         }
 
                         // 삭제하거나 변경된 알람들을 반영한다(Noti 등)

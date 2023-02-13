@@ -192,7 +192,7 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
                     alarmName = binding.alarmNameEditText.text.toString(),
                     alarmData = binding.alarmData!!
                 )
-                alarmViewModel.insertAlarmData(this, alarmData)
+                alarmViewModel.insertAlarmData(alarmData)
 
                 finish()
             } else {
