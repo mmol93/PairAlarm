@@ -310,7 +310,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
         // 일
         binding.sunButton.apply {
             setOnClickListener {
-                if (!binding.alarmData!!.Sat) {
+                if (!binding.alarmData!!.Sun) {
                     binding.alarmData = binding.alarmData?.copy(Sun = true)
                     AlarmAnimation.jump(this).start()
                 } else {
