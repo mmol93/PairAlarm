@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -13,6 +12,10 @@
         <variable
             name="weekend"
             type="com.easyo.pairalarm.database.table.Weekend" />
+
+        <variable
+            name="manualChangeForHour"
+            type="Boolean" />
     </data>
 
     <ScrollView
@@ -28,6 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -45,6 +50,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:text="@{alarmData.name}"
                     android:textColor="@color/white" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -64,7 +71,8 @@
                     android:layout_marginStart="25dp"
                     android:theme="@style/numberPickerCustomTheme"
                     app:hourForAMPM="@{alarmData.hour}"
-                    app:minForAMPM="@{alarmData.minute}"/>
+                    app:minForAMPM="@{alarmData.minute}"
+                    app:manualChange="@{manualChangeForHour}"/>
 
                 <NumberPicker
                     android:id="@+id/numberPickerHour"
@@ -111,7 +119,7 @@
                     android:paddingRight="0dp"
                     android:text="@string/monday_short"
                     android:textColor="@color/white"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     app:cornerRadius="60dp"
                     app:strokeColor="@color/background"
                     app:strokeWidth="2dp"
@@ -130,7 +138,7 @@
                     android:paddingRight="0dp"
                     android:text="@string/tuesday_short"
                     android:textColor="@color/white"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     app:cornerRadius="60dp"
                     app:strokeColor="@color/background"
                     app:strokeWidth="2dp"
@@ -149,7 +157,7 @@
                     android:paddingRight="0dp"
                     android:text="@string/wednesday_short"
                     android:textColor="@color/white"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     app:cornerRadius="60dp"
                     app:strokeColor="@color/background"
                     app:strokeWidth="2dp"
@@ -168,7 +176,7 @@
                     android:paddingRight="0dp"
                     android:text="@string/thursday_short"
                     android:textColor="@color/white"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     app:cornerRadius="60dp"
                     app:strokeColor="@color/background"
                     app:strokeWidth="2dp"
@@ -187,7 +195,7 @@
                     android:paddingRight="0dp"
                     android:text="@string/friday_short"
                     android:textColor="@color/white"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     app:cornerRadius="60dp"
                     app:strokeColor="@color/background"
                     app:strokeWidth="2dp"
@@ -206,7 +214,7 @@
                     android:paddingRight="0dp"
                     android:text="@string/saturday_short"
                     android:textColor="@color/main_deepBlue"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     app:cornerRadius="60dp"
                     app:strokeColor="@color/background"
                     app:strokeWidth="2dp"
@@ -225,7 +233,7 @@
                     android:paddingRight="0dp"
                     android:text="@string/sunday_short"
                     android:textColor="@color/red"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     app:cornerRadius="60dp"
                     app:strokeColor="@color/background"
                     app:strokeWidth="2dp"
@@ -366,7 +374,7 @@
                     android:gravity="center"
                     android:text="@string/alarmSet_selectBellTextTitle"
                     android:textColor="@color/white"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     app:bellIndex="@{alarmData.bell}" />
 
                 <TextView
@@ -378,7 +386,7 @@
                     android:gravity="center"
                     android:text="@string/alarmSet_selectModeTextTitle"
                     android:textColor="@color/white"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     app:alarmMode="@{alarmData.mode}" />
             </LinearLayout>
 

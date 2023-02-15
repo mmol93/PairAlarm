@@ -1,6 +1,7 @@
 package com.easyo.pairalarm.ui.activity
 
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
 import android.widget.SeekBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -39,6 +40,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
         binding = ActivityNormalAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.lifecycleOwner = this
+        binding.manualChangeForHour = false
 
         // alarmData를 사용하여 UI를 초기화
         var alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
@@ -57,6 +59,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
             minValue = 1
             setOnValueChangedListener { _, _, newVal ->
                 binding.alarmData?.let {
+                    binding.manualChangeForHour = true
                     binding.alarmData = it.copy(hour = newVal)
                 }
             }
@@ -68,6 +71,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
             minValue = 0
             setOnValueChangedListener { _, _, newVal ->
                 binding.alarmData?.let {
+                    binding.manualChangeForHour = true
                     binding.alarmData = it.copy(minute = newVal)
                 }
             }
@@ -79,6 +83,9 @@ class NormalAlarmSetActivity : AppCompatActivity() {
             maxValue = arg1.size - 1
             minValue = 0
             displayedValues = arg1
+            setOnValueChangedListener { _, _, _ ->
+                binding.manualChangeForHour = true
+            }
         }
 
         // bellDialog에서 변경한 bellIndex를 갱신한다
@@ -150,7 +157,8 @@ class NormalAlarmSetActivity : AppCompatActivity() {
                     val alarmData = binding.alarmData!!.copy(
                         hour = hour,
                         minute = binding.numberPickerMin.value,
-                        alarmCode = alarmCode!!
+                        alarmCode = alarmCode!!,
+                        name = binding.alarmNameEditText.text.toString()
                     )
 
                     // DB에 데이터 삽입
@@ -163,7 +171,8 @@ class NormalAlarmSetActivity : AppCompatActivity() {
                     val alarmData = binding.alarmData!!.copy(
                         hour = hour,
                         minute = binding.numberPickerMin.value,
-                        alarmCode = alarmCode!!
+                        alarmCode = alarmCode!!,
+                        name = binding.alarmNameEditText.text.toString()
                     )
                     // DB 업데이트
                     alarmViewModel.updateAlarmData(alarmData.copy(button = true))
@@ -310,7 +319,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
         // 일
         binding.sunButton.apply {
             setOnClickListener {
-                if (!binding.alarmData!!.Sat) {
+                if (!binding.alarmData!!.Sun) {
                     binding.alarmData = binding.alarmData?.copy(Sun = true)
                     AlarmAnimation.jump(this).start()
                 } else {
@@ -321,7 +330,16 @@ class NormalAlarmSetActivity : AppCompatActivity() {
             }
         }
 
-        alarmViewModel.failure.observe(this){
+        // 텍스트 입력 마쳤을 때
+        binding.alarmNameEditText.setOnEditorActionListener { textView, actionId, _ ->
+            return@setOnEditorActionListener if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.alarmData = binding.alarmData?.copy(name = textView.text.toString())
+                clearKeyBoardFocus(binding.root)
+                true
+            } else false
+        }
+
+        alarmViewModel.failure.observe(this) {
             showErrorSnackBar(binding.root, it)
         }
     }

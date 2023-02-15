@@ -1,6 +1,7 @@
 package com.easyo.pairalarm.ui.activity
 
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
 import android.widget.SeekBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -198,6 +199,15 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
             } else {
                 makeToast(this, getString(R.string.toast_set_minimum_time))
             }
+        }
+
+        // 텍스트 입력 마쳤을 때
+        binding.alarmNameEditText.setOnEditorActionListener { textView, actionId, _ ->
+            return@setOnEditorActionListener if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.alarmData = binding.alarmData?.copy(name = textView.text.toString())
+                clearKeyBoardFocus(binding.rootLayout)
+                true
+            } else false
         }
     }
 }
