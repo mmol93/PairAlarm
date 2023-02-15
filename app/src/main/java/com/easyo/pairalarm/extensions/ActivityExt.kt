@@ -31,12 +31,13 @@ fun AppCompatActivity.displayOn() {
 
 // 배경 화면을 클릭하면 현재 Focus되어있는거 클리어하기
 fun AppCompatActivity.clearKeyBoardFocus(rootView: View) {
-    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(rootView.windowToken, 0)
 
     rootView.requestFocus()
 }
 
+// 에러 메시지 표시
 fun AppCompatActivity.showErrorSnackBar(view: View, error: Failure) {
     this.let { Snackbar.make(view, R.string.some_error, Snackbar.LENGTH_SHORT) }
         .also { it.show() }

@@ -12,6 +12,10 @@
         <variable
             name="weekend"
             type="com.easyo.pairalarm.database.table.Weekend" />
+
+        <variable
+            name="manualChangeForHour"
+            type="Boolean" />
     </data>
 
     <ScrollView
@@ -27,6 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -44,8 +50,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:maxLines="1"
                     android:inputType="text"
+                    android:maxLines="1"
                     android:text="@{alarmData.name}"
                     android:textColor="@color/white" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -65,7 +71,8 @@
                     android:layout_marginStart="25dp"
                     android:theme="@style/numberPickerCustomTheme"
                     app:hourForAMPM="@{alarmData.hour}"
-                    app:minForAMPM="@{alarmData.minute}" />
+                    app:minForAMPM="@{alarmData.minute}"
+                    app:manualChange="@{manualChangeForHour}"/>
 
                 <NumberPicker
                     android:id="@+id/numberPickerHour"
