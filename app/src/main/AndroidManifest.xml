@@ -25,7 +25,10 @@
         >
         <activity
             android:name=".ui.activity.OnAlarmActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.PairAlarm.NoActionBar"
+            />
         <activity
             android:name=".ui.activity.NormalAlarmSetActivity"
             android:exported="false"
