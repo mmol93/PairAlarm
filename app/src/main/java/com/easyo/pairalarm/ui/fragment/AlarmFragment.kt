@@ -99,7 +99,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         }
 
         // Groupie - RecyclerView 데이터 입력
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             alarmViewModel.getAllAlarmData().collect { alarmDataList ->
                 Timber.d("AlarmData: $alarmDataList")
                 alarmDataList.map { AlarmItem(requireContext(), it, alarmViewModel) }
