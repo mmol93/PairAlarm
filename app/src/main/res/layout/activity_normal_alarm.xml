@@ -12,6 +12,10 @@
         <variable
             name="weekend"
             type="com.easyo.pairalarm.database.table.Weekend" />
+
+        <variable
+            name="manualChangeForHour"
+            type="Boolean" />
     </data>
 
     <ScrollView
@@ -67,7 +71,8 @@
                     android:layout_marginStart="25dp"
                     android:theme="@style/numberPickerCustomTheme"
                     app:hourForAMPM="@{alarmData.hour}"
-                    app:minForAMPM="@{alarmData.minute}" />
+                    app:minForAMPM="@{alarmData.minute}"
+                    app:manualChange="@{manualChangeForHour}"/>
 
                 <NumberPicker
                     android:id="@+id/numberPickerHour"
