@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.viewPager.isUserInputEnabled = false
 
         // TODO: 나중에 추가할 내용
         val alarmFragment = AlarmFragment()
