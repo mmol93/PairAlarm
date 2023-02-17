@@ -27,6 +27,8 @@
             android:name=".ui.activity.OnAlarmActivity"
             android:exported="false"
             android:launchMode="singleTask"
+            android:showOnLockScreen="true"
+            android:excludeFromRecents="true"
             android:theme="@style/Theme.PairAlarm.NoActionBar"
             />
         <activity

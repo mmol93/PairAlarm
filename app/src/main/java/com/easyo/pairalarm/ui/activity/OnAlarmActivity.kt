@@ -1,5 +1,6 @@
 package com.easyo.pairalarm.ui.activity
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -29,8 +30,14 @@ class OnAlarmActivity : AppCompatActivity() {
         binding = ActivityOnAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.lifecycleOwner = this
-
         val alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
+
+        // 안드12 이상에서 잠금화면 위로 액티비티 띄우기 & 화면 켜기
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        }
+
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
 
