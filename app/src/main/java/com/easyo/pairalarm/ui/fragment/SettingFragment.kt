@@ -46,8 +46,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
                         SettingContentType.SINGLE,
                         Dispatchers.Main,
                         job
-                    )
-                        .also { settingRecyclerAdapter.add(it) }
+                    ).also { settingRecyclerAdapter.add(it) }
                 }
             }
             settingItemList.size > 1 -> {
