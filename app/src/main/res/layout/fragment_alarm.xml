@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.AlarmFragment"
-    android:paddingHorizontal="4dp"
+    android:paddingHorizontal="@dimen/element_spacing_small"
     android:background="@color/background">
 
 
