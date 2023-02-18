@@ -1,11 +1,12 @@
 package com.easyo.pairalarm.ui.activity
 
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.work.*
 import com.easyo.pairalarm.R
@@ -29,8 +30,14 @@ class OnAlarmActivity : AppCompatActivity() {
         binding = ActivityOnAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.lifecycleOwner = this
-
         val alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
+
+        // 안드12 이상에서 잠금화면 위로 액티비티 띄우기 & 화면 켜기
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        }
+
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
 
@@ -65,8 +72,7 @@ class OnAlarmActivity : AppCompatActivity() {
                         }
 
                         // 삭제하거나 변경된 알람들을 반영한다(Noti 등)
-                        val alarmTimeWorkRequest: WorkRequest =
-                            OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
+                        val alarmTimeWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
                         WorkManager.getInstance(this@OnAlarmActivity)
                             .enqueueUniqueWork(
                                 NEXT_ALARM_WORKER,
