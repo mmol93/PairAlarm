@@ -18,7 +18,6 @@ import com.easyo.pairalarm.eventbus.InitDataEvent
 import com.easyo.pairalarm.util.MyTimber
 import com.easyo.pairalarm.worker.InitAlarmDataWorker
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -59,7 +58,7 @@ class InitialActivity : AppCompatActivity() {
         super.onStart()
         // InitDataEvent를 subscribe하여 EventBus의 post의 신호를 감지한다
         lifecycleScope.launch {
-            EventBus.subscribe<InitDataEvent>().collectLatest {
+            EventBus.subscribe<InitDataEvent>().collect {
                 Timber.d("EventBus collected")
                 updateProgress(it)
             }

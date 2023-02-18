@@ -9,8 +9,10 @@ import com.easyo.pairalarm.repository.AlarmRepository
 import com.easyo.pairalarm.util.*
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.collectLatest
-import timber.log.Timber
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 /**
  * 새롭게 알람을 추가하고 DB에서 다음 알림을 찾고 바로 등록하거나
@@ -31,10 +33,12 @@ class NextAlarmWorker @AssistedInject constructor(
                     resetAlarmNotification()
                 }
                 NOTI_ACTION2_REQUEST_CODE -> {
-                    Timber.d("NOTI_ACTION2_REQUEST_CODE called from worker")
+                    makeQuickAlarm(NOTI_ACTION2_REQUEST_CODE)
+                    resetAlarmNotification()
                 }
                 NOTI_ACTION3_REQUEST_CODE -> {
-                    Timber.d("NOTI_ACTION3_REQUEST_CODE called from worker")
+                    makeQuickAlarm(NOTI_ACTION3_REQUEST_CODE)
+                    resetAlarmNotification()
                 }
             }
         } else {
@@ -65,15 +69,18 @@ class NextAlarmWorker @AssistedInject constructor(
     }
 
     private suspend fun resetAlarmNotification() {
-        alarmRepository.getAllAlarm().collectLatest { alarmDataList ->
-            val transformedNextAlarm = getNextAlarm(alarmDataList)
-            if (transformedNextAlarm.isNullOrEmpty()) {
-                cancelAlarmNotification(applicationContext)
-            } else {
-                makeAlarmNotification(applicationContext, transformedNextAlarm.toString())
+        CoroutineScope(Dispatchers.Main).launch {
+            alarmRepository.getAllAlarm().collect { alarmDataList ->
+                val transformedNextAlarm = getNextAlarm(alarmDataList)
+                if (transformedNextAlarm.isNullOrEmpty()) {
+                    cancelAlarmNotification(applicationContext)
+                } else {
+                    makeAlarmNotification(applicationContext, transformedNextAlarm.toString())
+                }
+                // 모든 알람의 브로드캐스트를 새롭게 지정
+                getAllAlarmResetOnBroadcast(applicationContext, alarmDataList)
+                this.cancel()
             }
-            // 모든 알람의 브로드캐스트를 새롭게 지정
-            getAllAlarmResetOnBroadcast(applicationContext, alarmDataList)
         }
     }
 }

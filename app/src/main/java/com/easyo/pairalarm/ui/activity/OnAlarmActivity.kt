@@ -46,7 +46,6 @@ class OnAlarmActivity : AppCompatActivity() {
         this.onBackPressedDispatcher.addCallback(this, callback)
 
         if (alarmCode != null) {
-            stopOnAlarmWorkManager()
             val goesOffAlarmData = alarmViewModel.searchAlarmCode(alarmCode.toString())
             // 현재 시간이 계속 갱신되게한다
             val handler = Handler(Looper.getMainLooper())
@@ -77,7 +76,7 @@ class OnAlarmActivity : AppCompatActivity() {
                         WorkManager.getInstance(this@OnAlarmActivity)
                             .enqueueUniqueWork(
                                 NEXT_ALARM_WORKER,
-                                ExistingWorkPolicy.KEEP,
+                                ExistingWorkPolicy.REPLACE,
                                 alarmTimeWorkRequest as OneTimeWorkRequest
                             )
                         handler.removeMessages(0)
@@ -112,9 +111,5 @@ class OnAlarmActivity : AppCompatActivity() {
             makeToast(this, getString(R.string.on_alarm_error))
             finish()
         }
-    }
-
-    private fun stopOnAlarmWorkManager() {
-        WorkManager.getInstance(this).cancelUniqueWork(RECEIVER_ALARM_WORKER)
     }
 }
