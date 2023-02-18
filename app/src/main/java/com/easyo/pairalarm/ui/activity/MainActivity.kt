@@ -1,16 +1,17 @@
 package com.easyo.pairalarm.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.ComponentName
+import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.easyo.pairalarm.R
+import com.easyo.pairalarm.broadcast.AlarmReceiver
 import com.easyo.pairalarm.databinding.ActivityMainBinding
 import com.easyo.pairalarm.ui.fragment.AlarmFragment
-import com.easyo.pairalarm.ui.fragment.CommunityFragment
 import com.easyo.pairalarm.ui.fragment.SettingFragment
-import com.easyo.pairalarm.ui.fragment.WeatherFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +23,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewPager.isUserInputEnabled = false
+
+        val receiver = ComponentName(this, AlarmReceiver::class.java)
+
+        packageManager.setComponentEnabledSetting(
+            receiver,
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP
+        )
 
         // TODO: 나중에 추가할 내용
         val alarmFragment = AlarmFragment()
