@@ -45,7 +45,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
         // alarmData를 사용하여 UI를 초기화
         var alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
         lifecycleScope.launch {
-            alarmViewModel.getAlarmData(alarmCode).collectLatest {
+            alarmViewModel.getAlarmData(alarmCode).collect {
                 binding.alarmData = it
                 alarmViewModel.currentAlarmBell.value = it.bell
                 alarmViewModel.currentAlarmMode.value = it.mode

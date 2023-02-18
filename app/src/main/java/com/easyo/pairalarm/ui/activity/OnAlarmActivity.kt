@@ -1,5 +1,6 @@
 package com.easyo.pairalarm.ui.activity
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -29,8 +30,14 @@ class OnAlarmActivity : AppCompatActivity() {
         binding = ActivityOnAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.lifecycleOwner = this
-
         val alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
+
+        // 안드12 이상에서 잠금화면 위로 액티비티 띄우기 & 화면 켜기
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        }
+
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
 
@@ -39,7 +46,6 @@ class OnAlarmActivity : AppCompatActivity() {
         this.onBackPressedDispatcher.addCallback(this, callback)
 
         if (alarmCode != null) {
-            stopOnAlarmWorkManager()
             val goesOffAlarmData = alarmViewModel.searchAlarmCode(alarmCode.toString())
             // 현재 시간이 계속 갱신되게한다
             val handler = Handler(Looper.getMainLooper())
@@ -70,7 +76,7 @@ class OnAlarmActivity : AppCompatActivity() {
                         WorkManager.getInstance(this@OnAlarmActivity)
                             .enqueueUniqueWork(
                                 NEXT_ALARM_WORKER,
-                                ExistingWorkPolicy.KEEP,
+                                ExistingWorkPolicy.REPLACE,
                                 alarmTimeWorkRequest as OneTimeWorkRequest
                             )
                         handler.removeMessages(0)
@@ -105,9 +111,5 @@ class OnAlarmActivity : AppCompatActivity() {
             makeToast(this, getString(R.string.on_alarm_error))
             finish()
         }
-    }
-
-    private fun stopOnAlarmWorkManager() {
-        WorkManager.getInstance(this).cancelUniqueWork(RECEIVER_ALARM_WORKER)
     }
 }
