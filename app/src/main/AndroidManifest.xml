@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -22,13 +22,15 @@
         android:theme="@style/Theme.PairAlarm"
         tools:replace="android:theme">
         <activity
+            android:name=".ui.activity.DebugActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.OnAlarmActivity"
+            android:excludeFromRecents="true"
             android:exported="false"
             android:launchMode="singleTask"
             android:showOnLockScreen="true"
-            android:excludeFromRecents="true"
-            android:theme="@style/Theme.PairAlarm.NoActionBar"
-            />
+            android:theme="@style/Theme.PairAlarm.NoActionBar" />
         <activity
             android:name=".ui.activity.NormalAlarmSetActivity"
             android:exported="false"
@@ -50,18 +52,16 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.PairAlarm.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.PairAlarm.NoActionBar"></activity>
 
         <receiver
             android:name=".broadcast.AlarmReceiver"
-            android:enabled="true"
             android:directBootAware="true"
-            android:exported="false"
-            >
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="com.easyo.pairalarm" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
@@ -81,7 +81,6 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
         </provider>
-
     </application>
 
 </manifest>
