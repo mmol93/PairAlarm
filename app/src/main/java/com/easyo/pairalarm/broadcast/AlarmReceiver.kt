@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.work.*
+import com.easyo.pairalarm.BuildConfig
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.worker.NextAlarmWorker
 import com.easyo.pairalarm.worker.ReceiverAlarmWorker
@@ -14,15 +15,34 @@ class AlarmReceiver : BroadcastReceiver() {
         Timber.d("Broadcast is called")
         val alarmCode = intent?.getStringExtra(ALARM_CODE_TEXT)
         val actionButtonCode = intent?.getStringExtra(ACTION_BUTTON)
+        if (BuildConfig.DEBUG) {
+            context?.let {
+                val preference = SharedPreference(it)
+                when {
+                    alarmCode != null -> preference.putStringData(
+                        preference.getStringData(),
+                        alarmCode
+                    )
+                    intent?.action != "" -> preference.putStringData(
+                        preference.getStringData(),
+                        intent?.action
+                    )
+                    else -> preference.putStringData(
+                        preference.getStringData(),
+                        "no intent & alarmCode info"
+                    )
+                }
+            }
+        }
 
-        if (intent != null && context != null){
+        if (intent != null && context != null) {
             when {
                 // ** 휴대폰을 재부팅 했을 때 & 앱을 업데이트 했을 때-> 모든 알람을 재설정
                 intent.action == "android.intent.action.BOOT_COMPLETED" ||
-                intent.action == "android.intent.action.QUICKBOOT_POWERON" ||
-                intent.action == "android.intent.action.MY_PACKAGE_REPLACED" ||
-                intent.action == "android.intent.action.REBOOT" ||
-                intent.action == "android.intent.action.LOCKED_BOOT_COMPLETED"
+                        intent.action == "android.intent.action.QUICKBOOT_POWERON" ||
+                        intent.action == "android.intent.action.MY_PACKAGE_REPLACED" ||
+                        intent.action == "android.intent.action.REBOOT" ||
+                        intent.action == "android.intent.action.LOCKED_BOOT_COMPLETED"
                 -> {
                     Timber.d("reset alarm")
                     getAllAlarmResetOnBroadcast(context)
