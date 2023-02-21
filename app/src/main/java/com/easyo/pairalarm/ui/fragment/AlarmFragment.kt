@@ -23,14 +23,10 @@ import com.easyo.pairalarm.groupieitem.AlarmItem
 import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
 import com.easyo.pairalarm.ui.activity.SimpleAlarmSetActivity
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
-import com.easyo.pairalarm.util.cancelAlarmNotification
-import com.easyo.pairalarm.util.getNextAlarm
-import com.easyo.pairalarm.util.makeAlarmNotification
-import com.easyo.pairalarm.util.makeToast
+import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -108,8 +104,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 if (alarmDataList.isEmpty()) {
                     cancelAlarmNotification(requireContext())
                 } else {
-                    val nextAlarm = getNextAlarm(alarmDataList)
-                    makeAlarmNotification(requireContext(), nextAlarm.toString())
+                    getAllAlarmReset(requireContext(), alarmDataList)
                 }
             }
         }

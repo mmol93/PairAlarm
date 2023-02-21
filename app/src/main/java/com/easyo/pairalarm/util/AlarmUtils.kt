@@ -51,7 +51,7 @@ fun setAlarmOnBroadcast(context: Context, alarmCode: Int, hour: Int, min: Int) {
 }
 
 // 모든 알람 데이터를 가져와서 전부 다시 셋팅한다
-fun getAllAlarmResetOnBroadcast(context: Context?, alarmDataList: List<AlarmData>? = null) {
+fun getAllAlarmReset(context: Context?, alarmDataList: List<AlarmData>? = null) {
     if (context != null) {
         // AlarmData가 없으면 DB에서 새롭게 가져온다
         if (alarmDataList == null) {

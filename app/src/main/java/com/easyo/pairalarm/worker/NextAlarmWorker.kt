@@ -78,7 +78,7 @@ class NextAlarmWorker @AssistedInject constructor(
                     makeAlarmNotification(applicationContext, transformedNextAlarm.toString())
                 }
                 // 모든 알람의 브로드캐스트를 새롭게 지정
-                getAllAlarmResetOnBroadcast(applicationContext, alarmDataList)
+                getAllAlarmReset(applicationContext, alarmDataList)
                 this.cancel()
             }
         }
