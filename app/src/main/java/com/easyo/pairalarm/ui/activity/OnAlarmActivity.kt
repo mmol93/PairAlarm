@@ -1,12 +1,15 @@
 package com.easyo.pairalarm.ui.activity
 
+import android.app.KeyguardManager
+import android.content.Context
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.work.*
 import com.easyo.pairalarm.R
@@ -36,6 +39,15 @@ class OnAlarmActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
+            (getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager).apply {
+                requestDismissKeyguard(this@OnAlarmActivity, null)
+            }
+        } else {
+            this.window.addFlags(
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+            )
         }
 
         val callback = object : OnBackPressedCallback(true) {
@@ -72,7 +84,8 @@ class OnAlarmActivity : AppCompatActivity() {
                         }
 
                         // 삭제하거나 변경된 알람들을 반영한다(Noti 등)
-                        val alarmTimeWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
+                        val alarmTimeWorkRequest: WorkRequest =
+                            OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
                         WorkManager.getInstance(this@OnAlarmActivity)
                             .enqueueUniqueWork(
                                 NEXT_ALARM_WORKER,
