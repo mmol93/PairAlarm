@@ -13,10 +13,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import autoCleared
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
 import com.easyo.pairalarm.extensions.getPermissionActivityResultLauncher
+import com.easyo.pairalarm.extensions.setFadeVisible
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.extensions.showErrorSnackBar
 import com.easyo.pairalarm.groupieitem.AlarmItem
@@ -92,6 +95,22 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         binding.alarmRecycler.run {
             adapter = alarmRecyclerAdapter
             layoutManager = GridLayoutManager(context, recyclerViewSpan, GridLayoutManager.VERTICAL, false)
+            addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    // 처음은 발동하지 않게
+                    if (dy != 0){
+                        binding.fabLayout.visibility = View.GONE
+                    }
+                }
+
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (newState == SCROLL_STATE_IDLE){
+                        binding.fabLayout.setFadeVisible(true, 700, 0)
+                    }
+                }
+            })
         }
 
         // Groupie - RecyclerView 데이터 입력
