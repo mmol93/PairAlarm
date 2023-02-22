@@ -1,5 +1,6 @@
 package com.easyo.pairalarm.util
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
@@ -173,6 +174,7 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("week", "weekClicked")
     fun MaterialButton.setColorStroke(week: Weekend, weekClicked: Boolean) {
+        rippleColor = ColorStateList.valueOf(Color.TRANSPARENT)
         when (week) {
             Weekend.SAT -> {
                 if (weekClicked) {

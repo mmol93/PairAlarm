@@ -37,17 +37,17 @@ class SettingContentItem(
         when (settingContentType) {
             SettingContentType.SINGLE -> {
                 binding.settingItemLayout.background =
-                    ContextCompat.getDrawable(context, R.drawable.item_small_rounded_corner_clear)
+                    ContextCompat.getDrawable(context, R.drawable.item_small_rounded_corner)
                 binding.isLastItem = true
             }
             SettingContentType.FIRST -> {
                 binding.settingItemLayout.background = ContextCompat.getDrawable(
-                    context, R.drawable.item_uppper_small_rounded_corner_clear
+                    context, R.drawable.item_setting_uppper_small_rounded_corner
                 )
             }
             SettingContentType.LAST -> {
                 binding.settingItemLayout.background = ContextCompat.getDrawable(
-                    context, R.drawable.item_under_small_rounded_corner_clear
+                    context, R.drawable.item_setting_under_small_rounded_corner
                 )
                 binding.isLastItem = true
             }

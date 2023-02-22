@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="@dimen/element_spacing_xnormal"
-            android:background="@drawable/sub_item_rounded_corner_clear"
+            android:background="@drawable/sub_item_rounded_corner"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="12dp"
