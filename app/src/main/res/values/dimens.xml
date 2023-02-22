@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- for Common view Size -->
     <dimen name="element_spacing_xxxlarge">40dp</dimen>
     <dimen name="element_spacing_xxlarge">32dp</dimen>
     <dimen name="element_spacing_xlarge">24dp</dimen>
@@ -11,4 +12,15 @@
     <dimen name="element_spacing_small">4dp</dimen>
     <dimen name="element_spacing_tiny">2dp</dimen>
     <dimen name="element_spacing_none">0dp</dimen>
+
+    <!-- size for Normal button-->
+
+    <!-- size for Custom button -->
+    <dimen name="custom_button_icon_margin_start">8dp</dimen>
+    <dimen name="custom_button_icon_margin_end">4dp</dimen>
+    <dimen name="custom_button_corner_radius">8dp</dimen>
+    <dimen name="custom_button_div_width">1dp</dimen>
+    <dimen name="custom_button_div_height">40dp</dimen>
+    <dimen name="custom_button_icon_width">28dp</dimen>
+    <dimen name="custom_button_icon_height">28dp</dimen>
 </resources>
