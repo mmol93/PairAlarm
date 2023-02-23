@@ -175,7 +175,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
                         name = binding.alarmNameEditText.text.toString()
                     )
                     // DB 업데이트
-                    alarmViewModel.updateAlarmData(alarmData.copy(button = true))
+                    alarmViewModel.updateAlarmData(alarmData.copy(alarmIsOn = true))
                     Timber.d("updated alarmData: $alarmData")
                 }
                 finish()

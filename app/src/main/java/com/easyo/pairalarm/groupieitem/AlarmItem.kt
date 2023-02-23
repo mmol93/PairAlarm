@@ -42,13 +42,13 @@ class AlarmItem(
         }
 
         // on/off
-        binding.onOffSwitch.isChecked = alarmData.button
+        binding.onOffSwitch.isChecked = alarmData.alarmIsOn
 
         binding.onOffSwitch.setOnCheckedChangeListener { _, isChecked ->
             // 한 번만 클릭되는 기능을 넣지 않으면 혼자서 여러번 클릭됨
             if (lastClickTime < System.currentTimeMillis() - 500) {
                 lastClickTime = System.currentTimeMillis()
-                alarmData.button = isChecked
+                alarmData.alarmIsOn = isChecked
                 alarmViewModel.updateAlarmData(alarmData)
                 Timber.d("update alarmData: $alarmData")
             }

@@ -107,7 +107,7 @@ fun cancelAlarm(context: Context, alarmCode: String) {
 fun getNextAlarm(alarmList: List<AlarmData>): String? {
     val milliSecondForAlarmList = mutableListOf<Long>()
     alarmList.forEach { alarmData ->
-        if (alarmData.button) {
+        if (alarmData.alarmIsOn) {
             if (alarmData.Sun) {
                 milliSecondForAlarmList.add(
                     getMillisWithCalendar(
@@ -184,7 +184,7 @@ fun initCurrentAlarmData(
 ): AlarmData {
     return AlarmData(
         id = null,
-        button = true,
+        alarmIsOn = true,
         Sun = false,
         Mon = false,
         Tue = false,
