@@ -18,8 +18,9 @@ fun AppCompatActivity.displayOn() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
         setShowWhenLocked(true)
         setTurnScreenOn(true)
-        val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-        keyguardManager.requestDismissKeyguard(this, null)
+        (getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager).apply {
+            requestDismissKeyguard(this@displayOn, null)
+        }
     } else {
         window.addFlags(
             WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or

@@ -60,7 +60,7 @@ fun makeAlarmData(
     // 모든 요일이 false인 상태
     val defaultAlarmData = AlarmData(
         id = null,
-        button = true,
+        alarmIsOn = true,
         Sun = false,
         Mon = false,
         Tue = false,

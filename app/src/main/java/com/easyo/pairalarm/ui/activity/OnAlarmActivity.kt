@@ -1,12 +1,8 @@
 package com.easyo.pairalarm.ui.activity
 
-import android.app.KeyguardManager
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -33,26 +29,14 @@ class OnAlarmActivity : AppCompatActivity() {
         binding = ActivityOnAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.lifecycleOwner = this
-        val alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
 
-        // 안드12 이상에서 잠금화면 위로 액티비티 띄우기 & 화면 켜기
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-            setShowWhenLocked(true)
-            setTurnScreenOn(true)
-            (getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager).apply {
-                requestDismissKeyguard(this@OnAlarmActivity, null)
-            }
-        } else {
-            this.window.addFlags(
-                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or
-                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
-                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-            )
-        }
+        // 현재 화면이 자동으로 꺼지지 않게 유지 & 잠금화면에 액티비티 띄우기
+        displayOn()
+
+        val alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-
             }
         }
         this.onBackPressedDispatcher.addCallback(this, callback)
@@ -72,29 +56,23 @@ class OnAlarmActivity : AppCompatActivity() {
             handler.post(handlerTask)
             lifecycleScope.launch {
                 goesOffAlarmData.collectLatest { alarmData ->
-                    // 현재 화면이 자동으로 꺼지지 않게 유지 & 잠금화면에 액티비티 띄우기
-                    displayOn()
-
                     binding.hour.text = getCurrentHourDoubleDigitWithString()
                     binding.min.text = getCurrentMinuteDoubleDigitWithString()
 
-                    binding.ok.setOnClickListener {
-                        if (alarmData.quick) {
-                            alarmViewModel.deleteAlarmData(alarmData)
-                        }
-
-                        // 삭제하거나 변경된 알람들을 반영한다(Noti 등)
-                        val alarmTimeWorkRequest: WorkRequest =
-                            OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
-                        WorkManager.getInstance(this@OnAlarmActivity)
-                            .enqueueUniqueWork(
-                                NEXT_ALARM_WORKER,
-                                ExistingWorkPolicy.REPLACE,
-                                alarmTimeWorkRequest as OneTimeWorkRequest
-                            )
-                        handler.removeMessages(0)
-                        finish()
+                    if (alarmData.quick) {
+                        alarmViewModel.deleteAlarmData(alarmData)
                     }
+
+                    // 삭제하거나 변경된 알람들을 반영한다(Noti 등)
+                    val alarmTimeWorkRequest: WorkRequest =
+                        OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
+                    WorkManager.getInstance(this@OnAlarmActivity)
+                        .enqueueUniqueWork(
+                            NEXT_ALARM_WORKER,
+                            ExistingWorkPolicy.REPLACE,
+                            alarmTimeWorkRequest as OneTimeWorkRequest
+                        )
+                    getAllAlarmReset(this@OnAlarmActivity)
 
                     // +10분 스누즈
                     binding.tenMinutes.setOnClickListener {
@@ -119,6 +97,11 @@ class OnAlarmActivity : AppCompatActivity() {
                         finish()
                     }
                 }
+            }
+            binding.ok.setOnClickListener {
+
+                handler.removeMessages(0)
+                finish()
             }
         } else {
             makeToast(this, getString(R.string.on_alarm_error))

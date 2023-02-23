@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 data class AlarmData(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") var id: Int?,
-    @ColumnInfo(name = "button") var button: Boolean,
+    @ColumnInfo(name = "onOff") var alarmIsOn: Boolean,
     @ColumnInfo(name = "Sun") var Sun: Boolean,
     @ColumnInfo(name = "Mon") var Mon: Boolean,
     @ColumnInfo(name = "Tue") var Tue: Boolean,
