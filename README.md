@@ -9,3 +9,5 @@ Working Progress
 - [ ] Setting - ing
 - [ ] GA
 - [ ] UnitTest & UI Teset
+- [ ] PlayStore
+- [ ] AdMob
