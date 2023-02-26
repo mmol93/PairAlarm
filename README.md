@@ -1,10 +1,10 @@
 # PairAlarm
 
 Working Progress
-- [ ] DB setting
-- [ ] AlarmManager
-- [ ] Notification
-- [ ] BroadCast
+- [X] DB setting
+- [X] AlarmManager
+- [X] Notification
+- [X] BroadCast
 - [ ] onAlarm - ing
 - [ ] Setting - ing
 - [ ] GA
