@@ -15,8 +15,10 @@ import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.easyo.pairalarm.worker.NextAlarmWorker
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
@@ -59,6 +61,8 @@ class OnAlarmActivity : AppCompatActivity() {
                     binding.hour.text = getCurrentHourDoubleDigitWithString()
                     binding.min.text = getCurrentMinuteDoubleDigitWithString()
 
+                    Timber.d("alarmData in OnAlarmActivity: $alarmCode")
+
                     if (alarmData.quick) {
                         alarmViewModel.deleteAlarmData(alarmData)
                     }
@@ -74,32 +78,33 @@ class OnAlarmActivity : AppCompatActivity() {
                         )
                     getAllAlarmReset(this@OnAlarmActivity)
 
-                    // +10분 스누즈
-                    binding.tenMinutes.setOnClickListener {
-                        val calendar = Calendar.getInstance().apply {
-                            add(Calendar.MINUTE, 10)
-                        }
-                        val addHour = calendar.get(Calendar.HOUR_OF_DAY)
-                        val addMinute = calendar.get(Calendar.MINUTE)
-                        setAlarmOnBroadcast(
-                            this@OnAlarmActivity,
-                            alarmData.alarmCode.toInt(),
-                            addHour,
-                            addMinute
-                        )
 
-                        makeToast(
-                            this@OnAlarmActivity,
-                            getString(R.string.toast_ten_minute_later)
-                        )
-
-                        handler.removeMessages(0)
-                        finish()
-                    }
+                    this.cancel()
                 }
             }
-            binding.ok.setOnClickListener {
+            // +10분 스누즈
+            binding.tenMinutes.setOnClickListener {
+                val calendar = Calendar.getInstance().apply {
+                    add(Calendar.MINUTE, 10)
+                }
+                val addHour = calendar.get(Calendar.HOUR_OF_DAY)
+                val addMinute = calendar.get(Calendar.MINUTE)
+                setAlarmOnBroadcast(
+                    this@OnAlarmActivity,
+                    alarmCode.toInt(),
+                    addHour,
+                    addMinute
+                )
 
+                makeToast(
+                    this@OnAlarmActivity,
+                    getString(R.string.toast_ten_minute_later)
+                )
+
+                handler.removeMessages(0)
+                finish()
+            }
+            binding.ok.setOnClickListener {
                 handler.removeMessages(0)
                 finish()
             }
