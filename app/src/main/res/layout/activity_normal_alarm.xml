@@ -29,11 +29,12 @@
             android:id="@+id/rootLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="@dimen/element_spacing_large"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/element_spacing_xxxlarge">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/alarmName_editTextLayout"
@@ -59,8 +60,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginTop="@dimen/element_spacing_xlarge"
+                android:layout_marginBottom="@dimen/element_spacing_small"
                 android:background="@drawable/item_stroke_rounded_corner_clear"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -69,7 +70,7 @@
                     android:id="@+id/numberPickerAMPM"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
+                    android:layout_marginStart="@dimen/element_spacing_xxlarge"
                     android:theme="@style/numberPickerCustomTheme"
                     app:hourForAMPM="@{alarmData.hour}"
                     app:manualChange="@{manualChangeForHour}"
@@ -79,7 +80,7 @@
                     android:id="@+id/numberPickerHour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/element_spacing_normal"
                     android:theme="@style/numberPickerCustomTheme"
                     app:hour="@{alarmData.hour}" />
 
@@ -88,15 +89,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/naver_bold"
-                    android:text=":"
+                    android:text="@string/time_split"
                     android:textColor="@color/white"
-                    android:textSize="30sp" />
+                    android:textSize="@dimen/text_p1" />
 
                 <NumberPicker
                     android:id="@+id/numberPickerMin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/element_spacing_normal"
                     android:theme="@style/numberPickerCustomTheme"
                     android:value="@{alarmData.minute}" />
 
@@ -107,15 +108,15 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/element_spacing_xnormal"
                 android:background="@drawable/item_stroke_rounded_corner_clear"
-                android:padding="@dimen/element_spacing_tiny"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/element_spacing_tiny">
 
                 <!-- 요일 시작-->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/monButton"
-                    android:layout_width="50dp"
-                    android:layout_height="58dp"
-                    android:layout_margin="5dp"
+                    android:layout_width="@dimen/week_button_width"
+                    android:layout_height="@dimen/week_button_height"
+                    android:layout_margin="@dimen/element_spacing_small"
                     android:layout_weight="1"
                     android:backgroundTint="@color/itemBackground"
                     android:fontFamily="@font/naver_bold"
@@ -123,18 +124,18 @@
                     android:paddingRight="0dp"
                     android:text="@string/monday_short"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:cornerRadius="60dp"
+                    android:textSize="@dimen/text_p3"
+                    app:cornerRadius="@dimen/week_button_corner_radius"
                     app:strokeColor="@color/background"
-                    app:strokeWidth="2dp"
+                    app:strokeWidth="@dimen/element_spacing_tiny"
                     app:week="@{weekend.WEEK}"
                     app:weekClicked="@{alarmData.mon}" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/tueButton"
-                    android:layout_width="50dp"
-                    android:layout_height="58dp"
-                    android:layout_margin="5dp"
+                    android:layout_width="@dimen/week_button_width"
+                    android:layout_height="@dimen/week_button_height"
+                    android:layout_margin="@dimen/element_spacing_small"
                     android:layout_weight="1"
                     android:backgroundTint="@color/itemBackground"
                     android:fontFamily="@font/naver_bold"
@@ -142,18 +143,18 @@
                     android:paddingRight="0dp"
                     android:text="@string/tuesday_short"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:cornerRadius="60dp"
+                    android:textSize="@dimen/text_p3"
+                    app:cornerRadius="@dimen/week_button_corner_radius"
                     app:strokeColor="@color/background"
-                    app:strokeWidth="2dp"
+                    app:strokeWidth="@dimen/element_spacing_tiny"
                     app:week="@{weekend.WEEK}"
                     app:weekClicked="@{alarmData.tue}" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/wedButton"
-                    android:layout_width="50dp"
-                    android:layout_height="58dp"
-                    android:layout_margin="5dp"
+                    android:layout_width="@dimen/week_button_width"
+                    android:layout_height="@dimen/week_button_height"
+                    android:layout_margin="@dimen/element_spacing_small"
                     android:layout_weight="1"
                     android:backgroundTint="@color/itemBackground"
                     android:fontFamily="@font/naver_bold"
@@ -161,18 +162,18 @@
                     android:paddingRight="0dp"
                     android:text="@string/wednesday_short"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:cornerRadius="60dp"
+                    android:textSize="@dimen/text_p3"
+                    app:cornerRadius="@dimen/week_button_corner_radius"
                     app:strokeColor="@color/background"
-                    app:strokeWidth="2dp"
+                    app:strokeWidth="@dimen/element_spacing_tiny"
                     app:week="@{weekend.WEEK}"
                     app:weekClicked="@{alarmData.wed}" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/thurButton"
-                    android:layout_width="50dp"
-                    android:layout_height="58dp"
-                    android:layout_margin="5dp"
+                    android:layout_width="@dimen/week_button_width"
+                    android:layout_height="@dimen/week_button_height"
+                    android:layout_margin="@dimen/element_spacing_small"
                     android:layout_weight="1"
                     android:backgroundTint="@color/itemBackground"
                     android:fontFamily="@font/naver_bold"
@@ -180,8 +181,8 @@
                     android:paddingRight="0dp"
                     android:text="@string/thursday_short"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:cornerRadius="60dp"
+                    android:textSize="@dimen/text_p3"
+                    app:cornerRadius="@dimen/week_button_corner_radius"
                     app:strokeColor="@color/background"
                     app:strokeWidth="2dp"
                     app:week="@{weekend.WEEK}"
@@ -189,9 +190,9 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/friButton"
-                    android:layout_width="50dp"
-                    android:layout_height="58dp"
-                    android:layout_margin="5dp"
+                    android:layout_width="@dimen/week_button_width"
+                    android:layout_height="@dimen/week_button_height"
+                    android:layout_margin="@dimen/element_spacing_small"
                     android:layout_weight="1"
                     android:backgroundTint="@color/itemBackground"
                     android:fontFamily="@font/naver_bold"
@@ -199,18 +200,18 @@
                     android:paddingRight="0dp"
                     android:text="@string/friday_short"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:cornerRadius="60dp"
+                    android:textSize="@dimen/text_p3"
+                    app:cornerRadius="@dimen/week_button_corner_radius"
                     app:strokeColor="@color/background"
-                    app:strokeWidth="2dp"
+                    app:strokeWidth="@dimen/element_spacing_tiny"
                     app:week="@{weekend.WEEK}"
                     app:weekClicked="@{alarmData.fri}" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/satButton"
-                    android:layout_width="50dp"
-                    android:layout_height="58dp"
-                    android:layout_margin="5dp"
+                    android:layout_width="@dimen/week_button_width"
+                    android:layout_height="@dimen/week_button_height"
+                    android:layout_margin="@dimen/element_spacing_small"
                     android:layout_weight="1"
                     android:backgroundTint="@color/itemBackground"
                     android:fontFamily="@font/naver_bold"
@@ -218,18 +219,18 @@
                     android:paddingRight="0dp"
                     android:text="@string/saturday_short"
                     android:textColor="@color/main_deepBlue"
-                    android:textSize="20sp"
-                    app:cornerRadius="60dp"
+                    android:textSize="@dimen/text_p3"
+                    app:cornerRadius="@dimen/week_button_corner_radius"
                     app:strokeColor="@color/background"
-                    app:strokeWidth="2dp"
+                    app:strokeWidth="@dimen/element_spacing_tiny"
                     app:week="@{weekend.SAT}"
                     app:weekClicked="@{alarmData.sat}" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/sunButton"
-                    android:layout_width="50dp"
-                    android:layout_height="58dp"
-                    android:layout_margin="5dp"
+                    android:layout_width="@dimen/week_button_width"
+                    android:layout_height="@dimen/week_button_height"
+                    android:layout_margin="@dimen/element_spacing_small"
                     android:layout_weight="1"
                     android:backgroundTint="@color/itemBackground"
                     android:fontFamily="@font/naver_bold"
@@ -237,10 +238,10 @@
                     android:paddingRight="0dp"
                     android:text="@string/sunday_short"
                     android:textColor="@color/red"
-                    android:textSize="20sp"
-                    app:cornerRadius="60dp"
+                    android:textSize="@dimen/text_p3"
+                    app:cornerRadius="@dimen/week_button_corner_radius"
                     app:strokeColor="@color/background"
-                    app:strokeWidth="2dp"
+                    app:strokeWidth="@dimen/element_spacing_tiny"
                     app:week="@{weekend.SUN}"
                     app:weekClicked="@{alarmData.sun}" />
             </LinearLayout>
@@ -248,21 +249,20 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/image_vibration"
-                    android:layout_width="35dp"
-                    android:layout_height="55dp"
+                    android:layout_width="@dimen/alarmSet_image_width"
+                    android:layout_height="@dimen/alarmSet_image_height"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/ic_no_vib"
                     app:vibrateMode="@{alarmData.vibration}" />
 
                 <ImageView
                     android:id="@+id/image_volume"
-                    android:layout_width="35dp"
-                    android:layout_height="55dp"
+                    android:layout_width="@dimen/alarmSet_image_width"
+                    android:layout_height="@dimen/alarmSet_image_height"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/volume_icon"
                     app:volume="@{alarmData.volume}" />
@@ -284,65 +284,67 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:paddingTop="10dp">
+                android:paddingTop="@dimen/element_spacing_xnormal">
 
                 <com.github.nikartm.button.FitButton
                     android:id="@+id/selectBell_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/element_spacing_xnormal"
                     android:layout_weight="1"
                     android:enabled="true"
                     android:gravity="center_vertical"
                     app:fb_backgroundColor="@color/main_orange"
-                    app:fb_cornerRadius="@dimen/custom_button_corner_radius"
+                    app:fb_cornerRadius="@dimen/fitButton_corner_radius"
                     app:fb_divColor="#fff"
-                    app:fb_divHeight="@dimen/custom_button_div_height"
-                    app:fb_divWidth="@dimen/custom_button_div_width"
+                    app:fb_divHeight="@dimen/fitButton_div_height"
+                    app:fb_divWidth="@dimen/fitButton_div_width"
                     app:fb_icon="@drawable/ic_baseline_music"
                     app:fb_iconColor="#FFF"
-                    app:fb_iconHeight="@dimen/custom_button_icon_height"
-                    app:fb_iconMarginEnd="@dimen/custom_button_icon_margin_end"
-                    app:fb_iconMarginStart="@dimen/custom_button_icon_margin_start"
+                    app:fb_iconHeight="@dimen/fitButton_icon_height"
+                    app:fb_iconMarginEnd="@dimen/fitButton_icon_margin_end"
+                    app:fb_iconMarginStart="@dimen/fibButton_icon_margin_start"
                     app:fb_iconPosition="left"
-                    app:fb_iconWidth="@dimen/custom_button_icon_width"
+                    app:fb_iconWidth="@dimen/fitButton_icon_width"
                     app:fb_rippleColor="#FBE9E7"
                     app:fb_shape="rectangle"
                     app:fb_text="@string/alarmSet_selectBell"
                     app:fb_textColor="#FFF"
-                    app:fb_textPaddingStart="16dp" />
+                    app:fb_textPaddingStart="@dimen/element_spacing_xnormal"
+                    app:fb_textPaddingEnd="@dimen/element_spacing_xnormal" />
 
                 <com.github.nikartm.button.FitButton
                     android:id="@+id/selectMode_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/element_spacing_xnormal"
                     android:layout_weight="1"
                     android:enabled="true"
                     android:gravity="center_vertical"
                     app:fb_backgroundColor="@color/mainColor"
-                    app:fb_cornerRadius="@dimen/custom_button_corner_radius"
+                    app:fb_cornerRadius="@dimen/fitButton_corner_radius"
                     app:fb_divColor="#fff"
-                    app:fb_divHeight="@dimen/custom_button_div_height"
-                    app:fb_divWidth="@dimen/custom_button_div_width"
+                    app:fb_divHeight="@dimen/fitButton_div_height"
+                    app:fb_divWidth="@dimen/fitButton_div_width"
                     app:fb_icon="@drawable/calculator"
                     app:fb_iconColor="#FFF"
-                    app:fb_iconHeight="@dimen/custom_button_icon_height"
-                    app:fb_iconMarginEnd="@dimen/custom_button_icon_margin_end"
-                    app:fb_iconMarginStart="@dimen/custom_button_icon_margin_start"
+                    app:fb_iconHeight="@dimen/fitButton_icon_height"
+                    app:fb_iconMarginEnd="@dimen/fitButton_icon_margin_end"
+                    app:fb_iconMarginStart="@dimen/fibButton_icon_margin_start"
                     app:fb_iconPosition="left"
-                    app:fb_iconWidth="@dimen/custom_button_icon_width"
+                    app:fb_iconWidth="@dimen/fitButton_icon_width"
                     app:fb_rippleColor="#FBE9E7"
                     app:fb_shape="rectangle"
                     app:fb_text="@string/alarmSet_selectMode"
                     app:fb_textColor="#FFF"
-                    app:fb_textPaddingStart="16dp" />
+                    app:fb_textPaddingStart="@dimen/element_spacing_xnormal"
+                    app:fb_textPaddingEnd="@dimen/element_spacing_xnormal" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="@dimen/element_spacing_xsmall"
                 android:orientation="horizontal">
 
                 <TextView
@@ -367,7 +369,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="@dimen/element_spacing_xnormal"
                 android:orientation="horizontal">
 
                 <TextView
@@ -379,7 +381,7 @@
                     android:gravity="center"
                     android:text="@string/alarmSet_selectBellTextTitle"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_p5"
                     app:bellIndex="@{alarmData.bell}" />
 
                 <TextView
@@ -391,7 +393,7 @@
                     android:gravity="center"
                     android:text="@string/alarmSet_selectModeTextTitle"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_p5"
                     app:alarmMode="@{alarmData.mode}" />
             </LinearLayout>
 
@@ -403,28 +405,28 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/cancelButton"
-                    android:layout_width="120dp"
+                    android:layout_width="@dimen/alarmSet_button_width"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="@dimen/element_spacing_xlarge"
+                    android:layout_marginRight="@dimen/element_spacing_xlarge"
                     android:layout_weight="1"
                     android:backgroundTint="@color/new_subTextColor"
-                    android:padding="12dp"
+                    android:padding="@dimen/element_spacing_xnormal"
                     android:text="@string/cancel"
-                    app:cornerRadius="20dp" />
+                    app:cornerRadius="@dimen/alarmSet_button_corner_radius" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/saveButton"
-                    android:layout_width="120dp"
+                    android:layout_width="@dimen/alarmSet_button_width"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="@dimen/element_spacing_xlarge"
+                    android:layout_marginRight="@dimen/element_spacing_xlarge"
                     android:layout_weight="1"
                     android:backgroundTint="@color/mainColor"
-                    android:padding="12dp"
+                    android:padding="@dimen/element_spacing_xnormal"
                     android:text="@string/update"
                     app:alarmCode="@{alarmData.alarmCode}"
-                    app:cornerRadius="20dp" />
+                    app:cornerRadius="@dimen/alarmSet_button_corner_radius" />
             </LinearLayout>
 
 

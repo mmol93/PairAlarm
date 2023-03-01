@@ -16,12 +16,12 @@
 
     <LinearLayout
         android:id="@+id/itemLayout"
-        android:layout_width="170dp"
+        android:layout_width="@dimen/alarm_item_width"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/element_spacing_small"
         android:background="@drawable/item_rounded_corner_clear"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="@dimen/element_spacing_normal">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                 android:singleLine="true"
                 android:text="@{alarmData.name}"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_p4"
                 android:paddingStart="@dimen/element_spacing_normal"
                 android:paddingEnd="@dimen/element_spacing_tiny"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -51,8 +51,8 @@
 
             <ImageView
                 android:id="@+id/deleteImage"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="@dimen/element_spcaing_xxxxlarge"
+                android:layout_height="@dimen/element_spcaing_xxxxlarge"
                 android:layout_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -66,7 +66,7 @@
             android:id="@+id/timeContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/element_spacing_normal"
             android:gravity="bottom"
             android:orientation="horizontal">
 
@@ -78,7 +78,7 @@
                 android:fontFamily="@font/nanumgothicextrabold"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:textSize="30sp"
+                android:textSize="@dimen/text_p1"
                 app:hour="@{alarmData.hour}"
                 tools:text="00" />
 
@@ -89,9 +89,9 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/nanumgothicextrabold"
                 android:gravity="center"
-                android:text=":"
+                android:text="@string/time_split"
                 android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:textSize="@dimen/text_p2" />
 
             <TextView
                 android:id="@+id/minText"
@@ -101,7 +101,7 @@
                 android:fontFamily="@font/nanumgothicextrabold"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:textSize="30sp"
+                android:textSize="@dimen/text_p1"
                 app:min="@{alarmData.minute}"
                 tools:text="00" />
 
@@ -122,7 +122,7 @@
                 android:gravity="center"
                 android:text="@string/monday_short"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_p3"
                 app:week="@{weekend.WEEK}"
                 app:weekClicked="@{alarmData.mon}" />
 
@@ -135,7 +135,7 @@
                 android:gravity="center"
                 android:text="@string/tuesday_short"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_p3"
                 app:week="@{weekend.WEEK}"
                 app:weekClicked="@{alarmData.tue}" />
 
@@ -148,7 +148,7 @@
                 android:gravity="center"
                 android:text="@string/wednesday_short"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_p3"
                 app:week="@{weekend.WEEK}"
                 app:weekClicked="@{alarmData.wed}" />
 
@@ -161,7 +161,7 @@
                 android:gravity="center"
                 android:text="@string/thursday_short"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_p3"
                 app:week="@{weekend.WEEK}"
                 app:weekClicked="@{alarmData.thu}" />
 
@@ -174,7 +174,7 @@
                 android:gravity="center"
                 android:text="@string/friday_short"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_p3"
                 app:week="@{weekend.WEEK}"
                 app:weekClicked="@{alarmData.fri}" />
 
@@ -187,7 +187,7 @@
                 android:gravity="center"
                 android:text="@string/saturday_short"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_p3"
                 app:week="@{weekend.SAT}"
                 app:weekClicked="@{alarmData.sat}" />
 
@@ -200,7 +200,7 @@
                 android:gravity="center"
                 android:text="@string/sunday_short"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_p3"
                 app:week="@{weekend.SUN}"
                 app:weekClicked="@{alarmData.sun}" />
         </LinearLayout>
@@ -211,8 +211,8 @@
 
             <ImageView
                 android:id="@+id/vib_imageView"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="@dimen/element_spcaing_xxxxlarge"
+                android:layout_height="@dimen/element_spcaing_xxxxlarge"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -221,8 +221,8 @@
 
             <ImageView
                 android:id="@+id/volume_imageView"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="@dimen/element_spcaing_xxxxlarge"
+                android:layout_height="@dimen/element_spcaing_xxxxlarge"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/vib_imageView"
                 app:layout_constraintTop_toTopOf="parent"
