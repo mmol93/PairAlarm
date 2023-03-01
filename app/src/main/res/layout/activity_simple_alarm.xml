@@ -19,7 +19,8 @@
             android:id="@+id/rootLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="@dimen/element_spacing_large"
+            android:paddingBottom="@dimen/element_spacing_xxxlarge"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -48,8 +49,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginTop="@dimen/element_spacing_xlarge"
+                android:layout_marginBottom="@dimen/element_spacing_large"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -66,12 +67,12 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="@dimen/element_spacing_xnormal"
+                    android:layout_marginEnd="@dimen/element_spacing_xnormal"
                     android:fontFamily="@font/nanumgothicextrabold"
-                    android:text=":"
+                    android:text="@string/time_split"
                     android:textColor="@color/white"
-                    android:textSize="65sp" />
+                    android:textSize="@dimen/text_h2" />
 
                 <TextView
                     android:id="@+id/plusMinText"
@@ -80,115 +81,115 @@
                     android:fontFamily="@font/nanumgothicextrabold"
                     android:text="00"
                     android:textColor="@color/white"
-                    android:textSize="65sp" />
+                    android:textSize="@dimen/text_h2" />
 
             </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="@dimen/element_spacing_large"
                 android:gravity="center"
                 android:text="@string/alarmSet_simpleAlarmSubText"
                 android:textColor="@color/new_subTextColor"
-                android:textSize="20sp" />
+                android:textSize="@dimen/text_p3" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:paddingTop="8dp"
+                android:layout_marginTop="@dimen/element_spacing_xnormal"
+                android:paddingTop="@dimen/element_spacing_normal"
                 android:background="@drawable/button_background_upper"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/min60_Button"
-                    android:layout_width="120dp"
+                    android:layout_width="@dimen/alarmSet_button_width"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="@dimen/element_spacing_xnormal"
+                    android:layout_marginRight="@dimen/element_spacing_xnormal"
                     android:layout_weight="1"
                     android:backgroundTint="@color/itemBackground"
-                    android:padding="12dp"
+                    android:padding="@dimen/element_spacing_xnormal"
                     android:text="@string/alarmSet_60minButton"
                     android:textColor="@color/white"
-                    app:cornerRadius="20dp" />
+                    app:cornerRadius="@dimen/element_spacing_large" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/min30_Button"
-                    android:layout_width="120dp"
+                    android:layout_width="@dimen/alarmSet_button_width"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="@dimen/element_spacing_xnormal"
+                    android:layout_marginRight="@dimen/element_spacing_xnormal"
                     android:layout_weight="1"
                     android:backgroundTint="@color/itemBackground"
-                    android:padding="12dp"
+                    android:padding="@dimen/element_spacing_xnormal"
                     android:text="@string/alarmSet_30minButton"
                     android:textColor="@color/white"
-                    app:cornerRadius="20dp" />
+                    app:cornerRadius="@dimen/element_spacing_large" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/min15_Button"
-                    android:layout_width="120dp"
+                    android:layout_width="@dimen/alarmSet_button_width"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="@dimen/element_spacing_xnormal"
+                    android:layout_marginRight="@dimen/element_spacing_xnormal"
                     android:layout_weight="1"
                     android:backgroundTint="@color/itemBackground"
-                    android:padding="12dp"
+                    android:padding="@dimen/element_spacing_xnormal"
                     android:text="@string/alarmSet_15minButton"
                     android:textColor="@color/white"
-                    app:cornerRadius="20dp" />
+                    app:cornerRadius="@dimen/element_spacing_large" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="4dp"
-                android:paddingBottom="8dp"
-                android:layout_marginBottom="20dp"
+                android:paddingTop="@dimen/element_spacing_small"
+                android:paddingBottom="@dimen/element_spacing_normal"
+                android:layout_marginBottom="@dimen/element_spacing_xlarge"
                 android:background="@drawable/button_background_under"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/min10_Button"
-                    android:layout_width="120dp"
+                    android:layout_width="@dimen/alarmSet_button_width"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="@dimen/element_spacing_xnormal"
+                    android:layout_marginRight="@dimen/element_spacing_xnormal"
                     android:layout_weight="1"
                     android:backgroundTint="@color/itemBackground"
-                    android:padding="12dp"
+                    android:padding="@dimen/element_spacing_xnormal"
                     android:text="@string/alarmSet_10minButton"
                     android:textColor="@color/white"
-                    app:cornerRadius="20dp" />
+                    app:cornerRadius="@dimen/element_spacing_large" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/min5_Button"
-                    android:layout_width="120dp"
+                    android:layout_width="@dimen/alarmSet_button_width"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="@dimen/element_spacing_xnormal"
+                    android:layout_marginRight="@dimen/element_spacing_xnormal"
                     android:layout_weight="1"
                     android:backgroundTint="@color/itemBackground"
-                    android:padding="12dp"
+                    android:padding="@dimen/element_spacing_xnormal"
                     android:text="@string/alarmSet_5minButton"
                     android:textColor="@color/white"
-                    app:cornerRadius="20dp" />
+                    app:cornerRadius="@dimen/element_spacing_large" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/min1_Button"
-                    android:layout_width="120dp"
+                    android:layout_width="@dimen/alarmSet_button_width"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="@dimen/element_spacing_xnormal"
+                    android:layout_marginRight="@dimen/element_spacing_xnormal"
                     android:layout_weight="1"
                     android:backgroundTint="@color/itemBackground"
-                    android:padding="12dp"
+                    android:padding="@dimen/element_spacing_xnormal"
                     android:text="@string/alarmSet_1minButton"
                     android:textColor="@color/white"
-                    app:cornerRadius="20dp" />
+                    app:cornerRadius="@dimen/element_spacing_large" />
 
             </LinearLayout>
 
@@ -199,16 +200,16 @@
 
                 <ImageView
                     android:id="@+id/image_vibration"
-                    android:layout_width="35dp"
-                    android:layout_height="55dp"
+                    android:layout_width="@dimen/alarmSet_image_width"
+                    android:layout_height="@dimen/alarmSet_image_height"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/ic_no_vib"
                     app:vibrateMode="@{alarmData.vibration}" />
 
                 <ImageView
                     android:id="@+id/image_volume"
-                    android:layout_width="35dp"
-                    android:layout_height="55dp"
+                    android:layout_width="@dimen/alarmSet_image_width"
+                    android:layout_height="@dimen/alarmSet_image_height"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/volume_icon"
                     app:volume="@{alarmData.volume}" />
@@ -242,23 +243,24 @@
                     android:enabled="true"
                     android:gravity="center_vertical"
                     app:fb_backgroundColor="@color/main_orange"
-                    app:fb_cornerRadius="@dimen/custom_button_corner_radius"
+                    app:fb_cornerRadius="@dimen/fitButton_corner_radius"
                     app:fb_divColor="#fff"
-                    app:fb_divHeight="@dimen/custom_button_div_height"
-                    app:fb_divWidth="@dimen/custom_button_div_width"
+                    app:fb_divHeight="@dimen/fitButton_div_height"
+                    app:fb_divWidth="@dimen/fitButton_div_width"
                     app:fb_icon="@drawable/ic_baseline_music"
                     app:fb_iconColor="#FFF"
-                    app:fb_iconHeight="@dimen/custom_button_icon_height"
+                    app:fb_iconHeight="@dimen/fitButton_icon_height"
                     app:fb_divMarginStart="10dp"
-                    app:fb_iconMarginEnd="@dimen/custom_button_icon_margin_end"
-                    app:fb_iconMarginStart="@dimen/custom_button_icon_margin_start"
+                    app:fb_iconMarginEnd="@dimen/fitButton_icon_margin_end"
+                    app:fb_iconMarginStart="@dimen/fibButton_icon_margin_start"
                     app:fb_iconPosition="left"
-                    app:fb_iconWidth="@dimen/custom_button_icon_width"
+                    app:fb_iconWidth="@dimen/fitButton_icon_width"
                     app:fb_rippleColor="#FBE9E7"
                     app:fb_shape="rectangle"
                     app:fb_text="@string/alarmSet_selectBell"
                     app:fb_textColor="#FFF"
-                    app:fb_textPaddingStart="16dp" />
+                    app:fb_textPaddingStart="@dimen/element_spacing_xnormal"
+                    app:fb_textPaddingEnd="@dimen/element_spacing_xnormal"/>
 
                 <com.github.nikartm.button.FitButton
                     android:id="@+id/selectMode_button"
@@ -269,29 +271,30 @@
                     android:enabled="true"
                     android:gravity="center_vertical"
                     app:fb_backgroundColor="@color/mainColor"
-                    app:fb_cornerRadius="@dimen/custom_button_corner_radius"
+                    app:fb_cornerRadius="@dimen/fitButton_corner_radius"
                     app:fb_divColor="#fff"
-                    app:fb_divHeight="@dimen/custom_button_div_height"
-                    app:fb_divWidth="@dimen/custom_button_div_width"
+                    app:fb_divHeight="@dimen/fitButton_div_height"
+                    app:fb_divWidth="@dimen/fitButton_div_width"
                     app:fb_icon="@drawable/calculator"
                     app:fb_iconColor="#FFF"
-                    app:fb_iconHeight="@dimen/custom_button_icon_height"
+                    app:fb_iconHeight="@dimen/fitButton_icon_height"
                     app:fb_divMarginStart="8dp"
-                    app:fb_iconMarginEnd="@dimen/custom_button_icon_margin_end"
-                    app:fb_iconMarginStart="@dimen/custom_button_icon_margin_start"
+                    app:fb_iconMarginEnd="@dimen/fitButton_icon_margin_end"
+                    app:fb_iconMarginStart="@dimen/fibButton_icon_margin_start"
                     app:fb_iconPosition="left"
-                    app:fb_iconWidth="@dimen/custom_button_icon_width"
+                    app:fb_iconWidth="@dimen/fitButton_icon_width"
                     app:fb_rippleColor="#FBE9E7"
                     app:fb_shape="rectangle"
                     app:fb_text="@string/alarmSet_selectMode"
                     app:fb_textColor="#FFF"
-                    app:fb_textPaddingStart="16dp" />
+                    app:fb_textPaddingStart="@dimen/element_spacing_xnormal"
+                    app:fb_textPaddingEnd="@dimen/element_spacing_xnormal"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="@dimen/element_spacing_small"
                 android:orientation="horizontal">
 
                 <TextView
@@ -316,7 +319,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="@dimen/element_spacing_xnormal"
                 android:orientation="horizontal">
 
                 <TextView
@@ -328,7 +331,7 @@
                     android:gravity="center"
                     android:text="@string/alarmSet_selectBellTextTitle"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_p5"
                     app:bellIndex="@{alarmData.bell}" />
 
                 <TextView
@@ -340,7 +343,7 @@
                     android:gravity="center"
                     android:text="@string/alarmSet_selectModeTextTitle"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_p5"
                     app:alarmMode="@{alarmData.mode}" />
             </LinearLayout>
 
@@ -352,27 +355,27 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/cancelButton"
-                    android:layout_width="120dp"
+                    android:layout_width="@dimen/alarmSet_button_width"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="@dimen/element_spacing_xlarge"
+                    android:layout_marginRight="@dimen/element_spacing_xlarge"
                     android:layout_weight="1"
                     android:backgroundTint="@color/new_subTextColor"
-                    android:padding="12dp"
+                    android:padding="@dimen/element_spacing_xnormal"
                     android:text="@string/cancel"
-                    app:cornerRadius="20dp" />
+                    app:cornerRadius="@dimen/element_spacing_xlarge" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/saveButton"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="@dimen/element_spacing_xlarge"
+                    android:layout_marginRight="@dimen/element_spacing_xlarge"
                     android:layout_weight="1"
                     android:backgroundTint="@color/mainColor"
-                    android:padding="12dp"
+                    android:padding="@dimen/element_spacing_xnormal"
                     android:text="@string/save"
-                    app:cornerRadius="20dp" />
+                    app:cornerRadius="@dimen/element_spacing_xlarge" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

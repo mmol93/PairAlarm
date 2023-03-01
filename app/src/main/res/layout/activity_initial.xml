@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.InitialActivity"
-    android:layout_margin="20dp">
+    android:layout_margin="@dimen/element_spacing_xlarge">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieView"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
+        android:layout_width="@dimen/splash_animation_diagram"
+        android:layout_height="@dimen/splash_animation_diagram"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,14 +28,14 @@
         app:layout_constraintTop_toBottomOf="@id/lottieView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_p3"
         android:text="Pair Alarm" />
 
     <TextView
         android:id="@+id/progressText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="@dimen/element_spacing_xnormal"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/progressHorizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,14 +46,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:progress="0"
-        app:trackThickness="10dp"
-        app:trackCornerRadius="3dp"
+        app:trackThickness="@dimen/splash_progressbar_thickness"
+        app:trackCornerRadius="@dimen/splash_progressbar_radius"
         app:indicatorColor="@color/subColor"
         app:trackColor="@color/mainColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView"
         app:layout_constraintVertical_bias="0.283"
-        tools:layout_editor_absoluteX="16dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        tools:layout_editor_absoluteX="@dimen/element_spacing_large"
+        android:layout_marginLeft="@dimen/element_spacing_xnormal"
+        android:layout_marginRight="@dimen/element_spacing_xnormal"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
