@@ -83,6 +83,11 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
             }
         }
 
+        binding.resetCounter.setOnSingleClickListener {
+            alarmViewModel.currentAlarmMin.value = 0
+            alarmViewModel.currentAlarmHour.value = 0
+        }
+
         // editText의 외부를 클릭했을 때는 키보드랑 Focus 제거하기
         binding.rootLayout.setOnClickListener {
             clearKeyBoardFocus(binding.rootLayout)

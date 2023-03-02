@@ -46,7 +46,7 @@
                     android:textColor="@color/white" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/element_spacing_xlarge"
@@ -61,16 +61,22 @@
                     android:fontFamily="@font/nanumgothicextrabold"
                     android:text="00"
                     android:textColor="@color/white"
-                    android:textSize="65sp" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/timeSplit"
+                    android:textSize="@dimen/text_h2" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/timeSplit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/element_spacing_xnormal"
-                    android:layout_marginEnd="@dimen/element_spacing_xnormal"
                     android:fontFamily="@font/nanumgothicextrabold"
                     android:text="@string/time_split"
+                    android:paddingHorizontal="@dimen/element_spacing_large"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_h2" />
 
@@ -78,12 +84,26 @@
                     android:id="@+id/plusMinText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/timeSplit"
                     android:fontFamily="@font/nanumgothicextrabold"
                     android:text="00"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_h2" />
 
-            </LinearLayout>
+                <ImageView
+                    android:id="@+id/reset_counter"
+                    android:layout_width="@dimen/alarmSet_refresh_diameter"
+                    android:layout_height="@dimen/alarmSet_refresh_diameter"
+                    android:src="@drawable/ic_refresh_24"
+                    app:tint="@color/white"
+                    android:layout_marginEnd="@dimen/element_spacing_small"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:layout_width="match_parent"

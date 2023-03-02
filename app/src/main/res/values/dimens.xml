@@ -40,6 +40,7 @@
     <dimen name="alarmSet_button_width">120dp</dimen>
     <dimen name="alarmSet_image_width">36dp</dimen>
     <dimen name="alarmSet_image_height">56dp</dimen>
+    <dimen name="alarmSet_refresh_diameter">32dp</dimen>
 
     <!-- size for Fit button (button with image)-->
     <dimen name="fibButton_icon_margin_start">8dp</dimen>
