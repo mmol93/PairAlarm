@@ -176,7 +176,6 @@ fun getNextAlarm(alarmList: List<AlarmData>): String? {
     milliSecondForAlarmList.minOrNull()?.let { nextAlarmMillis ->
         val index = if (milliSecondForAlarmList.indexOf(nextAlarmMillis) == 0)  milliSecondForAlarmList.indexOf(nextAlarmMillis)
                     else milliSecondForAlarmList.indexOf(nextAlarmMillis) - 1
-        Timber.d("nextAlarmMillis index: $index")
         alarmList[index].run {
             return transMillisToTime(nextAlarmMillis) + "  " + this.name
         }

@@ -61,7 +61,7 @@ class OnAlarmActivity : AppCompatActivity() {
                     binding.hour.text = getCurrentHourDoubleDigitWithString()
                     binding.min.text = getCurrentMinuteDoubleDigitWithString()
 
-                    Timber.d("alarmData in OnAlarmActivity: $alarmCode")
+                    Timber.d("goes off alarmData in OnAlarmActivity: $alarmCode")
 
                     if (alarmData.quick) {
                         alarmViewModel.deleteAlarmData(alarmData)
