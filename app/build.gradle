@@ -117,6 +117,9 @@ dependencies {
     // datastore - https://developer.android.com/topic/libraries/architecture/datastore?hl=ko#prefs-vs-proto
     implementation "androidx.datastore:datastore-preferences:1.1.0-alpha01"
     implementation "androidx.datastore:datastore-core:1.1.0-alpha01"
+
+    // YvesCheung.RollingText - https://github.com/YvesCheung/RollingText
+    implementation "com.github.YvesCheung.RollingText:RollingText:1.2.11"
 }
 
 kapt {
