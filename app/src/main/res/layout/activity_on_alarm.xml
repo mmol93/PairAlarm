@@ -24,14 +24,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5">
 
-            <TextView
+            <com.yy.mobile.rollingtextview.RollingTextView
                 android:id="@+id/min"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanumgothicextrabold"
-                android:text="00"
+                android:text="@string/alarmSet_default_time"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_h1"
+                android:textStyle="bold"
+                app:duration="500"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.75"
@@ -53,14 +55,16 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
 
-            <TextView
+            <com.yy.mobile.rollingtextview.RollingTextView
                 android:id="@+id/hour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanumgothicextrabold"
-                android:text="00"
+                android:text="@string/alarmSet_default_time"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_h1"
+                android:textStyle="bold"
+                app:duration="500"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.25"

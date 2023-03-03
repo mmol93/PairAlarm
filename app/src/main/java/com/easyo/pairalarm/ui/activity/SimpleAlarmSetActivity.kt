@@ -53,9 +53,9 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
                 // 시간
                 alarmViewModel.currentAlarmHour.collectLatest {
                     if (it >= 10) {
-                        binding.plusHourText.text = it.toString()
+                        binding.plusHourText.setText(it.toString())
                     } else {
-                        binding.plusHourText.text = "0$it"
+                        binding.plusHourText.setText("0$it")
                     }
                 }
             }
@@ -67,9 +67,9 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
                         alarmViewModel.currentAlarmHour.value += 1
                     }
                     if (it >= 10) {
-                        binding.plusMinText.text = it.toString()
+                        binding.plusMinText.setText(it.toString())
                     } else {
-                        binding.plusMinText.text = "0$it"
+                        binding.plusMinText.setText("0$it")
                     }
                 }
             }

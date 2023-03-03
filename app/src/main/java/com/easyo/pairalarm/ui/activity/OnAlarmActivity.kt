@@ -51,15 +51,15 @@ class OnAlarmActivity : AppCompatActivity() {
                 override fun run() {
                     handler.postDelayed(this, 3600)
 
-                    binding.hour.text = getCurrentHourDoubleDigitWithString()
-                    binding.min.text = getCurrentMinuteDoubleDigitWithString()
+                    binding.hour.setText(getCurrentHourDoubleDigitWithString())
+                    binding.min.setText(getCurrentMinuteDoubleDigitWithString())
                 }
             }
             handler.post(handlerTask)
             lifecycleScope.launch {
                 goesOffAlarmData.collectLatest { alarmData ->
-                    binding.hour.text = getCurrentHourDoubleDigitWithString()
-                    binding.min.text = getCurrentMinuteDoubleDigitWithString()
+                    binding.hour.setText(getCurrentHourDoubleDigitWithString())
+                    binding.min.setText(getCurrentMinuteDoubleDigitWithString())
 
                     Timber.d("goes off alarmData in OnAlarmActivity: $alarmCode")
 

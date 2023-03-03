@@ -54,6 +54,7 @@
     <string name="alarmSet_10minButton">+10min</string>
     <string name="alarmSet_5minButton">+5min</string>
     <string name="alarmSet_1minButton">+1min</string>
+    <string name="alarmSet_default_time">00</string>
 
 
     <!-- about Dialog -->
