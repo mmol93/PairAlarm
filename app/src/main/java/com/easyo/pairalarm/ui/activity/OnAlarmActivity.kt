@@ -37,11 +37,11 @@ class OnAlarmActivity : AppCompatActivity() {
 
         val alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
 
-        val callback = object : OnBackPressedCallback(true) {
+        val backButtonCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
             }
         }
-        this.onBackPressedDispatcher.addCallback(this, callback)
+        this.onBackPressedDispatcher.addCallback(this, backButtonCallback)
 
         if (alarmCode != null) {
             val goesOffAlarmData = alarmViewModel.searchAlarmCode(alarmCode.toString())

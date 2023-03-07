@@ -30,8 +30,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
 
         binding.settingRecycler.apply {
             adapter = settingRecyclerAdapter
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
 
         setupSettingData(settingItemList)

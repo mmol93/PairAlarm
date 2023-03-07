@@ -73,20 +73,244 @@
                 app:layout_constraintVertical_bias="1.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <FrameLayout
-            android:id="@+id/front_container"
+        <LinearLayout
+            android:id="@+id/calculator_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2">
+            android:layout_weight="1.8"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/element_spcaing_xxxxlarge"
+            android:paddingTop="@dimen/element_spcaing_xxxxlarge"
+            >
 
-        </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/element_spacing_super_large">
+
+                <TextView
+                    android:id="@+id/problem_number1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/element_spacing_small"
+                    android:text="30"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_h3"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/problem_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/element_spacing_small"
+                    android:text="@string/problem_plus"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_h3"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/problem_number2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/element_spacing_small"
+                    android:text="33"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_h3"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/problem_equal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/element_spacing_small"
+                    android:text="@string/problem_equal"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_h3"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/problem_answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/element_spacing_small"
+                    android:text="63"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_h3" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/element_spacing_small"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/one_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/element_spacing_ultra_large"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/new_subTextColor"
+                    android:text="@string/one"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/text_p3"
+                    android:textStyle="bold"
+                    app:cornerRadius="@dimen/element_spacing_normal" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/two_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/element_spacing_ultra_large"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/new_subTextColor"
+                    android:text="@string/two"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/text_p3"
+                    android:textStyle="bold"
+                    app:cornerRadius="@dimen/element_spacing_normal" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/three_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/element_spacing_ultra_large"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/new_subTextColor"
+                    android:text="@string/three"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/text_p3"
+                    android:textStyle="bold"
+                    app:cornerRadius="@dimen/element_spacing_normal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/element_spacing_small"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/four_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/element_spacing_ultra_large"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/new_subTextColor"
+                    android:text="@string/four"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/text_p3"
+                    android:textStyle="bold"
+                    app:cornerRadius="@dimen/element_spacing_normal" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/five_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/element_spacing_ultra_large"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/new_subTextColor"
+                    android:text="@string/five"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/text_p3"
+                    android:textStyle="bold"
+                    app:cornerRadius="@dimen/element_spacing_normal" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/six_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/element_spacing_ultra_large"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/new_subTextColor"
+                    android:text="@string/six"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/text_p3"
+                    android:textStyle="bold"
+                    app:cornerRadius="@dimen/element_spacing_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/element_spacing_small"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/seven_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/element_spacing_ultra_large"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/new_subTextColor"
+                    android:text="@string/seven"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/text_p3"
+                    android:textStyle="bold"
+                    app:cornerRadius="@dimen/element_spacing_normal" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/eight_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/element_spacing_ultra_large"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/new_subTextColor"
+                    android:text="@string/eight"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/text_p3"
+                    android:textStyle="bold"
+                    app:cornerRadius="@dimen/element_spacing_normal" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/nine_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/element_spacing_ultra_large"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/new_subTextColor"
+                    android:text="@string/nine"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/text_p3"
+                    android:textStyle="bold"
+                    app:cornerRadius="@dimen/element_spacing_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/element_spacing_small"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/zero_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/element_spacing_ultra_large"
+                    android:layout_marginHorizontal="12dp"
+                    android:backgroundTint="@color/new_subTextColor"
+                    android:text="@string/zero"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/text_p3"
+                    android:textStyle="bold"
+                    app:cornerRadius="@dimen/element_spacing_normal" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.2">
-
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/ten_minutes"
