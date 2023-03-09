@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
-            name="alarmData"
-            type="com.easyo.pairalarm.database.table.AlarmData" />
+            name="showCalculatorProblem"
+            type="Boolean" />
+
+        <variable
+            name="calculatorProblem"
+            type="com.easyo.pairalarm.model.CalculatorProblem" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/on_alarm_background"
@@ -80,26 +86,27 @@
             android:layout_weight="1.8"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingHorizontal="@dimen/element_spcaing_xxxxlarge"
+            android:paddingHorizontal="@dimen/element_spacing_xxxlarge"
             android:paddingTop="@dimen/element_spcaing_xxxxlarge"
-            >
+            android:visibility="@{showCalculatorProblem ? View.VISIBLE : View.INVISIBLE}">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/element_spacing_super_large"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/element_spacing_super_large">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/problem_number1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/element_spacing_small"
-                    android:text="30"
+                    android:text="@{Integer.valueOf(calculatorProblem.number1).toString()}"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_h3"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/text_h4"
+                    android:textStyle="bold"
+                    tools:text="30" />
 
                 <TextView
                     android:id="@+id/problem_plus"
@@ -108,7 +115,7 @@
                     android:layout_marginHorizontal="@dimen/element_spacing_small"
                     android:text="@string/problem_plus"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_h3"
+                    android:textSize="@dimen/text_h4"
                     android:textStyle="bold" />
 
                 <TextView
@@ -116,10 +123,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/element_spacing_small"
-                    android:text="33"
+                    android:text="@{Integer.valueOf(calculatorProblem.number2).toString()}"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_h3"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/text_h4"
+                    android:textStyle="bold"
+                    tools:text="33" />
 
                 <TextView
                     android:id="@+id/problem_equal"
@@ -136,9 +144,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/element_spacing_small"
-                    android:text="63"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_h3" />
+                    android:textSize="@dimen/text_h3"
+                    tools:text="1234" />
 
             </LinearLayout>
 
@@ -284,25 +292,68 @@
                     app:cornerRadius="@dimen/element_spacing_normal" />
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/element_spacing_small"
                 android:gravity="center"
                 android:orientation="horizontal">
 
+                <ImageView
+                    android:id="@+id/delete_button"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/element_spacing_ultra_large"
+                    android:layout_weight="1"
+                    app:layout_constraintDimensionRatio="1:1"
+                    android:src="@drawable/ic_arrow_back"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideline1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.34" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/zero_button"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/element_spacing_ultra_large"
                     android:layout_marginHorizontal="12dp"
+                    android:layout_weight="1"
                     android:backgroundTint="@color/new_subTextColor"
                     android:text="@string/zero"
                     android:textAllCaps="false"
                     android:textSize="@dimen/text_p3"
                     android:textStyle="bold"
-                    app:cornerRadius="@dimen/element_spacing_normal" />
-            </LinearLayout>
+                    app:cornerRadius="@dimen/element_spacing_normal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideline2"
+                    app:layout_constraintStart_toStartOf="@id/guideline1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.67" />
+
+                <ImageView
+                    android:id="@+id/reset_button"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/element_spacing_ultra_large"
+                    android:src="@drawable/ic_refresh_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guideline2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
@@ -338,6 +389,7 @@
                 android:text="@string/ok"
                 android:textAllCaps="false"
                 android:textSize="@dimen/text_p3"
+                android:visibility="@{!showCalculatorProblem ? View.VISIBLE : View.INVISIBLE}"
                 app:cornerRadius="@dimen/element_spacing_xlarge"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

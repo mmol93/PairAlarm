@@ -2,7 +2,11 @@ package com.easyo.pairalarm.extensions
 
 import android.app.KeyguardManager
 import android.content.Context
+import android.content.Context.VIBRATOR_SERVICE
 import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -43,4 +47,15 @@ fun AppCompatActivity.showErrorSnackBar(view: View, error: Failure) {
     this.let { Snackbar.make(view, R.string.some_error, Snackbar.LENGTH_SHORT) }
         .also { it.show() }
     Timber.e("error: ${error.error.message}")
+}
+
+fun AppCompatActivity.doShortVibrateOnce(){
+    val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        (getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager).run {
+            defaultVibrator
+        }
+    } else {
+        getSystemService(VIBRATOR_SERVICE) as Vibrator
+    }
+    vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
 }

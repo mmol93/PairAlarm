@@ -71,7 +71,6 @@
     <string name="alarmSet_1minButton">+1min</string>
     <string name="alarmSet_default_time">00</string>
 
-
     <!-- about Dialog -->
     <string name="dialog_permission_title">Permission</string>
     <string name="dialog_overlay_message">Overlay permission is necessary to show alarm on the background</string>
@@ -101,5 +100,7 @@
     <string name="toast_set_minimum_time">Please set at least one minute</string>
     <string name="toast_ten_minute_later">Alarm goes off 10minutes later</string>
     <string name="toast_get_dataStore_error">Fail to get data from dataStore</string>
+    <string name="toast_correct_calculator_answer">Correct answer!!</string>
+    <string name="toast_wrong_calculator_answer">Wrong answer. Please put again.</string>
 
 </resources>
