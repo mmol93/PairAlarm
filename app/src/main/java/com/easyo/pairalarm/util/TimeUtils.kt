@@ -8,7 +8,7 @@ import java.util.*
 
 @SuppressLint("SimpleDateFormat")
 fun transMillisToTime(milliSecond: Long): String? {
-    val simpleDateFormat = SimpleDateFormat("MM/dd HH:mm")
+    val simpleDateFormat = SimpleDateFormat("MM/dd  HH:mm")
     return simpleDateFormat.format(milliSecond)
 }
 
