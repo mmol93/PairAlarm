@@ -173,13 +173,7 @@ fun getNextAlarm(alarmList: List<AlarmData>): String? {
             }
         }
     }
-    milliSecondForAlarmList.minOrNull()?.let { nextAlarmMillis ->
-        val index = if (milliSecondForAlarmList.indexOf(nextAlarmMillis) == 0)  milliSecondForAlarmList.indexOf(nextAlarmMillis)
-                    else milliSecondForAlarmList.indexOf(nextAlarmMillis) - 1
-        alarmList[index].run {
-            return transMillisToTime(nextAlarmMillis) + "  " + this.name
-        }
-    } ?: return null
+    return milliSecondForAlarmList.minOrNull()?.let { transMillisToTime(it) }
 }
 
 fun initCurrentAlarmData(
