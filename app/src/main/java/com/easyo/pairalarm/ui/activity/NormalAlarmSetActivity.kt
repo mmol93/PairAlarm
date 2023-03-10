@@ -17,7 +17,7 @@ import com.easyo.pairalarm.ui.dialog.SimpleDialog
 import com.easyo.pairalarm.util.ALARM_CODE_TEXT
 import com.easyo.pairalarm.util.AlarmAnimation
 import com.easyo.pairalarm.util.getNewAlarmCode
-import com.easyo.pairalarm.util.makeToast
+import com.easyo.pairalarm.util.showShortToast
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -180,7 +180,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
                 }
                 finish()
             } else {
-                makeToast(this, getString(R.string.alarmSet_Toast_week))
+                showShortToast(this, getString(R.string.alarmSet_Toast_week))
             }
         }
 

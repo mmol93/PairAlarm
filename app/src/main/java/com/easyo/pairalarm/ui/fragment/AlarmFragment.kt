@@ -53,7 +53,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 getString(R.string.dialog_notification_permission_message),
                 positive = { },
                 negative = {
-                    makeToast(
+                    showShortToast(
                         requireContext(),
                         getString(R.string.dialog_notification_permission_message)
                     )
@@ -73,7 +73,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                     getString(R.string.dialog_overlay_message),
                     positive = { checkOverlayPermission() },
                     negative = {
-                        makeToast(
+                        showShortToast(
                             requireContext(),
                             getString(R.string.dialog_permission_overlay_no)
                         )

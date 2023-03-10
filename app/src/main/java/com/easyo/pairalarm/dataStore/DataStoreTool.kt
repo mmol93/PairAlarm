@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.easyo.pairalarm.AppClass.Companion.dataStore
 import com.easyo.pairalarm.R
-import com.easyo.pairalarm.util.makeToast
+import com.easyo.pairalarm.util.showShortToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -23,7 +23,7 @@ interface DataStoreTool : CoroutineScope {
         val setDataKey = stringPreferencesKey(key)
         return context.dataStore.data.catch { exception ->
             Timber.d(exception.message)
-            makeToast(context, context.getString(R.string.toast_get_dataStore_error))
+            showShortToast(context, context.getString(R.string.toast_get_dataStore_error))
         }.map { preferences ->
             // No type safety.
             preferences[setDataKey] ?: ""
@@ -34,7 +34,7 @@ interface DataStoreTool : CoroutineScope {
         val setDataKey = intPreferencesKey(key)
         return context.dataStore.data.catch { exception ->
             Timber.d(exception.message)
-            makeToast(context, context.getString(R.string.toast_get_dataStore_error))
+            showShortToast(context, context.getString(R.string.toast_get_dataStore_error))
         }.map { preferences ->
             // No type safety.
             preferences[setDataKey] ?: 0

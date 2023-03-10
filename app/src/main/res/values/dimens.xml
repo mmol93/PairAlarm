@@ -17,7 +17,9 @@
     
     <!-- for TextSize -->
     <dimen name="text_h1">76sp</dimen>
-    <dimen name="text_h2">65sp</dimen>
+    <dimen name="text_h2">64sp</dimen>
+    <dimen name="text_h3">52sp</dimen>
+    <dimen name="text_h4">48sp</dimen>
     <dimen name="text_p1">28sp</dimen>
     <dimen name="text_p2">24sp</dimen>
     <dimen name="text_p3">20sp</dimen>

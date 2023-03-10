@@ -16,7 +16,7 @@ import com.easyo.pairalarm.ui.dialog.SimpleDialog
 import com.easyo.pairalarm.util.AlarmAnimation
 import com.easyo.pairalarm.util.getAddedTime
 import com.easyo.pairalarm.util.makeAlarmData
-import com.easyo.pairalarm.util.makeToast
+import com.easyo.pairalarm.util.showShortToast
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -202,7 +202,7 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
 
                 finish()
             } else {
-                makeToast(this, getString(R.string.toast_set_minimum_time))
+                showShortToast(this, getString(R.string.toast_set_minimum_time))
             }
         }
 

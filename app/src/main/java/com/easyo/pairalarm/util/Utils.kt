@@ -18,8 +18,8 @@ fun getNewAlarmCode(): String {
             currentMin.toString() + currentSecond.toString()
 }
 
-fun makeToast(context: Context, message: String) {
-    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+fun showShortToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
 fun selectMusic(context: Context, index: Int): MediaPlayer {

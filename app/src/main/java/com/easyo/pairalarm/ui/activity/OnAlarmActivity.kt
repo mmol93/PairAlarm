@@ -11,6 +11,9 @@ import androidx.work.*
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityOnAlarmBinding
 import com.easyo.pairalarm.extensions.displayOn
+import com.easyo.pairalarm.extensions.doShortVibrateOnce
+import com.easyo.pairalarm.model.AlarmModeType
+import com.easyo.pairalarm.model.CalculatorProblem
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.easyo.pairalarm.worker.NextAlarmWorker
@@ -25,6 +28,7 @@ import java.util.*
 class OnAlarmActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOnAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
+    lateinit var calculatorProblem: CalculatorProblem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +41,11 @@ class OnAlarmActivity : AppCompatActivity() {
 
         val alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
 
-        val callback = object : OnBackPressedCallback(true) {
+        val backButtonCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
             }
         }
-        this.onBackPressedDispatcher.addCallback(this, callback)
+        this.onBackPressedDispatcher.addCallback(this, backButtonCallback)
 
         if (alarmCode != null) {
             val goesOffAlarmData = alarmViewModel.searchAlarmCode(alarmCode.toString())
@@ -58,10 +62,13 @@ class OnAlarmActivity : AppCompatActivity() {
             handler.post(handlerTask)
             lifecycleScope.launch {
                 goesOffAlarmData.collectLatest { alarmData ->
+                    Timber.d("goes off alarmData in OnAlarmActivity: $alarmCode")
+
                     binding.hour.setText(getCurrentHourDoubleDigitWithString())
                     binding.min.setText(getCurrentMinuteDoubleDigitWithString())
-
-                    Timber.d("goes off alarmData in OnAlarmActivity: $alarmCode")
+                    calculatorProblem = alarmViewModel.getRandomNumberForCalculator()
+                    binding.calculatorProblem = calculatorProblem
+                    binding.showCalculatorProblem = alarmData.mode == AlarmModeType.CALCULATE.mode
 
                     if (alarmData.quick) {
                         alarmViewModel.deleteAlarmData(alarmData)
@@ -78,10 +85,10 @@ class OnAlarmActivity : AppCompatActivity() {
                         )
                     getAllAlarmReset(this@OnAlarmActivity)
 
-
                     this.cancel()
                 }
             }
+
             // +10분 스누즈
             binding.tenMinutes.setOnClickListener {
                 val calendar = Calendar.getInstance().apply {
@@ -96,7 +103,7 @@ class OnAlarmActivity : AppCompatActivity() {
                     addMinute
                 )
 
-                makeToast(
+                showShortToast(
                     this@OnAlarmActivity,
                     getString(R.string.toast_ten_minute_later)
                 )
@@ -104,12 +111,83 @@ class OnAlarmActivity : AppCompatActivity() {
                 handler.removeMessages(0)
                 finish()
             }
+
             binding.ok.setOnClickListener {
                 handler.removeMessages(0)
                 finish()
             }
+
+            lifecycleScope.launch {
+                alarmViewModel.answer.collectLatest {
+                    when {
+                        it.isBlank() -> binding.problemAnswer.text = "???"
+                        it == calculatorProblem.answer -> {
+                            showShortToast(
+                                this@OnAlarmActivity,
+                                getString(R.string.toast_correct_calculator_answer)
+                            )
+                            // TODO: 정답 맞추면 dialog로 정답인거 알려주고 ok 누르면 액티비티랑 같이 꺼지게 하기
+                            finish()
+                        }
+                        it.length > 3 -> {
+                            alarmViewModel.answer.value = ""
+                            doShortVibrateOnce()
+                            showShortToast(
+                                this@OnAlarmActivity,
+                                getString(R.string.toast_wrong_calculator_answer)
+                            )
+                        }
+                        else -> binding.problemAnswer.text = it
+                    }
+                }
+            }
+
+            // 숫자 버튼 클릭에 따른 행동 정의
+            binding.oneButton.setOnClickListener {
+                alarmViewModel.answer.value = alarmViewModel.answer.value + "1"
+            }
+            binding.twoButton.setOnClickListener {
+                alarmViewModel.answer.value = alarmViewModel.answer.value + "2"
+            }
+            binding.threeButton.setOnClickListener {
+                alarmViewModel.answer.value = alarmViewModel.answer.value + "3"
+            }
+            binding.fourButton.setOnClickListener {
+                alarmViewModel.answer.value = alarmViewModel.answer.value + "4"
+            }
+            binding.fiveButton.setOnClickListener {
+                alarmViewModel.answer.value = alarmViewModel.answer.value + "5"
+            }
+            binding.sixButton.setOnClickListener {
+                alarmViewModel.answer.value = alarmViewModel.answer.value + "6"
+            }
+            binding.sevenButton.setOnClickListener {
+                alarmViewModel.answer.value = alarmViewModel.answer.value + "7"
+            }
+            binding.eightButton.setOnClickListener {
+                alarmViewModel.answer.value = alarmViewModel.answer.value + "8"
+            }
+            binding.nineButton.setOnClickListener {
+                alarmViewModel.answer.value = alarmViewModel.answer.value + "9"
+            }
+            binding.zeroButton.setOnClickListener {
+                alarmViewModel.answer.value = alarmViewModel.answer.value + "0"
+            }
+
+            binding.deleteButton.setOnClickListener {
+                alarmViewModel.answer.value.let {
+                    if (it.isNotBlank()) {
+                        alarmViewModel.answer.value = it.dropLast(1)
+                    }
+                }
+            }
+
+            binding.resetButton.setOnClickListener {
+                alarmViewModel.answer.value = ""
+            }
+
         } else {
-            makeToast(this, getString(R.string.on_alarm_error))
+            showShortToast(this, getString(R.string.on_alarm_error))
             finish()
         }
     }
