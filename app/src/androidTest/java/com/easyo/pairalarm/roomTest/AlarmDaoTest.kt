@@ -1,14 +1,14 @@
 package com.easyo.pairalarm.roomTest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.filters.SmallTest
 import com.easyo.pairalarm.database.AppDatabase
 import com.easyo.pairalarm.database.dao.AlarmDAO
 import com.easyo.pairalarm.database.table.AlarmData
 import com.easyo.pairalarm.utils.initCurrentAlarmDataForTest
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -17,24 +17,27 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import javax.inject.Inject
+import javax.inject.Named
 
 @SmallTest
 @ExperimentalCoroutinesApi
+@HiltAndroidTest
 class AlarmDaoTest {
     @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var database: AppDatabase
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    @Named("testDatabase")
+    lateinit var database: AppDatabase
     private lateinit var dao: AlarmDAO
 
     @Before
     fun setup() {
-        database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(), AppDatabase::class.java
-        )
-            .allowMainThreadQueries() //this is a test case, we don't want other thread pools
-            .build()
-
+        hiltRule.inject()
         dao = database.alarmDao()
     }
 
@@ -44,7 +47,6 @@ class AlarmDaoTest {
     }
 
     @Test
-    // insert는 suspend 함수이기 때문에 runTest 안에서 실시한다
     fun insertAlarmDataTest() = runTest {
         val exampleAlarmData = initCurrentAlarmDataForTest()
         dao.insertNewAlarm(exampleAlarmData)
