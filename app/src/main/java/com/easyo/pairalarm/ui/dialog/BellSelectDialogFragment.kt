@@ -19,7 +19,7 @@ class BellSelectDialogFragment(
     private val clickSaveButton: (clickedBellIndex: Int) -> Unit
 ) : DialogFragment() {
     private lateinit var binding: DialogBellSetBinding
-    private var bellIndex = 0
+    private var bellIndex = selectedBellIndex
 
     override fun onCreateView(
         inflater: LayoutInflater,
