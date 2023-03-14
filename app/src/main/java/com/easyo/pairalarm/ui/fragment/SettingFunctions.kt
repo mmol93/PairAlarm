@@ -6,8 +6,9 @@ interface SettingFunctions {
 
     val settingContents: SettingContents
 
-    fun setQuickAlarmBell(title: String)
-    fun setQuickAlarmMode(title: String)
+    fun setQuickAlarmBell(key: String)
+    fun setQuickAlarmMode(key: String)
+    fun setQuickAlarmMute(key: String)
     fun openAppInfo()
     fun reportAboutApp()
 }

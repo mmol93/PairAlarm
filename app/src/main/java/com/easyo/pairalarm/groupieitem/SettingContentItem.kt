@@ -34,6 +34,7 @@ class SettingContentItem(
 
     override fun bind(binding: SettingItemBinding, position: Int) {
         binding.title = settingContents.title
+        // 레이아웃의 배경 셋팅
         when (settingContentType) {
             SettingContentType.SINGLE -> {
                 binding.settingItemLayout.background =
@@ -71,6 +72,9 @@ class SettingContentItem(
                 SettingContents.QUICKALARM_MODE -> {
                     setQuickAlarmMode(settingContents.title)
                 }
+                SettingContents.QUICKALARM_MUTE -> {
+                    setQuickAlarmMute(settingContents.title)
+                }
                 SettingContents.APP_INFO -> {
                     openAppInfo()
                     if (BuildConfig.DEBUG){
@@ -96,15 +100,17 @@ class SettingContentItem(
         job.cancel()
     }
 
-    override fun setQuickAlarmBell(title: String) {
+    // 각 override fun에는 클릭 시 실시한 행동 정의
+
+    override fun setQuickAlarmBell(key: String) {
         BellSelectDialogFragment(settingDetail.getBellIndex()) { selectedBellIndex ->
             launch {
-                saveStringData(title, selectedBellIndex.getBellName())
+                saveStringData(key, selectedBellIndex.getBellName())
             }
         }.also { it.show((context as AppCompatActivity).supportFragmentManager, null) }
     }
 
-    override fun setQuickAlarmMode(title: String) {
+    override fun setQuickAlarmMode(key: String) {
         SimpleDialog.showAlarmModeDialog(
             context,
             clickedItemPosition = settingDetail.getModeIndex(),
@@ -114,16 +120,36 @@ class SettingContentItem(
                     when (alert.listView.checkedItemPosition) {
                         // Normal 클릭 시
                         0 -> {
-                            saveStringData(title, AlarmMode.NORMAL.mode)
+                            saveStringData(key, AlarmMode.NORMAL.mode)
                         }
                         // Calculate 클릭 시
                         1 -> {
-                            saveStringData(title, AlarmMode.CALCULATION.mode)
+                            saveStringData(key, AlarmMode.CALCULATION.mode)
                         }
                     }
                 }
             }
         )
+    }
+
+    override fun setQuickAlarmMute(key: String) {
+        launch {
+            // 클릭할 때 마다 다음 모드가 저장되게 한다.
+            when(settingDetail) {
+                AlarmMuteOption.MUTE.muteOptionName -> {
+                    saveStringData(key, AlarmMuteOption.ONCE.muteOptionName)
+                }
+                AlarmMuteOption.ONCE.muteOptionName -> {
+                    saveStringData(key, AlarmMuteOption.SOUND.muteOptionName)
+                }
+                AlarmMuteOption.SOUND.muteOptionName -> {
+                    saveStringData(key, AlarmMuteOption.MUTE.muteOptionName)
+                }
+                else -> {
+                    saveStringData(key, AlarmMuteOption.MUTE.muteOptionName)
+                }
+            }
+        }
     }
 
     override fun openAppInfo() {
