@@ -8,6 +8,6 @@ Working Progress
 - [ ] onAlarm - ing
 - [ ] Setting - ing
 - [ ] GA
-- [ ] UnitTest & UI Teset
+- [X] UnitTest & UI Teset
 - [ ] PlayStore
 - [ ] AdMob
