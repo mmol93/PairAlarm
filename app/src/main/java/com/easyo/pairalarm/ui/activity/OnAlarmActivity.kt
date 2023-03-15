@@ -83,7 +83,7 @@ class OnAlarmActivity : AppCompatActivity() {
                             ExistingWorkPolicy.REPLACE,
                             alarmTimeWorkRequest as OneTimeWorkRequest
                         )
-                    getAllAlarmReset(this@OnAlarmActivity)
+                    resetAllAlarms(this@OnAlarmActivity)
 
                     this.cancel()
                 }

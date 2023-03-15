@@ -54,7 +54,7 @@ fun getMillisWithCalendar(hour: Int, min: Int, dayOfWeek: Int): Long {
     return calendar.timeInMillis
 }
 
-fun getAlarmDataFromTimeMillis(timeInterval: Long): AlarmData {
+fun getAlarmDataFromTimeMillis(timeInterval: Long, isQuickAlarm: Boolean = false): AlarmData {
     val calendar = Calendar.getInstance()
     calendar.timeInMillis += timeInterval
     val hourSet = calendar.get(Calendar.HOUR_OF_DAY)

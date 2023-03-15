@@ -45,7 +45,7 @@ class AlarmReceiver : BroadcastReceiver() {
                         intent.action == "android.intent.action.LOCKED_BOOT_COMPLETED"
                 -> {
                     Timber.d("reset alarm")
-                    getAllAlarmReset(context)
+                    resetAllAlarms(context)
                 }
 
                 // 내가 설정한 알람이 울렸을 때

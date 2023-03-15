@@ -123,7 +123,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 if (alarmDataList.isEmpty()) {
                     cancelAlarmNotification(requireContext())
                 } else {
-                    getAllAlarmReset(requireContext(), alarmDataList)
+                    resetAllAlarms(requireContext(), alarmDataList)
                 }
             }
         }

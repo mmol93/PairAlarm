@@ -45,13 +45,12 @@ fun setAlarmOnBroadcast(context: Context, alarmCode: Int, hour: Int, min: Int) {
     )
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val alarmInfo = AlarmManager.AlarmClockInfo(calendarMillis, pendingIntent)
-    Timber.d("set broadcast alarmCode: $alarmCode")
-    Timber.d("set broadcast alarm(mills): " + transMillisToTime(calendarMillis))
+    Timber.d("set broadcast alarmCode: $alarmCode alarm(date): " + transMillisToTime(calendarMillis))
     alarmManager.setAlarmClock(alarmInfo, pendingIntent)
 }
 
 // 모든 알람 데이터를 가져와서 전부 다시 셋팅한다
-fun getAllAlarmReset(context: Context?, alarmDataList: List<AlarmData>? = null) {
+fun resetAllAlarms(context: Context?, alarmDataList: List<AlarmData>? = null) {
     if (context != null) {
         // AlarmData가 없으면 DB에서 새롭게 가져온다
         if (alarmDataList == null) {
