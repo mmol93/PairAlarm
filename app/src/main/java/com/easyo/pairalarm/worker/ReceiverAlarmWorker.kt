@@ -10,10 +10,7 @@ import com.easyo.pairalarm.ui.activity.OnAlarmActivity
 import com.easyo.pairalarm.util.ALARM_CODE_TEXT
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.first
 import timber.log.Timber
 import java.util.*
 
@@ -30,52 +27,48 @@ class ReceiverAlarmWorker @AssistedInject constructor(
         val alarmCode = inputData.getString(ALARM_CODE_TEXT)
         Timber.d("alarmCode: $alarmCode")
         if (alarmCode != null) {
-            CoroutineScope(Dispatchers.Main).launch {
-                val targetAlarmData = alarmDao.searchAlarmDataWithAlarmCode(alarmCode.toString())
-                targetAlarmData.collect { alarmData ->
-                    Timber.d("Called alarm data: $alarmData")
-                    val todayWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-                    Timber.d("today week: $todayWeek")
+            val targetAlarmData = alarmDao.searchAlarmDataWithAlarmCode(alarmCode.toString())
+            targetAlarmData.first().let { alarmData ->
+                Timber.d("Called alarm data: $alarmData")
+                val todayWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+                Timber.d("today week: $todayWeek")
 
-                    when (todayWeek) {
-                        1 -> {
-                            if (alarmData.Sun && alarmData.alarmIsOn) {
-                                openOnAlarmActivity(applicationContext, alarmCode)
-                            }
-                        }
-                        2 -> {
-                            if (alarmData.Mon && alarmData.alarmIsOn) {
-                                openOnAlarmActivity(applicationContext, alarmCode)
-                            }
-                        }
-                        3 -> {
-                            if (alarmData.Tue && alarmData.alarmIsOn) {
-                                openOnAlarmActivity(applicationContext, alarmCode)
-                            }
-                        }
-                        4 -> {
-                            if (alarmData.Wed && alarmData.alarmIsOn) {
-                                openOnAlarmActivity(applicationContext, alarmCode)
-                            }
-                        }
-                        5 -> {
-                            if (alarmData.Thu && alarmData.alarmIsOn) {
-                                openOnAlarmActivity(applicationContext, alarmCode)
-                            }
-                        }
-                        6 -> {
-                            if (alarmData.Fri && alarmData.alarmIsOn) {
-                                openOnAlarmActivity(applicationContext, alarmCode)
-                            }
-                        }
-                        7 -> {
-                            if (alarmData.Sat && alarmData.alarmIsOn) {
-                                openOnAlarmActivity(applicationContext, alarmCode)
-                            }
+                when (todayWeek) {
+                    1 -> {
+                        if (alarmData.Sun && alarmData.alarmIsOn) {
+                            openOnAlarmActivity(applicationContext, alarmCode)
                         }
                     }
-                    // collect를 한 번만 하게 한다
-                    this.cancel()
+                    2 -> {
+                        if (alarmData.Mon && alarmData.alarmIsOn) {
+                            openOnAlarmActivity(applicationContext, alarmCode)
+                        }
+                    }
+                    3 -> {
+                        if (alarmData.Tue && alarmData.alarmIsOn) {
+                            openOnAlarmActivity(applicationContext, alarmCode)
+                        }
+                    }
+                    4 -> {
+                        if (alarmData.Wed && alarmData.alarmIsOn) {
+                            openOnAlarmActivity(applicationContext, alarmCode)
+                        }
+                    }
+                    5 -> {
+                        if (alarmData.Thu && alarmData.alarmIsOn) {
+                            openOnAlarmActivity(applicationContext, alarmCode)
+                        }
+                    }
+                    6 -> {
+                        if (alarmData.Fri && alarmData.alarmIsOn) {
+                            openOnAlarmActivity(applicationContext, alarmCode)
+                        }
+                    }
+                    7 -> {
+                        if (alarmData.Sat && alarmData.alarmIsOn) {
+                            openOnAlarmActivity(applicationContext, alarmCode)
+                        }
+                    }
                 }
             }
         }

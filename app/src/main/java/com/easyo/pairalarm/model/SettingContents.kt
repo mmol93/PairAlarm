@@ -3,6 +3,7 @@ package com.easyo.pairalarm.model
 enum class SettingContents(val title: String) {
     QUICKALARM_BELL("QuickAlarm Bell"),
     QUICKALARM_MODE("QuickAlarm Mode"),
+    QUICKALARM_MUTE("QuickAlarm Mute"),
     BLANK(""),
     APP_INFO("App Info"),
     REPORT("Report")
@@ -52,6 +53,23 @@ fun AlarmModeName.getModeIndex(): Int {
     return when (this) {
         AlarmMode.NORMAL.mode -> 0
         AlarmMode.CALCULATION.mode -> 1
+        else -> 0
+    }
+}
+
+// AlarmMute
+typealias AlarmVibrationName = String
+enum class AlarmVibrationOption(val vibrationOptionName: AlarmVibrationName) {
+    Vibration("Mute"),
+    ONCE("Once"),
+    SOUND("Sound")
+}
+
+fun AlarmVibrationName.getVibrationIndex(): Int {
+    return when (this) {
+        AlarmVibrationOption.Vibration.vibrationOptionName -> 0
+        AlarmVibrationOption.ONCE.vibrationOptionName -> 1
+        AlarmVibrationOption.SOUND.vibrationOptionName -> 2
         else -> 0
     }
 }

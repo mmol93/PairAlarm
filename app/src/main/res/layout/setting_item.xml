@@ -84,7 +84,7 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="@{settingDetail}"
-                    android:textColor="@color/sub_item_text_color"
+                    android:textColor="@color/deep_yellow"
                     app:visible="@{!TextUtils.isEmpty(settingDetail)}"
                     tools:text="Setting description" />
             </LinearLayout>
