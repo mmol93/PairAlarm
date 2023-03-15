@@ -30,6 +30,18 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5">
 
+            <TextView
+                android:id="@+id/alarm_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/min"
+                android:textColor="@color/deep_yellow"
+                android:textSize="@dimen/text_p1"
+                android:text="Alarm name" />
+
             <com.yy.mobile.rollingtextview.RollingTextView
                 android:id="@+id/min"
                 android:layout_width="wrap_content"
@@ -83,12 +95,11 @@
             android:id="@+id/calculator_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1.8"
+            android:layout_weight="0.5"
             android:gravity="center"
             android:orientation="vertical"
             android:paddingHorizontal="@dimen/element_spacing_xxxlarge"
-            android:paddingTop="@dimen/element_spcaing_xxxxlarge"
-            android:visibility="@{showCalculatorProblem ? View.VISIBLE : View.INVISIBLE}">
+            android:paddingTop="@dimen/element_spacing_large">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -147,7 +158,6 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_h3"
                     tools:text="1234" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -304,9 +314,9 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/element_spacing_ultra_large"
                     android:layout_weight="1"
-                    app:layout_constraintDimensionRatio="1:1"
                     android:src="@drawable/ic_arrow_back"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toEndOf="@id/guideline1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -361,6 +371,7 @@
             android:id="@+id/button_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/element_spacing_xnormal"
             android:layout_weight="1.2">
 
             <com.google.android.material.button.MaterialButton
@@ -373,7 +384,6 @@
                 android:textAllCaps="false"
                 android:textSize="@dimen/text_p3"
                 app:cornerRadius="@dimen/element_spacing_xlarge"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.172"
                 app:layout_constraintStart_toStartOf="parent"
@@ -391,7 +401,6 @@
                 android:textSize="@dimen/text_p3"
                 android:visibility="@{!showCalculatorProblem ? View.VISIBLE : View.INVISIBLE}"
                 app:cornerRadius="@dimen/element_spacing_xlarge"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.82"
                 app:layout_constraintStart_toStartOf="parent"

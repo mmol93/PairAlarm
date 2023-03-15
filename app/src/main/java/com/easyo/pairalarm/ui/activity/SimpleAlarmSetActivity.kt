@@ -1,7 +1,8 @@
 package com.easyo.pairalarm.ui.activity
 
 import android.os.Bundle
-import android.view.inputmethod.EditorInfo
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.SeekBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -206,13 +207,23 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
             }
         }
 
-        // 텍스트 입력 마쳤을 때
-        binding.alarmNameEditText.setOnEditorActionListener { textView, actionId, _ ->
-            return@setOnEditorActionListener if (actionId == EditorInfo.IME_ACTION_DONE) {
-                binding.alarmData = binding.alarmData?.copy(name = textView.text.toString())
+        binding.alarmNameEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                setTextForAlarmName(s.toString())
+            }
+        })
+        binding.alarmNameEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
                 clearKeyBoardFocus(binding.rootLayout)
-                true
-            } else false
+            }
         }
+    }
+
+    private fun setTextForAlarmName(newText: String) {
+        binding.alarmData = binding.alarmData?.copy(name = newText)
     }
 }

@@ -51,6 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    android:imeOptions="actionDone"
                     android:inputType="text"
                     android:maxLines="1"
                     android:text="@{alarmData.name}"
@@ -310,8 +311,8 @@
                     app:fb_shape="rectangle"
                     app:fb_text="@string/alarmSet_selectBell"
                     app:fb_textColor="#FFF"
-                    app:fb_textPaddingStart="@dimen/element_spacing_xnormal"
-                    app:fb_textPaddingEnd="@dimen/element_spacing_xnormal" />
+                    app:fb_textPaddingEnd="@dimen/element_spacing_xnormal"
+                    app:fb_textPaddingStart="@dimen/element_spacing_xnormal" />
 
                 <com.github.nikartm.button.FitButton
                     android:id="@+id/selectMode_button"
@@ -337,8 +338,8 @@
                     app:fb_shape="rectangle"
                     app:fb_text="@string/alarmSet_selectMode"
                     app:fb_textColor="#FFF"
-                    app:fb_textPaddingStart="@dimen/element_spacing_xnormal"
-                    app:fb_textPaddingEnd="@dimen/element_spacing_xnormal" />
+                    app:fb_textPaddingEnd="@dimen/element_spacing_xnormal"
+                    app:fb_textPaddingStart="@dimen/element_spacing_xnormal" />
             </LinearLayout>
 
             <LinearLayout

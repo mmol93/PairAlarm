@@ -69,14 +69,14 @@ class OnAlarmActivity : AppCompatActivity() {
                     calculatorProblem = alarmViewModel.getRandomNumberForCalculator()
                     binding.calculatorProblem = calculatorProblem
                     binding.showCalculatorProblem = alarmData.mode == AlarmModeType.CALCULATE.mode
+                    binding.alarmName.text = alarmData.name
 
                     if (alarmData.quick) {
                         alarmViewModel.deleteAlarmData(alarmData)
                     }
 
                     // 삭제하거나 변경된 알람들을 반영한다(Noti 등)
-                    val alarmTimeWorkRequest: WorkRequest =
-                        OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
+                    val alarmTimeWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
                     WorkManager.getInstance(this@OnAlarmActivity)
                         .enqueueUniqueWork(
                             NEXT_ALARM_WORKER,
