@@ -8,10 +8,7 @@ import androidx.work.WorkerParameters
 import com.easyo.pairalarm.AppClass.Companion.dataStore
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.database.table.AlarmData
-import com.easyo.pairalarm.model.AlarmMode
-import com.easyo.pairalarm.model.AlarmMuteOption
-import com.easyo.pairalarm.model.BellType
-import com.easyo.pairalarm.model.SettingContents
+import com.easyo.pairalarm.model.*
 import com.easyo.pairalarm.repository.AlarmRepository
 import com.easyo.pairalarm.util.*
 import dagger.assisted.Assisted
@@ -30,25 +27,28 @@ class NextAlarmWorker @AssistedInject constructor(
     @Assisted workerParams: WorkerParameters,
     private val alarmRepository: AlarmRepository,
 ) : CoroutineWorker(appContext, workerParams) {
-    private var quickAlarmBellName = ""
-    private var quickAlarmMode = ""
-    private var quickAlarmMute = ""
+    private var quickAlarmBellIndex: Int = 0
+    private var quickAlarmModeIndex: Int = 0
+    private var quickAlarmVibrationIndex: Int = 0
     override suspend fun doWork(): Result {
         val actionButtonPosition = inputData.getInt(ACTION_BUTTON, 0)
         if (actionButtonPosition != 0) {
             applicationContext.dataStore.data.catch { exception ->
-                Timber.d(exception.message)
+                Timber.e(exception.message)
                 showShortToast(
                     applicationContext,
                     applicationContext.getString(R.string.toast_get_dataStore_error)
                 )
             }.first().let {
-                quickAlarmBellName = it[stringPreferencesKey(SettingContents.QUICKALARM_BELL.title)]
-                    ?: BellType.WALKING.title
-                quickAlarmMode = it[stringPreferencesKey(SettingContents.QUICKALARM_MODE.title)]
-                    ?: AlarmMode.NORMAL.mode
-                quickAlarmMute = it[stringPreferencesKey(SettingContents.QUICKALARM_MUTE.title)]
-                    ?: AlarmMuteOption.SOUND.muteOptionName
+                quickAlarmBellIndex =
+                    it[stringPreferencesKey(SettingContents.QUICKALARM_BELL.title)]?.getBellIndex()
+                        ?: BellType.WALKING.title.getBellIndex()
+                quickAlarmModeIndex =
+                    it[stringPreferencesKey(SettingContents.QUICKALARM_MODE.title)]?.getModeIndex()
+                        ?: AlarmMode.NORMAL.mode.getModeIndex()
+                quickAlarmVibrationIndex =
+                    it[stringPreferencesKey(SettingContents.QUICKALARM_MUTE.title)]?.getVibrationIndex()
+                        ?: AlarmVibrationOption.SOUND.vibrationOptionName.getVibrationIndex()
             }
 
             when (actionButtonPosition) {
@@ -62,7 +62,6 @@ class NextAlarmWorker @AssistedInject constructor(
                     makeQuickAlarm(NOTI_ACTION3_REQUEST_CODE)
                 }
             }
-
             resetAlarmNotification()
         } else {
             resetAlarmNotification()
@@ -80,13 +79,28 @@ class NextAlarmWorker @AssistedInject constructor(
     private fun makeAlarmDataForQuickAlarm(notiActionRequestCode: Int): AlarmData? {
         return when (notiActionRequestCode) {
             NOTI_ACTION1_REQUEST_CODE -> {
-                getAlarmDataFromTimeMillis(5 * 60 * 1000, true)
+                getAlarmDataFromTimeMillis(
+                    5 * 60 * 1000,
+                    quickAlarmBellIndex,
+                    quickAlarmModeIndex,
+                    quickAlarmVibrationIndex
+                )
             }
             NOTI_ACTION2_REQUEST_CODE -> {
-                getAlarmDataFromTimeMillis(15 * 60 * 1000, true)
+                getAlarmDataFromTimeMillis(
+                    15 * 60 * 1000,
+                    quickAlarmBellIndex,
+                    quickAlarmModeIndex,
+                    quickAlarmVibrationIndex
+                )
             }
             NOTI_ACTION3_REQUEST_CODE -> {
-                getAlarmDataFromTimeMillis(30 * 60 * 1000, true)
+                getAlarmDataFromTimeMillis(
+                    30 * 60 * 1000,
+                    quickAlarmBellIndex,
+                    quickAlarmModeIndex,
+                    quickAlarmVibrationIndex
+                )
             }
             else -> null
         }

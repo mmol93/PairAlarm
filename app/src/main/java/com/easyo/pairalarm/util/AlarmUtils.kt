@@ -179,7 +179,10 @@ fun initCurrentAlarmData(
     hour: Int = 0,
     min: Int = 0,
     isQuick: Boolean = false,
-    alarmCode: String = ""
+    alarmCode: String = "",
+    mode: Int = 0,
+    vibration: Int = 0,
+    bell: Int = 0
 ): AlarmData {
     return AlarmData(
         id = null,
@@ -191,14 +194,14 @@ fun initCurrentAlarmData(
         Thu = false,
         Fri = false,
         Sat = false,
-        vibration = 0,
+        vibration = vibration,
         alarmCode = alarmCode,
-        mode = 0,
+        mode = mode,
         hour = if (hour != 0) hour else getCurrentHour(),
         minute = if (min != 0) min else getCurrentMinute(),
         quick = isQuick,
         volume = 100,
-        bell = 0,
+        bell = bell,
         name = ""
     )
 }

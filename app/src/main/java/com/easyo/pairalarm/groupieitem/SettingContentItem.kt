@@ -136,17 +136,17 @@ class SettingContentItem(
         launch {
             // 클릭할 때 마다 다음 모드가 저장되게 한다.
             when(settingDetail) {
-                AlarmMuteOption.MUTE.muteOptionName -> {
-                    saveStringData(key, AlarmMuteOption.ONCE.muteOptionName)
+                AlarmVibrationOption.Vibration.vibrationOptionName -> {
+                    saveStringData(key, AlarmVibrationOption.ONCE.vibrationOptionName)
                 }
-                AlarmMuteOption.ONCE.muteOptionName -> {
-                    saveStringData(key, AlarmMuteOption.SOUND.muteOptionName)
+                AlarmVibrationOption.ONCE.vibrationOptionName -> {
+                    saveStringData(key, AlarmVibrationOption.SOUND.vibrationOptionName)
                 }
-                AlarmMuteOption.SOUND.muteOptionName -> {
-                    saveStringData(key, AlarmMuteOption.MUTE.muteOptionName)
+                AlarmVibrationOption.SOUND.vibrationOptionName -> {
+                    saveStringData(key, AlarmVibrationOption.Vibration.vibrationOptionName)
                 }
                 else -> {
-                    saveStringData(key, AlarmMuteOption.MUTE.muteOptionName)
+                    saveStringData(key, AlarmVibrationOption.Vibration.vibrationOptionName)
                 }
             }
         }

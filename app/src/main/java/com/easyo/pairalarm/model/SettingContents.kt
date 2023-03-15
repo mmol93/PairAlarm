@@ -58,9 +58,18 @@ fun AlarmModeName.getModeIndex(): Int {
 }
 
 // AlarmMute
-typealias AlarmMuteName = String
-enum class AlarmMuteOption(val muteOptionName: AlarmMuteName) {
-    MUTE("Mute"),
+typealias AlarmVibrationName = String
+enum class AlarmVibrationOption(val vibrationOptionName: AlarmVibrationName) {
+    Vibration("Mute"),
     ONCE("Once"),
     SOUND("Sound")
+}
+
+fun AlarmVibrationName.getVibrationIndex(): Int {
+    return when (this) {
+        AlarmVibrationOption.Vibration.vibrationOptionName -> 0
+        AlarmVibrationOption.ONCE.vibrationOptionName -> 1
+        AlarmVibrationOption.SOUND.vibrationOptionName -> 2
+        else -> 0
+    }
 }
