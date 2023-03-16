@@ -62,7 +62,7 @@
             android:name=".broadcast.AlarmReceiver"
             android:directBootAware="true"
             android:enabled="true"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 
