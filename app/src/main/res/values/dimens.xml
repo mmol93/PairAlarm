@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- for Common view Size -->
+    <dimen name="element_spacing_super_ultra_large">120dp</dimen>
     <dimen name="element_spacing_ultra_large">56dp</dimen>
     <dimen name="element_spacing_super_large">40dp</dimen>
     <dimen name="element_spcaing_xxxxlarge">36dp</dimen>
