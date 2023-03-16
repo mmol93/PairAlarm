@@ -18,8 +18,8 @@ import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.easyo.pairalarm.worker.NextAlarmWorker
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
@@ -61,7 +61,7 @@ class OnAlarmActivity : AppCompatActivity() {
             }
             handler.post(handlerTask)
             lifecycleScope.launch {
-                goesOffAlarmData.collectLatest { alarmData ->
+                goesOffAlarmData.first() { alarmData ->
                     Timber.d("goes off alarmData in OnAlarmActivity: $alarmCode")
 
                     binding.hour.setText(getCurrentHourDoubleDigitWithString())
@@ -84,8 +84,7 @@ class OnAlarmActivity : AppCompatActivity() {
                             alarmTimeWorkRequest as OneTimeWorkRequest
                         )
                     resetAllAlarms(this@OnAlarmActivity)
-
-                    this.cancel()
+                    true
                 }
             }
 

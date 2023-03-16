@@ -10,7 +10,7 @@ import com.easyo.pairalarm.database.AppDatabase
 import com.easyo.pairalarm.database.table.AlarmData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
@@ -56,7 +56,7 @@ fun resetAllAlarms(context: Context?, alarmDataList: List<AlarmData>? = null) {
         if (alarmDataList == null) {
             val alarmData: AppDatabase = Room.databaseBuilder(context, AppDatabase::class.java, ALARM_DB_NAME).build()
             CoroutineScope(Dispatchers.IO).launch {
-                alarmData.alarmDao().getAllAlarms().collect {
+                alarmData.alarmDao().getAllAlarms().first {
                     it.forEach { alarmData ->
                         Timber.d("reset alarm: " + alarmData.alarmCode)
                         setAlarmOnBroadcast(
@@ -67,8 +67,7 @@ fun resetAllAlarms(context: Context?, alarmDataList: List<AlarmData>? = null) {
                         )
                     }
                     getNextAlarm(it)?.let { message -> makeAlarmNotification(context, message) }
-                    // collect를 한 번만 하게 한다
-                    this.cancel()
+                    true
                 }
             }
         } else {
