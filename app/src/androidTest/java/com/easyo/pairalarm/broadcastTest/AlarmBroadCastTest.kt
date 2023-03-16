@@ -9,6 +9,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
+// adb로는 다음 커맨드로 테스트 가능
+// adb shell am broadcast -n com.easyo.pairalarm/com.easyo.pairalarm.broadcast.AlarmReceiver -e action_button "action1"
 @RunWith(AndroidJUnit4::class)
 class AlarmBroadCastTest {
     private val context = InstrumentationRegistry.getInstrumentation().context
