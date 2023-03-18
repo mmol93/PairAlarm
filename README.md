@@ -1,4 +1,4 @@
-# PairAlarm
+# PairAlarm - ing
 
 ### Working Progress
 - [X] DB setting
