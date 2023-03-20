@@ -9,8 +9,9 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".AppClass"
@@ -23,11 +24,19 @@
         android:theme="@style/Theme.PairAlarm"
         tools:replace="android:theme">
         <activity
+            android:name=".ui.activity.DebugActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.WebActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.OnAlarmActivity"
-            android:exported="false" />
+            android:permission="android.permission.SYSTEM_ALERT_WINDOW"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:showOnLockScreen="true"
+            android:theme="@style/Theme.PairAlarm.NoActionBar" />
         <activity
             android:name=".ui.activity.NormalAlarmSetActivity"
             android:exported="false"
@@ -55,12 +64,17 @@
 
         <receiver
             android:name=".broadcast.AlarmReceiver"
+            android:directBootAware="true"
+            android:enabled="true"
             android:exported="true">
             <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="com.easyo.pairalarm" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="POSTPHONETIME" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.REBOOT" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>

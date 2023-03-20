@@ -10,12 +10,12 @@ import com.easyo.pairalarm.database.AppDatabase
 import com.easyo.pairalarm.database.table.AlarmData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 
-fun setAlarm(context: Context, alarmCode: Int, hour: Int, min: Int) {
+fun setAlarmOnBroadcast(context: Context, alarmCode: Int, hour: Int, min: Int) {
     val setAlarmCalendar = Calendar.getInstance().apply {
         set(Calendar.HOUR_OF_DAY, hour)
         set(Calendar.MINUTE, min)
@@ -33,7 +33,8 @@ fun setAlarm(context: Context, alarmCode: Int, hour: Int, min: Int) {
 
     val intent = Intent(context.packageName)
     intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
-    intent.component = ComponentName(context.packageName, "com.easyo.pairalarm.broadcast.AlarmReceiver")
+    intent.component =
+        ComponentName(context.packageName, "com.easyo.pairalarm.broadcast.AlarmReceiver")
     intent.putExtra(ALARM_CODE_TEXT, "$alarmCode")
 
     val pendingIntent = PendingIntent.getBroadcast(
@@ -44,23 +45,21 @@ fun setAlarm(context: Context, alarmCode: Int, hour: Int, min: Int) {
     )
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val alarmInfo = AlarmManager.AlarmClockInfo(calendarMillis, pendingIntent)
-    Timber.d("set broadcast alarmCode: $alarmCode")
-    Timber.d("set broadcast alarm(mills): " + transMillisToTime(calendarMillis))
+    Timber.d("set broadcast alarmCode: $alarmCode alarm(date): " + transMillisToTime(calendarMillis))
     alarmManager.setAlarmClock(alarmInfo, pendingIntent)
 }
 
 // 모든 알람 데이터를 가져와서 전부 다시 셋팅한다
-fun resetAlarm(context: Context?, alarmDataList: List<AlarmData>? = null) {
+fun resetAllAlarms(context: Context?, alarmDataList: List<AlarmData>? = null) {
     if (context != null) {
         // AlarmData가 없으면 DB에서 새롭게 가져온다
-        if (alarmDataList == null){
-            val alarmData: AppDatabase =
-                Room.databaseBuilder(context, AppDatabase::class.java, ALARM_DB_NAME).build()
+        if (alarmDataList == null) {
+            val alarmData: AppDatabase = Room.databaseBuilder(context, AppDatabase::class.java, ALARM_DB_NAME).build()
             CoroutineScope(Dispatchers.IO).launch {
-                alarmData.alarmDao().getAllAlarms().collectLatest {
+                alarmData.alarmDao().getAllAlarms().first {
                     it.forEach { alarmData ->
                         Timber.d("reset alarm: " + alarmData.alarmCode)
-                        setAlarm(
+                        setAlarmOnBroadcast(
                             context,
                             alarmData.alarmCode.toInt(),
                             alarmData.hour,
@@ -68,12 +67,13 @@ fun resetAlarm(context: Context?, alarmDataList: List<AlarmData>? = null) {
                         )
                     }
                     getNextAlarm(it)?.let { message -> makeAlarmNotification(context, message) }
+                    true
                 }
             }
-        }else{
+        } else {
             alarmDataList.forEach { alarmData ->
                 Timber.d("reset alarm: " + alarmData.alarmCode)
-                setAlarm(
+                setAlarmOnBroadcast(
                     context,
                     alarmData.alarmCode.toInt(),
                     alarmData.hour,
@@ -105,27 +105,69 @@ fun cancelAlarm(context: Context, alarmCode: String) {
 fun getNextAlarm(alarmList: List<AlarmData>): String? {
     val milliSecondForAlarmList = mutableListOf<Long>()
     alarmList.forEach { alarmData ->
-        if (alarmData.button) {
+        if (alarmData.alarmIsOn) {
             if (alarmData.Sun) {
-                milliSecondForAlarmList.add(getMillisWithCalendar(alarmData.hour, alarmData.minute, 1))
+                milliSecondForAlarmList.add(
+                    getMillisWithCalendar(
+                        alarmData.hour,
+                        alarmData.minute,
+                        1
+                    )
+                )
             }
             if (alarmData.Mon) {
-                milliSecondForAlarmList.add(getMillisWithCalendar(alarmData.hour, alarmData.minute, 2))
+                milliSecondForAlarmList.add(
+                    getMillisWithCalendar(
+                        alarmData.hour,
+                        alarmData.minute,
+                        2
+                    )
+                )
             }
             if (alarmData.Tue) {
-                milliSecondForAlarmList.add(getMillisWithCalendar(alarmData.hour, alarmData.minute, 3))
+                milliSecondForAlarmList.add(
+                    getMillisWithCalendar(
+                        alarmData.hour,
+                        alarmData.minute,
+                        3
+                    )
+                )
             }
             if (alarmData.Wed) {
-                milliSecondForAlarmList.add(getMillisWithCalendar(alarmData.hour, alarmData.minute, 4))
+                milliSecondForAlarmList.add(
+                    getMillisWithCalendar(
+                        alarmData.hour,
+                        alarmData.minute,
+                        4
+                    )
+                )
             }
             if (alarmData.Thu) {
-                milliSecondForAlarmList.add(getMillisWithCalendar(alarmData.hour, alarmData.minute, 5))
+                milliSecondForAlarmList.add(
+                    getMillisWithCalendar(
+                        alarmData.hour,
+                        alarmData.minute,
+                        5
+                    )
+                )
             }
             if (alarmData.Fri) {
-                milliSecondForAlarmList.add(getMillisWithCalendar(alarmData.hour, alarmData.minute, 6))
+                milliSecondForAlarmList.add(
+                    getMillisWithCalendar(
+                        alarmData.hour,
+                        alarmData.minute,
+                        6
+                    )
+                )
             }
             if (alarmData.Sat) {
-                milliSecondForAlarmList.add(getMillisWithCalendar(alarmData.hour, alarmData.minute, 7))
+                milliSecondForAlarmList.add(
+                    getMillisWithCalendar(
+                        alarmData.hour,
+                        alarmData.minute,
+                        7
+                    )
+                )
             }
         }
     }
@@ -136,11 +178,14 @@ fun initCurrentAlarmData(
     hour: Int = 0,
     min: Int = 0,
     isQuick: Boolean = false,
-    alarmCode: String = ""
+    alarmCode: String = "",
+    mode: Int = 0,
+    vibration: Int = 0,
+    bell: Int = 0
 ): AlarmData {
     return AlarmData(
         id = null,
-        button = true,
+        alarmIsOn = true,
         Sun = false,
         Mon = false,
         Tue = false,
@@ -148,14 +193,14 @@ fun initCurrentAlarmData(
         Thu = false,
         Fri = false,
         Sat = false,
-        vibration = 0,
+        vibration = vibration,
         alarmCode = alarmCode,
-        mode = 0,
+        mode = mode,
         hour = if (hour != 0) hour else getCurrentHour(),
         minute = if (min != 0) min else getCurrentMinute(),
         quick = isQuick,
         volume = 100,
-        bell = 0,
+        bell = bell,
         name = ""
     )
 }

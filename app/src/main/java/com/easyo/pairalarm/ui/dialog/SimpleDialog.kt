@@ -2,49 +2,12 @@ package com.easyo.pairalarm.ui.dialog
 
 import android.content.Context
 import android.content.DialogInterface
-import com.easyo.pairalarm.R
 import androidx.appcompat.app.AlertDialog
+import com.easyo.pairalarm.R
+import com.easyo.pairalarm.model.AlarmMode
 
 object SimpleDialog {
-    fun make(
-        context: Context,
-        title: String,
-        message: String,
-        icon: Int? = null,
-        positive: ((dialogInterface: DialogInterface) -> Unit),
-        negative: (() -> Unit)? = null
-    ) {
-        setUpSimpleDialog(
-            context,
-            title,
-            message,
-            icon = icon,
-            positive = positive,
-            negative = negative
-        )
-    }
-
-    fun make(
-        context: Context,
-        title: String,
-        messageItems: Array<String>,
-        clickedItemPosition: Int = 0,
-        icon: Int? = null,
-        positive: ((dialogInterface: DialogInterface) -> Unit),
-        negative: (() -> Unit)? = null
-    ) {
-        setUpSimpleDialog(
-            context,
-            title,
-            messageItems = messageItems,
-            clickedItemPosition = clickedItemPosition,
-            icon = icon,
-            positive = positive,
-            negative = negative
-        )
-    }
-
-    private fun setUpSimpleDialog(
+    fun showSimpleDialog(
         context: Context,
         title: String,
         message: String? = null,
@@ -71,21 +34,32 @@ object SimpleDialog {
             dialogBuilder.setIcon(icon)
         }
 
-        // Dialog의 No 버튼 - 주로 Toast 메시지 출력
         dialogBuilder.setNegativeButton(context.getString(R.string.no)) { _: DialogInterface, _: Int ->
             negative?.invoke()
         }
 
-        // Dialog의 Yes 버튼 - 주로 특정 메서드 실행
         dialogBuilder.setNeutralButton(context.getString(R.string.yes)) { dialogInterface: DialogInterface, _: Int ->
             positive.invoke(dialogInterface)
         }
 
-        // Dialog를 취소했을 때도 No랑 똑같이 취급
         dialogBuilder.setOnCancelListener {
             negative?.invoke()
         }
 
         dialogBuilder.show()
+    }
+
+    fun showAlarmModeDialog(
+        context: Context,
+        clickedItemPosition: Int,
+        positive: ((dialogInterface: DialogInterface) -> Unit)
+    ) {
+        showSimpleDialog(
+            context,
+            context.getString(R.string.alarmSet_selectBellDialogTitle),
+            messageItems = AlarmMode.values().map { it.mode }.toTypedArray(),
+            clickedItemPosition = clickedItemPosition,
+            positive = positive
+        )
     }
 }

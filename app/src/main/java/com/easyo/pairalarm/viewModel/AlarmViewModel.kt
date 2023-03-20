@@ -1,53 +1,71 @@
 package com.easyo.pairalarm.viewModel
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.easyo.pairalarm.database.table.AlarmData
+import com.easyo.pairalarm.model.CalculatorProblem
 import com.easyo.pairalarm.repository.AlarmRepository
-import com.easyo.pairalarm.util.*
+import com.easyo.pairalarm.util.cancelAlarm
+import com.easyo.pairalarm.util.initCurrentAlarmData
+import com.easyo.pairalarm.util.setAlarmOnBroadcast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepository) :
-    BaseViewModel() {
+class AlarmViewModel @Inject constructor(
+    private val alarmRepository: AlarmRepository,
+    private val app: Application
+) : BaseViewModel(app) {
     val currentAlarmHour = MutableStateFlow(0)
     val currentAlarmMin = MutableStateFlow(0)
     val currentAlarmBell = MutableStateFlow(0)
     val currentAlarmMode = MutableStateFlow(0)
+    val answer = MutableStateFlow("")
 
     fun getAllAlarmData() = alarmRepository.getAllAlarm()
 
-    fun insertAlarmData(context: Context, alarmData: AlarmData) = viewModelScope.launch {
+    fun insertAlarmData(alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.insertAlarmData(alarmData)
     }.execute(onSuccess = {
         // 브로드캐스트에 알람 예약하기
-        setAlarm(context, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
-        }
-    )
-
-    fun updateAlarmData(context: Context, alarmData: AlarmData) = viewModelScope.launch {
-        alarmRepository.updateAlarmData(alarmData)
-    }.execute(onSuccess = {
-        // 브로드캐스트에 기존 알람 삭제 및 새로운 알람 추가
-        if (alarmData.button) {
-            cancelAlarm(context, alarmData.alarmCode)
-            setAlarm(context, alarmData.alarmCode.toInt(), alarmData.hour, alarmData.minute)
-        } else {
-            cancelAlarm(context, alarmData.alarmCode)
-        }
+        setAlarmOnBroadcast(
+            app.applicationContext,
+            alarmData.alarmCode.toInt(),
+            alarmData.hour,
+            alarmData.minute
+        )
     }
     )
 
-    fun deleteAlarmData(context: Context, alarmData: AlarmData) = viewModelScope.launch {
+    fun updateAlarmData(alarmData: AlarmData) = viewModelScope.launch {
+        alarmRepository.updateAlarmData(alarmData)
+    }.execute(
+        onSuccess = {
+            // 브로드캐스트에 기존 알람 삭제 및 새로운 알람 추가
+            if (alarmData.alarmIsOn) {
+                cancelAlarm(app.applicationContext, alarmData.alarmCode)
+                setAlarmOnBroadcast(
+                    app.applicationContext,
+                    alarmData.alarmCode.toInt(),
+                    alarmData.hour,
+                    alarmData.minute
+                )
+            } else {
+                cancelAlarm(app.applicationContext, alarmData.alarmCode)
+            }
+        }
+    )
+
+    fun deleteAlarmData(alarmData: AlarmData) = viewModelScope.launch {
         alarmRepository.deleteAlarmData(alarmData)
     }.execute(onSuccess = {
         // 브로드캐스트에 알람 삭제
-        cancelAlarm(context, alarmData.alarmCode)
+        cancelAlarm(app.applicationContext, alarmData.alarmCode)
     })
 
     fun searchAlarmCode(alarmCode: String) = alarmRepository.searchWithAlarmCode(alarmCode)
@@ -63,6 +81,17 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
     private fun initCurrentAlarmDataFlow(): Flow<AlarmData> {
         return flowOf(
             initCurrentAlarmData()
+        )
+    }
+
+    fun getRandomNumberForCalculator(): CalculatorProblem {
+        val random = Random()
+        val randomNumber1 = random.nextInt(100)
+        val randomNumber2 = random.nextInt(100)
+        return CalculatorProblem(
+            randomNumber1,
+            randomNumber2,
+            (randomNumber1 + randomNumber2).toString()
         )
     }
 }

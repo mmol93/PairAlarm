@@ -4,28 +4,27 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.View
 
-// TODO: 이 부분 ViewExt으로 바꾸기
 object AlarmAnimation {
-    lateinit var animatorSet: AnimatorSet
+    private lateinit var animatorSet: AnimatorSet
 
     fun swing(view: View): AnimatorSet{
         animatorSet = AnimatorSet()
-        val objectAnimator1 = ObjectAnimator.ofFloat(view, View.ROTATION, 0f, -30f).setDuration(50)
-        val objectAnimator2 = ObjectAnimator.ofFloat(view, View.ROTATION, -30f, 30f).setDuration(100)
-        val objectAnimator3 = ObjectAnimator.ofFloat(view, View.ROTATION, 30f, -30f).setDuration(100)
-        val objectAnimator4 = ObjectAnimator.ofFloat(view, View.ROTATION, -30f, 0f).setDuration(50)
+        val centerToLeft = ObjectAnimator.ofFloat(view, View.ROTATION, 0f, -30f).setDuration(50)
+        val leftToRight = ObjectAnimator.ofFloat(view, View.ROTATION, -30f, 30f).setDuration(100)
+        val rightToLeft = ObjectAnimator.ofFloat(view, View.ROTATION, 30f, -30f).setDuration(100)
+        val leftToCenter = ObjectAnimator.ofFloat(view, View.ROTATION, -30f, 0f).setDuration(50)
 
-        animatorSet.playSequentially(objectAnimator1, objectAnimator2, objectAnimator3, objectAnimator4)
+        animatorSet.playSequentially(centerToLeft, leftToRight, rightToLeft, leftToCenter)
 
         return animatorSet
     }
 
     fun jump(view: View): AnimatorSet{
         animatorSet = AnimatorSet()
-        val objectAnimator1 = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0f, -30f).setDuration(100)
-        val objectAnimator2 = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0f, 0f).setDuration(200)
+        val goingUp = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0f, -30f).setDuration(100)
+        val goingDown = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0f, 0f).setDuration(200)
 
-        animatorSet.playSequentially(objectAnimator1, objectAnimator2)
+        animatorSet.playSequentially(goingUp, goingDown)
 
         return animatorSet
     }

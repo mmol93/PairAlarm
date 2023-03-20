@@ -13,28 +13,29 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
+import autoCleared
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.FragmentAlarmBinding
 import com.easyo.pairalarm.extensions.getPermissionActivityResultLauncher
+import com.easyo.pairalarm.extensions.setFadeVisible
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
+import com.easyo.pairalarm.extensions.showErrorSnackBar
 import com.easyo.pairalarm.groupieitem.AlarmItem
 import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
 import com.easyo.pairalarm.ui.activity.SimpleAlarmSetActivity
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
-import com.easyo.pairalarm.util.cancelAlarmNotification
-import com.easyo.pairalarm.util.getNextAlarm
-import com.easyo.pairalarm.util.makeAlarmNotification
-import com.easyo.pairalarm.util.makeToast
+import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
 class AlarmFragment : Fragment(R.layout.fragment_alarm) {
-    private lateinit var binding: FragmentAlarmBinding
+    private var binding: FragmentAlarmBinding by autoCleared()
     private lateinit var alarmActivityIntent: Intent
     private val alarmViewModel: AlarmViewModel by activityViewModels()
     private val permissionRequest = getPermissionActivityResultLauncher(
@@ -46,13 +47,13 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         },
         notGranted = {
             // 1개라도 허락되지 않은 권한이 있을 때
-            SimpleDialog.make(
+            SimpleDialog.showSimpleDialog(
                 requireContext(),
                 getString(R.string.dialog_permission_title),
                 getString(R.string.dialog_notification_permission_message),
                 positive = { },
                 negative = {
-                    makeToast(
+                    showShortToast(
                         requireContext(),
                         getString(R.string.dialog_notification_permission_message)
                     )
@@ -61,19 +62,18 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         }
     )
 
-    private var resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             // 오버레이 권한 설정에서 돌아왔을 때
             Timber.d("resultCode: ${result.resultCode}")
             // 오버레이 권한은 설정 후 Back키로 돌아오기 때문에 RESULT_CANCELED가 찍힌다
             if (result.resultCode == Activity.RESULT_CANCELED) {
-                SimpleDialog.make(
+                SimpleDialog.showSimpleDialog(
                     requireContext(),
                     getString(R.string.dialog_permission_title),
                     getString(R.string.dialog_overlay_message),
                     positive = { checkOverlayPermission() },
                     negative = {
-                        makeToast(
+                        showShortToast(
                             requireContext(),
                             getString(R.string.dialog_permission_overlay_no)
                         )
@@ -81,7 +81,6 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 )
             }
         }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -96,11 +95,27 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         binding.alarmRecycler.run {
             adapter = alarmRecyclerAdapter
             layoutManager = GridLayoutManager(context, recyclerViewSpan, GridLayoutManager.VERTICAL, false)
+            addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    // 처음은 발동하지 않게
+                    if (dy != 0){
+                        binding.fabLayout.visibility = View.GONE
+                    }
+                }
+
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (newState == SCROLL_STATE_IDLE){
+                        binding.fabLayout.setFadeVisible(true, 700, 0)
+                    }
+                }
+            })
         }
 
         // Groupie - RecyclerView 데이터 입력
-        lifecycleScope.launch {
-            alarmViewModel.getAllAlarmData().collectLatest { alarmDataList ->
+        viewLifecycleOwner.lifecycleScope.launch {
+            alarmViewModel.getAllAlarmData().collect { alarmDataList ->
                 Timber.d("AlarmData: $alarmDataList")
                 alarmDataList.map { AlarmItem(requireContext(), it, alarmViewModel) }
                     .also { alarmRecyclerAdapter.update(it) }
@@ -108,8 +123,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 if (alarmDataList.isEmpty()) {
                     cancelAlarmNotification(requireContext())
                 } else {
-                    val nextAlarm = getNextAlarm(alarmDataList)
-                    makeAlarmNotification(requireContext(), nextAlarm.toString())
+                    resetAllAlarms(requireContext(), alarmDataList)
                 }
             }
         }
@@ -142,6 +156,10 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         binding.fab3.setOnSingleClickListener {
             alarmActivityIntent = Intent(activity, SimpleAlarmSetActivity::class.java)
             checkEssentialPermission()
+        }
+
+        alarmViewModel.failure.observe(viewLifecycleOwner) {
+            showErrorSnackBar(it)
         }
     }
 

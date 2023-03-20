@@ -6,7 +6,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
-import androidx.work.WorkManager
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.broadcast.AlarmReceiver
 import com.easyo.pairalarm.ui.activity.MainActivity
@@ -47,10 +46,6 @@ fun makeAlarmNotification(context: Context, messageBody: String) {
     )
     notificationManager.createNotificationChannel(channel)
     notificationManager.notify(ALARM_NOTI_ID, notificationBuilder.build())
-
-    // Worker를 캔슬하지 않으면 notification을 만들고 Worker로 되돌아감(suspend로 만들어서 그럼)
-    // MAKE_ALARM_WORKER를 사용하는 곳이 있다면 해당 함수를 가장 마지막에 실시해야한다
-    WorkManager.getInstance(context).cancelUniqueWork(NEXT_ALARM_WORKER)
 }
 
 fun buildActionButton(context: Context, actionButtonOrder: Int): NotificationCompat.Action? {
@@ -81,5 +76,4 @@ fun cancelAlarmNotification(context: Context) {
     val notificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     notificationManager.cancel(ALARM_NOTI_ID)
-    WorkManager.getInstance(context).cancelUniqueWork(NEXT_ALARM_WORKER)
 }

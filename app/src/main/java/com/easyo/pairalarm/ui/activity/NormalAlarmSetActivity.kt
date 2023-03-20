@@ -1,6 +1,8 @@
 package com.easyo.pairalarm.ui.activity
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.SeekBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -10,10 +12,13 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityNormalAlarmBinding
 import com.easyo.pairalarm.extensions.clearKeyBoardFocus
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
-import com.easyo.pairalarm.model.AlarmMode
+import com.easyo.pairalarm.extensions.showErrorSnackBar
 import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
-import com.easyo.pairalarm.util.*
+import com.easyo.pairalarm.util.ALARM_CODE_TEXT
+import com.easyo.pairalarm.util.AlarmAnimation
+import com.easyo.pairalarm.util.getNewAlarmCode
+import com.easyo.pairalarm.util.showShortToast
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,11 +41,12 @@ class NormalAlarmSetActivity : AppCompatActivity() {
         binding = ActivityNormalAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.lifecycleOwner = this
+        binding.manualChangeForHour = false
 
         // alarmData를 사용하여 UI를 초기화
         var alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
         lifecycleScope.launch {
-            alarmViewModel.getAlarmData(alarmCode).collectLatest {
+            alarmViewModel.getAlarmData(alarmCode).collect {
                 binding.alarmData = it
                 alarmViewModel.currentAlarmBell.value = it.bell
                 alarmViewModel.currentAlarmMode.value = it.mode
@@ -54,6 +60,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
             minValue = 1
             setOnValueChangedListener { _, _, newVal ->
                 binding.alarmData?.let {
+                    binding.manualChangeForHour = true
                     binding.alarmData = it.copy(hour = newVal)
                 }
             }
@@ -65,6 +72,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
             minValue = 0
             setOnValueChangedListener { _, _, newVal ->
                 binding.alarmData?.let {
+                    binding.manualChangeForHour = true
                     binding.alarmData = it.copy(minute = newVal)
                 }
             }
@@ -76,6 +84,9 @@ class NormalAlarmSetActivity : AppCompatActivity() {
             maxValue = arg1.size - 1
             minValue = 0
             displayedValues = arg1
+            setOnValueChangedListener { _, _, _ ->
+                binding.manualChangeForHour = true
+            }
         }
 
         // bellDialog에서 변경한 bellIndex를 갱신한다
@@ -100,11 +111,9 @@ class NormalAlarmSetActivity : AppCompatActivity() {
         // AlarmMode 설정 버튼 눌렀을 때
         binding.selectModeButton.setOnSingleClickListener {
             // ** 항목 선택 Dialog 설정
-            SimpleDialog.make(
+            SimpleDialog.showAlarmModeDialog(
                 this,
-                getString(R.string.alarmSet_selectBellDialogTitle),
-                AlarmMode.values().map { it.mode }.toTypedArray(),
-                binding.alarmData!!.mode,
+                clickedItemPosition = binding.alarmData!!.mode,
                 positive = { dialogInterface ->
                     val alert = dialogInterface as AlertDialog
                     when (alert.listView.checkedItemPosition) {
@@ -149,11 +158,12 @@ class NormalAlarmSetActivity : AppCompatActivity() {
                     val alarmData = binding.alarmData!!.copy(
                         hour = hour,
                         minute = binding.numberPickerMin.value,
-                        alarmCode = alarmCode!!
+                        alarmCode = alarmCode!!,
+                        name = binding.alarmNameEditText.text.toString()
                     )
 
                     // DB에 데이터 삽입
-                    alarmViewModel.insertAlarmData(this, alarmData)
+                    alarmViewModel.insertAlarmData(alarmData)
                     Timber.d("saved alarmData: $alarmData")
                 }
                 // 데이터를 수정 했을 경우
@@ -162,15 +172,16 @@ class NormalAlarmSetActivity : AppCompatActivity() {
                     val alarmData = binding.alarmData!!.copy(
                         hour = hour,
                         minute = binding.numberPickerMin.value,
-                        alarmCode = alarmCode!!
+                        alarmCode = alarmCode!!,
+                        name = binding.alarmNameEditText.text.toString()
                     )
                     // DB 업데이트
-                    alarmViewModel.updateAlarmData(this, alarmData.copy(button = true))
+                    alarmViewModel.updateAlarmData(alarmData.copy(alarmIsOn = true))
                     Timber.d("updated alarmData: $alarmData")
                 }
                 finish()
             } else {
-                makeToast(this, getString(R.string.alarmSet_Toast_week))
+                showShortToast(this, getString(R.string.alarmSet_Toast_week))
             }
         }
 
@@ -309,7 +320,7 @@ class NormalAlarmSetActivity : AppCompatActivity() {
         // 일
         binding.sunButton.apply {
             setOnClickListener {
-                if (!binding.alarmData!!.Sat) {
+                if (!binding.alarmData!!.Sun) {
                     binding.alarmData = binding.alarmData?.copy(Sun = true)
                     AlarmAnimation.jump(this).start()
                 } else {
@@ -319,6 +330,29 @@ class NormalAlarmSetActivity : AppCompatActivity() {
                 setStrokeColorInButton(null, binding.alarmData!!.Sun)
             }
         }
+
+        binding.alarmNameEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                setTextForAlarmName(s.toString())
+            }
+        })
+        binding.alarmNameEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                clearKeyBoardFocus(binding.rootLayout)
+            }
+        }
+
+        alarmViewModel.failure.observe(this) {
+            showErrorSnackBar(binding.root, it)
+        }
+    }
+
+    private fun setTextForAlarmName(newText: String) {
+        binding.alarmData = binding.alarmData?.copy(name = newText)
     }
 
     private fun MaterialButton.setStrokeColorInButton(week: String?, weekClicked: Boolean) {

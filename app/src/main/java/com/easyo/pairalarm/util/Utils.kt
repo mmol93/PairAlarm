@@ -18,8 +18,8 @@ fun getNewAlarmCode(): String {
             currentMin.toString() + currentSecond.toString()
 }
 
-fun makeToast(context: Context, message: String) {
-    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+fun showShortToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
 fun selectMusic(context: Context, index: Int): MediaPlayer {
@@ -60,7 +60,7 @@ fun makeAlarmData(
     // 모든 요일이 false인 상태
     val defaultAlarmData = AlarmData(
         id = null,
-        button = true,
+        alarmIsOn = true,
         Sun = false,
         Mon = false,
         Tue = false,

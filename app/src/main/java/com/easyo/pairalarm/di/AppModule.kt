@@ -20,6 +20,7 @@ class AppModule {
     fun provideContext(@ApplicationContext context: Context): Context {
         return context
     }
+
     @Provides
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(context, AppDatabase::class.java, ALARM_DB_NAME).build()

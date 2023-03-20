@@ -32,17 +32,17 @@ class SpacerItem(
         /**
          * 24dp
          */
-        fun xlarge() = SpacerItem(R.dimen.element_spacing_xlarge)
+        fun xlarge() = SpacerItem(R.dimen.element_spacing_xxlarge)
 
         /**
          * 32dp
          */
-        fun xxlarge() = SpacerItem(R.dimen.element_spacing_xxlarge)
+        fun xxlarge() = SpacerItem(R.dimen.element_spacing_xxxlarge)
 
         /**
          * 40dp
          */
-        fun xxxlarge() = SpacerItem(R.dimen.element_spacing_xxxlarge)
+        fun xxxlarge() = SpacerItem(R.dimen.element_spacing_super_large)
     }
 
     override fun bind(binding: SpacerItemBinding, position: Int) {

@@ -5,11 +5,13 @@ import android.content.Intent
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.easyo.pairalarm.BuildConfig
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.dataStore.DataStoreTool
 import com.easyo.pairalarm.databinding.SettingItemBinding
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.model.*
+import com.easyo.pairalarm.ui.activity.DebugActivity
 import com.easyo.pairalarm.ui.activity.WebActivity
 import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
@@ -34,20 +36,21 @@ class SettingContentItem(
 
     override fun bind(binding: SettingItemBinding, position: Int) {
         binding.title = settingContents.title
+        // 레이아웃의 배경 셋팅
         when (settingContentType) {
             SettingContentType.SINGLE -> {
                 binding.settingItemLayout.background =
-                    ContextCompat.getDrawable(context, R.drawable.item_small_rounded_corner_clear)
+                    ContextCompat.getDrawable(context, R.drawable.item_small_rounded_corner)
                 binding.isLastItem = true
             }
             SettingContentType.FIRST -> {
                 binding.settingItemLayout.background = ContextCompat.getDrawable(
-                    context, R.drawable.item_uppper_small_rounded_corner_clear
+                    context, R.drawable.item_setting_uppper_small_rounded_corner
                 )
             }
             SettingContentType.LAST -> {
                 binding.settingItemLayout.background = ContextCompat.getDrawable(
-                    context, R.drawable.item_under_small_rounded_corner_clear
+                    context, R.drawable.item_setting_under_small_rounded_corner
                 )
                 binding.isLastItem = true
             }
@@ -71,8 +74,18 @@ class SettingContentItem(
                 SettingContents.QUICKALARM_MODE -> {
                     setQuickAlarmMode(settingContents.title)
                 }
+                SettingContents.QUICKALARM_MUTE -> {
+                    setQuickAlarmMute(settingContents.title)
+                }
                 SettingContents.APP_INFO -> {
                     openAppInfo()
+                    if (BuildConfig.DEBUG){
+                        binding.root.setOnLongClickListener {
+                            val intent = Intent(context, DebugActivity::class.java)
+                            context.startActivity(intent)
+                            true
+                        }
+                    }
                 }
                 SettingContents.REPORT -> {
                     reportAboutApp()
@@ -89,36 +102,56 @@ class SettingContentItem(
         job.cancel()
     }
 
-    override fun setQuickAlarmBell(title: String) {
+    // 각 override fun에는 클릭 시 실시한 행동 정의
+
+    override fun setQuickAlarmBell(key: String) {
         BellSelectDialogFragment(settingDetail.getBellIndex()) { selectedBellIndex ->
             launch {
-                saveStringData(title, selectedBellIndex.getBellName())
+                saveStringData(key, selectedBellIndex.getBellName())
             }
         }.also { it.show((context as AppCompatActivity).supportFragmentManager, null) }
     }
 
-    override fun setQuickAlarmMode(title: String) {
-        SimpleDialog.make(
+    override fun setQuickAlarmMode(key: String) {
+        SimpleDialog.showAlarmModeDialog(
             context,
-            context.getString(R.string.alarmSet_selectBellDialogTitle),
-            AlarmMode.values().map { it.mode }.toTypedArray(),
-            settingDetail.getModeIndex(),
+            clickedItemPosition = settingDetail.getModeIndex(),
             positive = { dialogInterface ->
                 launch {
                     val alert = dialogInterface as AlertDialog
                     when (alert.listView.checkedItemPosition) {
                         // Normal 클릭 시
                         0 -> {
-                            saveStringData(title, AlarmMode.NORMAL.mode)
+                            saveStringData(key, AlarmMode.NORMAL.mode)
                         }
                         // Calculate 클릭 시
                         1 -> {
-                            saveStringData(title, AlarmMode.CALCULATION.mode)
+                            saveStringData(key, AlarmMode.CALCULATION.mode)
                         }
                     }
                 }
             }
         )
+    }
+
+    override fun setQuickAlarmMute(key: String) {
+        launch {
+            // 클릭할 때 마다 다음 모드가 저장되게 한다.
+            when(settingDetail) {
+                AlarmVibrationOption.Vibration.vibrationOptionName -> {
+                    saveStringData(key, AlarmVibrationOption.ONCE.vibrationOptionName)
+                }
+                AlarmVibrationOption.ONCE.vibrationOptionName -> {
+                    saveStringData(key, AlarmVibrationOption.SOUND.vibrationOptionName)
+                }
+                AlarmVibrationOption.SOUND.vibrationOptionName -> {
+                    saveStringData(key, AlarmVibrationOption.Vibration.vibrationOptionName)
+                }
+                else -> {
+                    saveStringData(key, AlarmVibrationOption.Vibration.vibrationOptionName)
+                }
+            }
+        }
     }
 
     override fun openAppInfo() {

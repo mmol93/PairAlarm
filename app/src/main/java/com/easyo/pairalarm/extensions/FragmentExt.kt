@@ -3,8 +3,12 @@ package com.easyo.pairalarm.extensions
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import com.easyo.pairalarm.R
+import com.easyo.pairalarm.model.Failure
 import com.easyo.pairalarm.util.DENIED
 import com.easyo.pairalarm.util.EXPLAINED
+import com.google.android.material.snackbar.Snackbar
+import timber.log.Timber
 
 fun Fragment.getPermissionActivityResultLauncher(
     allGranted: () -> Unit,
@@ -31,4 +35,10 @@ fun Fragment.getPermissionActivityResultLauncher(
             }
         }
     }
+}
+
+fun Fragment.showErrorSnackBar(error: Failure) {
+    view?.let { Snackbar.make(it, R.string.some_error, Snackbar.LENGTH_SHORT) }
+        .also { it?.show() }
+    Timber.e("error: ${error.error.message}")
 }

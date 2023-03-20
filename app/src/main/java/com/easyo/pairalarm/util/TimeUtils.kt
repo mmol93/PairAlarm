@@ -8,7 +8,7 @@ import java.util.*
 
 @SuppressLint("SimpleDateFormat")
 fun transMillisToTime(milliSecond: Long): String? {
-    val simpleDateFormat = SimpleDateFormat("MM/dd HH:mm")
+    val simpleDateFormat = SimpleDateFormat("MM/dd  HH:mm")
     return simpleDateFormat.format(milliSecond)
 }
 
@@ -54,12 +54,25 @@ fun getMillisWithCalendar(hour: Int, min: Int, dayOfWeek: Int): Long {
     return calendar.timeInMillis
 }
 
-fun getAlarmDataFromTimeMillis(timeInterval: Long): AlarmData {
+fun getAlarmDataFromTimeMillis(
+    timeInterval: Long,
+    quickAlarmBellIndex: Int = 0,
+    quickAlarmModeIndex: Int = 0,
+    quickAlarmVibrationIndex: Int = 0
+): AlarmData {
     val calendar = Calendar.getInstance()
     calendar.timeInMillis += timeInterval
     val hourSet = calendar.get(Calendar.HOUR_OF_DAY)
     val minSet = calendar.get(Calendar.MINUTE)
-    var alarmSet = initCurrentAlarmData(hour = hourSet, min = minSet, isQuick = true, getNewAlarmCode())
+    var alarmSet = initCurrentAlarmData(
+        hour = hourSet,
+        min = minSet,
+        isQuick = true,
+        alarmCode = getNewAlarmCode(),
+        bell = quickAlarmBellIndex,
+        mode = quickAlarmModeIndex,
+        vibration = quickAlarmVibrationIndex
+    )
     Timber.d("hourSet: $hourSet")
     Timber.d("minSet: $minSet")
     // 요일 데이터는 Int형으로 가져온다 (일요일:1 ~ 토요일:7)

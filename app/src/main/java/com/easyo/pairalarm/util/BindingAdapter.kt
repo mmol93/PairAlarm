@@ -1,5 +1,7 @@
 package com.easyo.pairalarm.util
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
@@ -31,19 +33,33 @@ object BindingAdapter {
         }
     }
 
+    @JvmStatic
+    @BindingAdapter("hour")
+    fun TextView.setHour(hour: Int) {
+        text = if (hour >= 10) hour.toString() else "0$hour"
+    }
+
+    @JvmStatic
+    @BindingAdapter("min")
+    fun TextView.setMin(min: Int) {
+        text = if (min >= 10) min.toString() else "0$min"
+    }
+
     /**
      *  오전/오후를 NumberPicker에 세팅한다
      *
      *  @param hourForAMPM 시간(24시간 포맷)
      */
     @JvmStatic
-    @BindingAdapter("hourForAMPM", "minForAMPM")
-    fun NumberPicker.setAMPM(hourForAMPM: Int, minForAMPM: Int) {
-        this.value = when {
-            this.value == 1 -> 1
-            hourForAMPM > 12 -> 1
-            hourForAMPM == 12 && minForAMPM > 0 -> 1
-            else -> 0
+    @BindingAdapter("hourForAMPM", "minForAMPM", "manualChange")
+    fun NumberPicker.setAMPM(hourForAMPM: Int, minForAMPM: Int, manualChange: Boolean = false) {
+        if (!manualChange){
+            this.value = when {
+                this.value == 1 -> 1
+                hourForAMPM > 12 -> 1
+                hourForAMPM == 12 && minForAMPM > 0 -> 1
+                else -> 0
+            }
         }
     }
 
@@ -131,30 +147,55 @@ object BindingAdapter {
 
     @JvmStatic
     @BindingAdapter("week", "weekClicked")
+    fun TextView.setWeekTextColor(week: Weekend, weekClicked: Boolean) {
+        when (week) {
+            Weekend.WEEK -> {
+                if (weekClicked) {
+                    setTextColor(Color.YELLOW)
+                    return
+                }
+            }
+            Weekend.SAT -> {
+                if (weekClicked) {
+                    setTextColor(context.getColor(R.color.light_blue))
+                    return
+                }
+            }
+            Weekend.SUN -> {
+                if (weekClicked) {
+                    setTextColor(Color.RED)
+                    return
+                }
+            }
+        }
+        setTextColor(context.getColor(R.color.new_subTextColor))
+    }
+
+    @JvmStatic
+    @BindingAdapter("week", "weekClicked")
     fun MaterialButton.setColorStroke(week: Weekend, weekClicked: Boolean) {
+        rippleColor = ColorStateList.valueOf(Color.TRANSPARENT)
         when (week) {
             Weekend.SAT -> {
                 if (weekClicked) {
                     setStrokeColorResource(R.color.light_blue)
-                } else {
-                    setStrokeColorResource(R.color.background)
+                    return
                 }
             }
             Weekend.SUN -> {
                 if (weekClicked) {
                     setStrokeColorResource(R.color.red)
-                } else {
-                    setStrokeColorResource(R.color.background)
+                    return
                 }
             }
             Weekend.WEEK -> {
                 if (weekClicked) {
-                    this.setStrokeColorResource(R.color.deep_yellow)
-                } else {
-                    this.setStrokeColorResource(R.color.background)
+                    setStrokeColorResource(R.color.deep_yellow)
+                    return
                 }
             }
         }
+        setStrokeColorResource(R.color.background)
     }
 
     @JvmStatic

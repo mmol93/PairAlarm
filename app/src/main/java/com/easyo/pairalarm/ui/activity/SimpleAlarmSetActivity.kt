@@ -1,6 +1,8 @@
 package com.easyo.pairalarm.ui.activity
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.SeekBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -10,13 +12,12 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivitySimpleAlarmBinding
 import com.easyo.pairalarm.extensions.clearKeyBoardFocus
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
-import com.easyo.pairalarm.model.AlarmMode
 import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
 import com.easyo.pairalarm.util.AlarmAnimation
 import com.easyo.pairalarm.util.getAddedTime
 import com.easyo.pairalarm.util.makeAlarmData
-import com.easyo.pairalarm.util.makeToast
+import com.easyo.pairalarm.util.showShortToast
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -53,9 +54,9 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
                 // 시간
                 alarmViewModel.currentAlarmHour.collectLatest {
                     if (it >= 10) {
-                        binding.plusHourText.text = it.toString()
+                        binding.plusHourText.setText(it.toString())
                     } else {
-                        binding.plusHourText.text = "0$it"
+                        binding.plusHourText.setText("0$it")
                     }
                 }
             }
@@ -67,9 +68,9 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
                         alarmViewModel.currentAlarmHour.value += 1
                     }
                     if (it >= 10) {
-                        binding.plusMinText.text = it.toString()
+                        binding.plusMinText.setText(it.toString())
                     } else {
-                        binding.plusMinText.text = "0$it"
+                        binding.plusMinText.setText("0$it")
                     }
                 }
             }
@@ -81,6 +82,11 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+
+        binding.resetCounter.setOnSingleClickListener {
+            alarmViewModel.currentAlarmMin.value = 0
+            alarmViewModel.currentAlarmHour.value = 0
         }
 
         // editText의 외부를 클릭했을 때는 키보드랑 Focus 제거하기
@@ -125,11 +131,8 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
         // 모드 버튼을 눌렀을 때
         binding.selectModeButton.setOnSingleClickListener {
             // ** 항목 선택 Dialog 설정
-            SimpleDialog.make(
-                this,
-                getString(R.string.alarmSet_selectBellDialogTitle),
-                AlarmMode.values().map { it.mode }.toTypedArray(),
-                alarmViewModel.currentAlarmMode.value,
+            SimpleDialog.showAlarmModeDialog(this,
+                clickedItemPosition = alarmViewModel.currentAlarmMode.value,
                 positive = { dialogInterface ->
                     val alert = dialogInterface as AlertDialog
                     // 선택된 아이템의 position에 따라 행동 조건 넣기
@@ -145,8 +148,7 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
                     }
                     binding.alarmData =
                         binding.alarmData?.copy(mode = alarmViewModel.currentAlarmMode.value)
-                }
-            )
+                })
         }
 
         // AlarmBell 설정 버튼 눌렀을 때
@@ -197,12 +199,31 @@ class SimpleAlarmSetActivity : AppCompatActivity() {
                     alarmName = binding.alarmNameEditText.text.toString(),
                     alarmData = binding.alarmData!!
                 )
-                alarmViewModel.insertAlarmData(this, alarmData)
+                alarmViewModel.insertAlarmData(alarmData)
 
                 finish()
             } else {
-                makeToast(this, getString(R.string.toast_set_minimum_time))
+                showShortToast(this, getString(R.string.toast_set_minimum_time))
             }
         }
+
+        binding.alarmNameEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                setTextForAlarmName(s.toString())
+            }
+        })
+        binding.alarmNameEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                clearKeyBoardFocus(binding.rootLayout)
+            }
+        }
+    }
+
+    private fun setTextForAlarmName(newText: String) {
+        binding.alarmData = binding.alarmData?.copy(name = newText)
     }
 }

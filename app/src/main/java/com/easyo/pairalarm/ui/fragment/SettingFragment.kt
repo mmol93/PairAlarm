@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import autoCleared
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.FragmentSettingBinding
 import com.easyo.pairalarm.groupieitem.SettingContentItem
@@ -16,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 
 class SettingFragment : Fragment(R.layout.fragment_setting) {
-    private lateinit var binding: FragmentSettingBinding
+    private var binding: FragmentSettingBinding by autoCleared()
     private val settingRecyclerAdapter = GroupieAdapter()
     private val job by lazy { Job() }
 
@@ -29,8 +30,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
 
         binding.settingRecycler.apply {
             adapter = settingRecyclerAdapter
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
 
         setupSettingData(settingItemList)
