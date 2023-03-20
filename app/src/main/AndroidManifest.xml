@@ -42,7 +42,7 @@
             android:exported="false"
             android:theme="@style/Theme.PairAlarm.NoActionBar" />
         <activity
-            android:name=".ui.activity.InitialActivity"
+            android:name=".ui.activity.SplashActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:theme="@style/Theme.PairAlarm.NoActionBar">

@@ -23,17 +23,18 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class InitialActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInitialBinding
     private var isDoneLottieAnimation = false
     private var isDoneDatabaseLoad = false
+    private var count = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityInitialBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Timber.plant(MyTimber())
-
-        Timber.d("init created")
+        count ++
+        Timber.d("init created: $count")
 
         // Lottie 애니메이션이 끝났을 때 MainActivity 열기
         binding.lottieView.addAnimatorListener(object : Animator.AnimatorListener {
@@ -88,11 +89,10 @@ class InitialActivity : AppCompatActivity() {
             binding.progressText.text = getString(R.string.progressFinish)
             if (isDoneDatabaseLoad && isDoneLottieAnimation){
                 // animation이 너무 빨리 끝날 수 있으니 1초 대기한 후 다음 화면으로 이동
-//                val handler = Handler(Looper.getMainLooper())
-//                handler.postDelayed({
-//                    openMainActivity()
-//                }, 500)
-                openMainActivity()
+                val handler = Handler(Looper.getMainLooper())
+                handler.postDelayed({
+                    openMainActivity()
+                }, 500)
             }
         }
     }
