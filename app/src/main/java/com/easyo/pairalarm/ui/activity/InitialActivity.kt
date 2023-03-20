@@ -18,6 +18,7 @@ import com.easyo.pairalarm.eventbus.InitDataEvent
 import com.easyo.pairalarm.util.MyTimber
 import com.easyo.pairalarm.worker.InitAlarmDataWorker
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -31,6 +32,8 @@ class InitialActivity : AppCompatActivity() {
         binding = ActivityInitialBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Timber.plant(MyTimber())
+
+        Timber.d("init created")
 
         // Lottie 애니메이션이 끝났을 때 MainActivity 열기
         binding.lottieView.addAnimatorListener(object : Animator.AnimatorListener {
@@ -52,15 +55,13 @@ class InitialActivity : AppCompatActivity() {
 
             }
         })
-    }
 
-    override fun onStart() {
-        super.onStart()
         // InitDataEvent를 subscribe하여 EventBus의 post의 신호를 감지한다
         lifecycleScope.launch {
-            EventBus.subscribe<InitDataEvent>().collect {
+            EventBus.subscribe<InitDataEvent>().first {
                 Timber.d("EventBus collected")
                 updateProgress(it)
+                true
             }
         }
 
@@ -87,10 +88,11 @@ class InitialActivity : AppCompatActivity() {
             binding.progressText.text = getString(R.string.progressFinish)
             if (isDoneDatabaseLoad && isDoneLottieAnimation){
                 // animation이 너무 빨리 끝날 수 있으니 1초 대기한 후 다음 화면으로 이동
-                val handler = Handler(Looper.getMainLooper())
-                handler.postDelayed({
-                    openMainActivity()
-                }, 500)
+//                val handler = Handler(Looper.getMainLooper())
+//                handler.postDelayed({
+//                    openMainActivity()
+//                }, 500)
+                openMainActivity()
             }
         }
     }

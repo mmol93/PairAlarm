@@ -23,6 +23,7 @@ import com.easyo.pairalarm.extensions.setFadeVisible
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.extensions.showErrorSnackBar
 import com.easyo.pairalarm.groupieitem.AlarmItem
+import com.easyo.pairalarm.service.AlarmForeground
 import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
 import com.easyo.pairalarm.ui.activity.SimpleAlarmSetActivity
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
@@ -62,7 +63,8 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         }
     )
 
-    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             // 오버레이 권한 설정에서 돌아왔을 때
             Timber.d("resultCode: ${result.resultCode}")
             // 오버레이 권한은 설정 후 Back키로 돌아오기 때문에 RESULT_CANCELED가 찍힌다
@@ -94,19 +96,20 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         val alarmRecyclerAdapter = GroupieAdapter()
         binding.alarmRecycler.run {
             adapter = alarmRecyclerAdapter
-            layoutManager = GridLayoutManager(context, recyclerViewSpan, GridLayoutManager.VERTICAL, false)
-            addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            layoutManager =
+                GridLayoutManager(context, recyclerViewSpan, GridLayoutManager.VERTICAL, false)
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     // 처음은 발동하지 않게
-                    if (dy != 0){
+                    if (dy != 0) {
                         binding.fabLayout.visibility = View.GONE
                     }
                 }
 
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-                    if (newState == SCROLL_STATE_IDLE){
+                    if (newState == SCROLL_STATE_IDLE) {
                         binding.fabLayout.setFadeVisible(true, 700, 0)
                     }
                 }
@@ -116,11 +119,14 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         // Groupie - RecyclerView 데이터 입력
         viewLifecycleOwner.lifecycleScope.launch {
             alarmViewModel.getAllAlarmData().collect { alarmDataList ->
+
                 Timber.d("AlarmData: $alarmDataList")
                 alarmDataList.map { AlarmItem(requireContext(), it, alarmViewModel) }
                     .also { alarmRecyclerAdapter.update(it) }
 
                 if (alarmDataList.isEmpty()) {
+                    val serviceIntent = Intent(requireContext(), AlarmForeground::class.java)
+                    requireContext().stopService(serviceIntent)
                     cancelAlarmNotification(requireContext())
                 } else {
                     resetAllAlarms(requireContext(), alarmDataList)
