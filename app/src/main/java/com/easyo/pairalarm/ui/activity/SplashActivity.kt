@@ -27,14 +27,11 @@ class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInitialBinding
     private var isDoneLottieAnimation = false
     private var isDoneDatabaseLoad = false
-    private var count = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityInitialBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Timber.plant(MyTimber())
-        count ++
-        Timber.d("init created: $count")
 
         // Lottie 애니메이션이 끝났을 때 MainActivity 열기
         binding.lottieView.addAnimatorListener(object : Animator.AnimatorListener {
