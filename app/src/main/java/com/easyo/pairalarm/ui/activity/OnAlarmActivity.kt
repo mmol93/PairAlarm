@@ -61,7 +61,7 @@ class OnAlarmActivity : AppCompatActivity() {
             }
             handler.post(handlerTask)
             lifecycleScope.launch {
-                goesOffAlarmData.first() { alarmData ->
+                goesOffAlarmData.first { alarmData ->
                     Timber.d("goes off alarmData in OnAlarmActivity: $alarmCode")
 
                     binding.hour.setText(getCurrentHourDoubleDigitWithString())

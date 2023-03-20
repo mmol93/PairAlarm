@@ -27,8 +27,6 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.isUserInputEnabled = false
 
         val receiver = ComponentName(this, AlarmReceiver::class.java)
-        val serviceIntent = Intent(this, AlarmForeground::class.java)
-        startForegroundService(serviceIntent)
 
         packageManager.setComponentEnabledSetting(
             receiver,

@@ -38,6 +38,7 @@ import timber.log.Timber
 class AlarmFragment : Fragment(R.layout.fragment_alarm) {
     private var binding: FragmentAlarmBinding by autoCleared()
     private lateinit var alarmActivityIntent: Intent
+    private lateinit var serviceIntent: Intent
     private val alarmViewModel: AlarmViewModel by activityViewModels()
     private val permissionRequest = getPermissionActivityResultLauncher(
         allGranted = {
@@ -116,6 +117,8 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
             })
         }
 
+        serviceIntent = Intent(requireContext(), AlarmForeground::class.java)
+
         // Groupie - RecyclerView 데이터 입력
         viewLifecycleOwner.lifecycleScope.launch {
             alarmViewModel.getAllAlarmData().collect { alarmDataList ->
@@ -125,10 +128,12 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                     .also { alarmRecyclerAdapter.update(it) }
 
                 if (alarmDataList.isEmpty()) {
-                    val serviceIntent = Intent(requireContext(), AlarmForeground::class.java)
                     requireContext().stopService(serviceIntent)
                     cancelAlarmNotification(requireContext())
                 } else {
+                    serviceIntent.putExtra(NEXT_ALARM_NOTIFICATION_TEXT, getNextAlarm(alarmDataList))
+                    requireContext().startForegroundService(serviceIntent)
+
                     resetAllAlarms(requireContext(), alarmDataList)
                 }
             }
