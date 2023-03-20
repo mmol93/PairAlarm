@@ -11,11 +11,11 @@
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:name=".AppClass"
         android:allowBackup="true"
-        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -42,8 +42,9 @@
             android:exported="false"
             android:theme="@style/Theme.PairAlarm.NoActionBar" />
         <activity
-            android:name=".ui.activity.InitialActivity"
+            android:name=".ui.activity.SplashActivity"
             android:exported="true"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.PairAlarm.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,9 +54,9 @@
         </activity>
         <activity
             android:name=".ui.activity.MainActivity"
-            android:exported="true"
+            android:exported="false"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.PairAlarm.NoActionBar">
-
         </activity>
 
         <receiver
@@ -74,6 +75,8 @@
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".service.AlarmForeground" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

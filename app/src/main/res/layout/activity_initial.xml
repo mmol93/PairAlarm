@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.InitialActivity"
+    tools:context=".ui.activity.SplashActivity"
     android:layout_margin="@dimen/element_spacing_xlarge">
 
     <com.airbnb.lottie.LottieAnimationView

@@ -1,6 +1,7 @@
 package com.easyo.pairalarm.ui.activity
 
 import android.content.ComponentName
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.broadcast.AlarmReceiver
 import com.easyo.pairalarm.databinding.ActivityMainBinding
+import com.easyo.pairalarm.service.AlarmForeground
 import com.easyo.pairalarm.ui.fragment.AlarmFragment
 import com.easyo.pairalarm.ui.fragment.SettingFragment
 import com.google.android.material.tabs.TabLayout

@@ -18,11 +18,12 @@ import com.easyo.pairalarm.eventbus.InitDataEvent
 import com.easyo.pairalarm.util.MyTimber
 import com.easyo.pairalarm.worker.InitAlarmDataWorker
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class InitialActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInitialBinding
     private var isDoneLottieAnimation = false
     private var isDoneDatabaseLoad = false
@@ -52,15 +53,13 @@ class InitialActivity : AppCompatActivity() {
 
             }
         })
-    }
 
-    override fun onStart() {
-        super.onStart()
         // InitDataEvent를 subscribe하여 EventBus의 post의 신호를 감지한다
         lifecycleScope.launch {
-            EventBus.subscribe<InitDataEvent>().collect {
+            EventBus.subscribe<InitDataEvent>().first {
                 Timber.d("EventBus collected")
                 updateProgress(it)
+                true
             }
         }
 

@@ -11,7 +11,7 @@ import com.easyo.pairalarm.broadcast.AlarmReceiver
 import com.easyo.pairalarm.ui.activity.MainActivity
 import timber.log.Timber
 
-fun makeAlarmNotification(context: Context, messageBody: String) {
+fun getNotificationBuilder(context: Context, messageBody: String): NotificationCompat.Builder {
     // noti 클릭 시 MainActivity를 열게 한다
     val intent = Intent(context, MainActivity::class.java)
     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -20,10 +20,7 @@ fun makeAlarmNotification(context: Context, messageBody: String) {
         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
 
-    val channelId = context.getString(R.string.alarm_notification_channel_id)
-    val channelName = context.getString(R.string.alarm_notification_channel_name)
-
-    val notificationBuilder = NotificationCompat.Builder(context, channelId)
+    val notificationBuilder = NotificationCompat.Builder(context, context.getString(R.string.alarm_notification_channel_id))
         .setSmallIcon(R.drawable.ic_clock)
         .setContentTitle(context.getString(R.string.alarm_notification_title))
         .setContentText(messageBody)
@@ -38,6 +35,13 @@ fun makeAlarmNotification(context: Context, messageBody: String) {
         buildActionButton(context, actionButtonOrder)?.let { notificationBuilder.addAction(it) }
     }
 
+    return notificationBuilder
+}
+
+fun makeAlarmNotification(context: Context, messageBody: String) {
+    val channelId = context.getString(R.string.alarm_notification_channel_id)
+    val channelName = context.getString(R.string.alarm_notification_channel_name)
+
     val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     val channel = NotificationChannel(
         channelId,
@@ -45,7 +49,7 @@ fun makeAlarmNotification(context: Context, messageBody: String) {
         NotificationManager.IMPORTANCE_DEFAULT
     )
     notificationManager.createNotificationChannel(channel)
-    notificationManager.notify(ALARM_NOTI_ID, notificationBuilder.build())
+    notificationManager.notify(ALARM_NOTI_ID, getNotificationBuilder(context, messageBody).build())
 }
 
 fun buildActionButton(context: Context, actionButtonOrder: Int): NotificationCompat.Action? {
