@@ -133,8 +133,6 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                 } else {
                     serviceIntent.putExtra(NEXT_ALARM_NOTIFICATION_TEXT, getNextAlarm(alarmDataList))
                     requireContext().startForegroundService(serviceIntent)
-
-                    resetAllAlarms(requireContext(), alarmDataList)
                 }
             }
         }

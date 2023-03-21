@@ -1,5 +1,6 @@
 package com.easyo.pairalarm.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,6 +15,7 @@ import com.easyo.pairalarm.extensions.displayOn
 import com.easyo.pairalarm.extensions.doShortVibrateOnce
 import com.easyo.pairalarm.model.AlarmModeType
 import com.easyo.pairalarm.model.CalculatorProblem
+import com.easyo.pairalarm.service.AlarmForeground
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.easyo.pairalarm.worker.NextAlarmWorker
@@ -61,18 +63,18 @@ class OnAlarmActivity : AppCompatActivity() {
             }
             handler.post(handlerTask)
             lifecycleScope.launch {
-                goesOffAlarmData.first { alarmData ->
+                goesOffAlarmData.first { currentAlarmData ->
                     Timber.d("goes off alarmData in OnAlarmActivity: $alarmCode")
 
                     binding.hour.setText(getCurrentHourDoubleDigitWithString())
                     binding.min.setText(getCurrentMinuteDoubleDigitWithString())
                     calculatorProblem = alarmViewModel.getRandomNumberForCalculator()
                     binding.calculatorProblem = calculatorProblem
-                    binding.showCalculatorProblem = alarmData.mode == AlarmModeType.CALCULATE.mode
-                    binding.alarmName.text = alarmData.name
+                    binding.showCalculatorProblem = currentAlarmData.mode == AlarmModeType.CALCULATE.mode
+                    binding.alarmName.text = currentAlarmData.name
 
-                    if (alarmData.quick) {
-                        alarmViewModel.deleteAlarmData(alarmData)
+                    if (currentAlarmData.quick) {
+                        alarmViewModel.deleteAlarmData(currentAlarmData)
                     }
 
                     // 삭제하거나 변경된 알람들을 반영한다(Noti 등)
@@ -83,7 +85,8 @@ class OnAlarmActivity : AppCompatActivity() {
                             ExistingWorkPolicy.REPLACE,
                             alarmTimeWorkRequest as OneTimeWorkRequest
                         )
-                    resetAllAlarms(this@OnAlarmActivity)
+                    val serviceIntent = Intent(this@OnAlarmActivity, AlarmForeground::class.java)
+                    startForegroundService(serviceIntent)
                     true
                 }
             }

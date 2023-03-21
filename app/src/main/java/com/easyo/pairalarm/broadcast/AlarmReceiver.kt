@@ -3,7 +3,6 @@ package com.easyo.pairalarm.broadcast
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.work.*
 import com.easyo.pairalarm.BuildConfig
 import com.easyo.pairalarm.service.AlarmForeground
@@ -50,7 +49,6 @@ class AlarmReceiver : BroadcastReceiver() {
                     // 서비스 재시작
                     val serviceIntent = Intent(context, AlarmForeground::class.java)
                     context.startForegroundService(serviceIntent)
-                    resetAllAlarms(context)
                 }
 
                 // 내가 설정한 알람이 울렸을 때
