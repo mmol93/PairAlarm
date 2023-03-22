@@ -15,6 +15,7 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityInitialBinding
 import com.easyo.pairalarm.eventbus.EventBus
 import com.easyo.pairalarm.eventbus.InitDataEvent
+import com.easyo.pairalarm.util.IS_INIT_APP
 import com.easyo.pairalarm.util.MyTimber
 import com.easyo.pairalarm.worker.InitAlarmDataWorker
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,9 +71,10 @@ class SplashActivity : AppCompatActivity() {
 
     // MainActivity 열기
     private fun openMainActivity(){
-        val mainActivity = Intent(this, MainActivity::class.java)
-        mainActivity.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(mainActivity)
+        val mainActivityIntent = Intent(this, MainActivity::class.java)
+        mainActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        mainActivityIntent.putExtra(IS_INIT_APP, true)
+        startActivity(mainActivityIntent)
         finish()
     }
 
