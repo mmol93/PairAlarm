@@ -1,10 +1,12 @@
 package com.easyo.pairalarm.broadcastTest
 
 import android.content.Intent
+import android.content.IntentFilter
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.easyo.pairalarm.broadcast.AlarmReceiver
-import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.*
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,20 +21,26 @@ class AlarmBroadCastTest {
     @Before
     fun setup() {
         receiver = AlarmReceiver()
+        val intentFilter = IntentFilter().apply {
+            addAction(context.packageName)
+        }
+        InstrumentationRegistry.getInstrumentation().targetContext.registerReceiver(
+            receiver,
+            intentFilter
+        )
     }
 
     @Test
     fun test_MY_PACKAGE_REPLACED_OnReceive() {
-        val intent = Intent("android.intent.action.MY_PACKAGE_REPLACED")
-        receiver.onReceive(context, intent)
-        assertEquals("android.intent.action.MY_PACKAGE_REPLACED", intent.action)
+        val intent = Intent(context.packageName)
+        context.sendOrderedBroadcast(intent, null)
+        // wait for onReceive() in Receive class
+        Thread.sleep(2000)
+        assertTrue(receiver.broadcastCalled)
     }
 
-    @Test
-    fun test_BOOT_COMPLETED_OnReceive() {
-        val intent = Intent("android.intent.action.BOOT_COMPLETED")
-        receiver.onReceive(context, intent)
-
-        assertEquals("android.intent.action.BOOT_COMPLETED", intent.action)
+    @After
+    fun tearDown() {
+        InstrumentationRegistry.getInstrumentation().targetContext.unregisterReceiver(receiver)
     }
 }

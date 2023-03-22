@@ -3,7 +3,6 @@ package com.easyo.pairalarm.broadcast
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.work.*
 import com.easyo.pairalarm.BuildConfig
 import com.easyo.pairalarm.service.AlarmForeground
@@ -13,8 +12,10 @@ import com.easyo.pairalarm.worker.ReceiverAlarmWorker
 import timber.log.Timber
 
 class AlarmReceiver : BroadcastReceiver() {
+    var broadcastCalled = false
     override fun onReceive(context: Context?, intent: Intent?) {
-        Timber.d("Broadcast is called")
+        println("Broadcast is called")
+        broadcastCalled = true
         val alarmCode = intent?.getStringExtra(ALARM_CODE_TEXT)
         val actionButtonCode = intent?.getStringExtra(ACTION_BUTTON)
         if (BuildConfig.DEBUG) {
