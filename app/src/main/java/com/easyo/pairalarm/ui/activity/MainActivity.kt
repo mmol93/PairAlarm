@@ -1,6 +1,7 @@
 package com.easyo.pairalarm.ui.activity
 
 import android.content.ComponentName
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import com.easyo.pairalarm.broadcast.AlarmReceiver
 import com.easyo.pairalarm.databinding.ActivityMainBinding
 import com.easyo.pairalarm.ui.fragment.AlarmFragment
 import com.easyo.pairalarm.ui.fragment.SettingFragment
+import com.easyo.pairalarm.util.IS_INIT_APP
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,8 +21,16 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private var isInitializedApp = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        isInitializedApp = intent.getBooleanExtra(IS_INIT_APP, false)
+        if (!isInitializedApp) {
+            startActivity(Intent(this, SplashActivity::class.java))
+            finish()
+        }
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewPager.isUserInputEnabled = false
 

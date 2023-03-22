@@ -15,14 +15,16 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityInitialBinding
 import com.easyo.pairalarm.eventbus.EventBus
 import com.easyo.pairalarm.eventbus.InitDataEvent
+import com.easyo.pairalarm.util.IS_INIT_APP
 import com.easyo.pairalarm.util.MyTimber
 import com.easyo.pairalarm.worker.InitAlarmDataWorker
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class InitialActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInitialBinding
     private var isDoneLottieAnimation = false
     private var isDoneDatabaseLoad = false
@@ -52,15 +54,13 @@ class InitialActivity : AppCompatActivity() {
 
             }
         })
-    }
 
-    override fun onStart() {
-        super.onStart()
         // InitDataEvent를 subscribe하여 EventBus의 post의 신호를 감지한다
         lifecycleScope.launch {
-            EventBus.subscribe<InitDataEvent>().collect {
+            EventBus.subscribe<InitDataEvent>().first {
                 Timber.d("EventBus collected")
                 updateProgress(it)
+                true
             }
         }
 
@@ -71,9 +71,10 @@ class InitialActivity : AppCompatActivity() {
 
     // MainActivity 열기
     private fun openMainActivity(){
-        val mainActivity = Intent(this, MainActivity::class.java)
-        mainActivity.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(mainActivity)
+        val mainActivityIntent = Intent(this, MainActivity::class.java)
+        mainActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        mainActivityIntent.putExtra(IS_INIT_APP, true)
+        startActivity(mainActivityIntent)
         finish()
     }
 

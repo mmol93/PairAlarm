@@ -3,8 +3,10 @@ package com.easyo.pairalarm.broadcast
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.work.*
 import com.easyo.pairalarm.BuildConfig
+import com.easyo.pairalarm.service.AlarmForeground
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.worker.NextAlarmWorker
 import com.easyo.pairalarm.worker.ReceiverAlarmWorker
@@ -45,6 +47,9 @@ class AlarmReceiver : BroadcastReceiver() {
                         intent.action == "android.intent.action.LOCKED_BOOT_COMPLETED"
                 -> {
                     Timber.d("reset alarm")
+                    // 서비스 재시작
+                    val serviceIntent = Intent(context, AlarmForeground::class.java)
+                    context.startForegroundService(serviceIntent)
                     resetAllAlarms(context)
                 }
 
