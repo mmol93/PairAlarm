@@ -51,7 +51,6 @@ class AlarmReceiver : BroadcastReceiver() {
                     // 서비스 재시작
                     val serviceIntent = Intent(context, AlarmForeground::class.java)
                     context.startForegroundService(serviceIntent)
-                    resetAllAlarms(context)
                 }
 
                 // 내가 설정한 알람이 울렸을 때

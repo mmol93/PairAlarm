@@ -6,6 +6,7 @@ import android.os.IBinder
 import com.easyo.pairalarm.util.ALARM_NOTI_ID
 import com.easyo.pairalarm.util.NEXT_ALARM_NOTIFICATION_TEXT
 import com.easyo.pairalarm.util.getNotificationBuilder
+import com.easyo.pairalarm.util.resetAllAlarms
 import timber.log.Timber
 
 /**
@@ -22,6 +23,7 @@ class AlarmForeground : Service() {
                 intent?.getStringExtra(NEXT_ALARM_NOTIFICATION_TEXT) ?: ""
             ).build()
         )
+        resetAllAlarms(applicationContext)
 
         return START_STICKY
     }
