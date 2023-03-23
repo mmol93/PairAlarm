@@ -5,8 +5,8 @@ enum class SettingContents(val title: String) {
     QUICKALARM_MODE("QuickAlarm Mode"),
     QUICKALARM_MUTE("QuickAlarm Mute"),
     BLANK(""),
-    APP_INFO("App Info"),
-    REPORT("Report")
+    USER_GUIDE("User Guide"),
+    APP_INFO("App Info")
 }
 
 // AlarmBell

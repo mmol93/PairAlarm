@@ -3,6 +3,8 @@ package com.easyo.pairalarm.groupieitem
 import androidx.annotation.DimenRes
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.SpacerItemBinding
+import com.easyo.pairalarm.util.BindingAdapter.setMarginBottom
+import com.easyo.pairalarm.util.BindingAdapter.setMarginTop
 import com.xwray.groupie.databinding.BindableItem
 
 class SpacerItem(
@@ -46,10 +48,10 @@ class SpacerItem(
     }
 
     override fun bind(binding: SpacerItemBinding, position: Int) {
-        val params = binding.spacer.layoutParams.apply {
-            height = binding.root.resources.getDimensionPixelOffset(space)
+        binding.root.resources.getDimensionPixelOffset(space).toFloat().let {
+            binding.spacer.setMarginTop(it)
+            binding.spacer.setMarginBottom(it)
         }
-        binding.spacer.layoutParams = params
     }
 
     override fun getLayout(): Int = R.layout.spacer_item

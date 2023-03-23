@@ -87,12 +87,10 @@ class SettingContentItem(
                         }
                     }
                 }
-                SettingContents.REPORT -> {
-                    reportAboutApp()
+                SettingContents.USER_GUIDE -> {
+                    userGuide()
                 }
-                else -> {
-
-                }
+                else -> {}
             }
         }
     }
@@ -161,7 +159,7 @@ class SettingContentItem(
         context.startActivity(intent)
     }
 
-    override fun reportAboutApp() {
+    override fun userGuide() {
 
     }
 

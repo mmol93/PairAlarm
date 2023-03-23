@@ -10,5 +10,5 @@ interface SettingFunctions {
     fun setQuickAlarmMode(key: String)
     fun setQuickAlarmMute(key: String)
     fun openAppInfo()
-    fun reportAboutApp()
+    fun userGuide()
 }
