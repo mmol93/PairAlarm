@@ -8,7 +8,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.work.*
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityOnAlarmBinding
 import com.easyo.pairalarm.extensions.displayOn
@@ -18,7 +17,6 @@ import com.easyo.pairalarm.model.CalculatorProblem
 import com.easyo.pairalarm.service.AlarmForeground
 import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
-import com.easyo.pairalarm.worker.NextAlarmWorker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -78,14 +76,7 @@ class OnAlarmActivity : AppCompatActivity() {
                     }
 
                     // 삭제하거나 변경된 알람들을 반영한다(Noti 등)
-                    val alarmTimeWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<NextAlarmWorker>().build()
-                    WorkManager.getInstance(this@OnAlarmActivity)
-                        .enqueueUniqueWork(
-                            NEXT_ALARM_WORKER,
-                            ExistingWorkPolicy.REPLACE,
-                            alarmTimeWorkRequest as OneTimeWorkRequest
-                        )
-                    val serviceIntent = Intent(this@OnAlarmActivity, AlarmForeground::class.java)
+                    val serviceIntent = Intent(applicationContext, AlarmForeground::class.java)
                     startForegroundService(serviceIntent)
                     true
                 }

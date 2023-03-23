@@ -117,7 +117,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
             })
         }
 
-        serviceIntent = Intent(requireContext(), AlarmForeground::class.java)
+        serviceIntent = Intent(requireActivity().applicationContext, AlarmForeground::class.java)
 
         // Groupie - RecyclerView 데이터 입력
         viewLifecycleOwner.lifecycleScope.launch {
