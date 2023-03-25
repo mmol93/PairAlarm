@@ -1,4 +1,4 @@
-package com.easyo.pairalarm.groupieitem
+package com.easyo.pairalarm.recyclerItem
 
 import android.annotation.SuppressLint
 import android.content.Context

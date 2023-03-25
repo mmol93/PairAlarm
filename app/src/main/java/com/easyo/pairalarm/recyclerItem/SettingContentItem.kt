@@ -1,4 +1,4 @@
-package com.easyo.pairalarm.groupieitem
+package com.easyo.pairalarm.recyclerItem
 
 import android.content.Context
 import android.content.Intent
@@ -12,6 +12,7 @@ import com.easyo.pairalarm.databinding.SettingItemBinding
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.model.*
 import com.easyo.pairalarm.ui.activity.DebugActivity
+import com.easyo.pairalarm.ui.activity.UserGuideActivity
 import com.easyo.pairalarm.ui.activity.WebActivity
 import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
@@ -27,7 +28,7 @@ import kotlin.coroutines.CoroutineContext
 class SettingContentItem(
     override val context: Context,
     override val settingContents: SettingContents,
-    private val settingContentType: SettingContentType?,
+    private val recyclerItemContentsType: RecyclerItemContentsType?,
     override val coroutineContext: CoroutineContext,
     override val job: Job,
 ) : BindableItem<SettingItemBinding>(settingContents.hashCode().toLong()), DataStoreTool,
@@ -37,18 +38,18 @@ class SettingContentItem(
     override fun bind(binding: SettingItemBinding, position: Int) {
         binding.title = settingContents.title
         // 레이아웃의 배경 셋팅
-        when (settingContentType) {
-            SettingContentType.SINGLE -> {
+        when (recyclerItemContentsType) {
+            RecyclerItemContentsType.SINGLE -> {
                 binding.settingItemLayout.background =
                     ContextCompat.getDrawable(context, R.drawable.item_small_rounded_corner)
                 binding.isLastItem = true
             }
-            SettingContentType.FIRST -> {
+            RecyclerItemContentsType.FIRST -> {
                 binding.settingItemLayout.background = ContextCompat.getDrawable(
                     context, R.drawable.item_setting_uppper_small_rounded_corner
                 )
             }
-            SettingContentType.LAST -> {
+            RecyclerItemContentsType.LAST -> {
                 binding.settingItemLayout.background = ContextCompat.getDrawable(
                     context, R.drawable.item_setting_under_small_rounded_corner
                 )
@@ -160,7 +161,7 @@ class SettingContentItem(
     }
 
     override fun userGuide() {
-
+        context.startActivity(Intent(context, UserGuideActivity::class.java))
     }
 
     override fun getLayout(): Int = R.layout.setting_item

@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import autoCleared
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.FragmentSettingBinding
-import com.easyo.pairalarm.groupieitem.SettingContentItem
-import com.easyo.pairalarm.groupieitem.SpacerItem
-import com.easyo.pairalarm.model.SettingContentType
+import com.easyo.pairalarm.model.RecyclerItemContentsType
 import com.easyo.pairalarm.model.SettingContents
+import com.easyo.pairalarm.recyclerItem.SettingContentItem
+import com.easyo.pairalarm.recyclerItem.SpacerItem
 import com.xwray.groupie.GroupieAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -43,7 +43,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
                     SettingContentItem(
                         requireContext(),
                         settingItem,
-                        SettingContentType.SINGLE,
+                        RecyclerItemContentsType.SINGLE,
                         Dispatchers.Main,
                         job
                     ).also { settingRecyclerAdapter.add(it) }
@@ -58,14 +58,14 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
                             // 첫 번째 항목이거나 직전 값이 빈칸일 경우
                             index == 0 || (settingItemList[index - 1] == SettingContents.BLANK) -> {
                                 if (settingItemList.size == 2) {
-                                    setupItem(data, SettingContentType.FIRST)
+                                    setupItem(data, RecyclerItemContentsType.FIRST)
                                 } else {
-                                    setupItem(data, SettingContentType.FIRST)
+                                    setupItem(data, RecyclerItemContentsType.FIRST)
                                 }
                             }
                             // 마지막 항목이거나 이후 값이 빈칸일 경우
                             index == settingItemList.size - 1 || (settingItemList[index + 1] == SettingContents.BLANK) -> {
-                                setupItem(data, SettingContentType.LAST)
+                                setupItem(data, RecyclerItemContentsType.LAST)
                             }
                             else -> {
                                 setupItem(data)
@@ -77,7 +77,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         }
     }
 
-    private fun setupItem(data: SettingContents? = null, contentType: SettingContentType? = null) {
+    private fun setupItem(data: SettingContents? = null, contentType: RecyclerItemContentsType? = null) {
         if (data == null) {
             SpacerItem.xnormal().also { settingRecyclerAdapter.add(it) }
         } else {

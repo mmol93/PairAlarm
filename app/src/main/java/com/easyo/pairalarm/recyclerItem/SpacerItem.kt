@@ -1,4 +1,4 @@
-package com.easyo.pairalarm.groupieitem
+package com.easyo.pairalarm.recyclerItem
 
 import androidx.annotation.DimenRes
 import com.easyo.pairalarm.R

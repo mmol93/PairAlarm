@@ -22,7 +22,7 @@ import com.easyo.pairalarm.extensions.getPermissionActivityResultLauncher
 import com.easyo.pairalarm.extensions.setFadeVisible
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.extensions.showErrorSnackBar
-import com.easyo.pairalarm.groupieitem.AlarmItem
+import com.easyo.pairalarm.recyclerItem.AlarmItem
 import com.easyo.pairalarm.service.AlarmForeground
 import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
 import com.easyo.pairalarm.ui.activity.SimpleAlarmSetActivity

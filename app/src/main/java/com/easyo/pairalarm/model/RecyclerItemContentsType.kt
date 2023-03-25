@@ -1,6 +1,6 @@
 package com.easyo.pairalarm.model
 
-enum class SettingContentType{
+enum class RecyclerItemContentsType{
     SINGLE,
     FIRST,
     LAST
