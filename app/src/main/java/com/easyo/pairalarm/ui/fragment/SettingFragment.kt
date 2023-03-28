@@ -10,9 +10,9 @@ import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.FragmentSettingBinding
 import com.easyo.pairalarm.model.RecyclerItemContentsType
 import com.easyo.pairalarm.model.SettingContents
-import com.easyo.pairalarm.recyclerItem.SettingContentItem
+import com.easyo.pairalarm.recyclerItem.SettingContentsItem
 import com.easyo.pairalarm.recyclerItem.SpacerItem
-import com.easyo.pairalarm.ui.dialog.UserGuideFragment
+import com.easyo.pairalarm.ui.dialog.UserGuideBottomDialogFragment
 import com.xwray.groupie.GroupieAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,18 +31,17 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
 
         binding.settingRecycler.apply {
             adapter = settingRecyclerAdapter
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
 
-        setupSettingData(settingItemList)
+        setupSettingList(settingItemList)
     }
 
-    private fun setupSettingData(settingItemList: List<SettingContents>) {
+    private fun setupSettingList(settingItemList: List<SettingContents>) {
         when {
             settingItemList.size == 1 -> {
                 settingItemList.map { settingItem ->
-                    SettingContentItem(
+                    SettingContentsItem(
                         requireContext(),
                         settingItem,
                         RecyclerItemContentsType.SINGLE,
@@ -80,7 +79,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
     }
 
     private fun showUserGuideFragment() {
-        val bottomSheet = UserGuideFragment()
+        val bottomSheet = UserGuideBottomDialogFragment()
         bottomSheet.show(requireActivity().supportFragmentManager, bottomSheet.tag)
     }
 
@@ -91,7 +90,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         if (data == null) {
             SpacerItem.xnormal().also { settingRecyclerAdapter.add(it) }
         } else {
-            SettingContentItem(
+            SettingContentsItem(
                 requireContext(),
                 data,
                 contentType,

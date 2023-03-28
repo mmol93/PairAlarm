@@ -1,5 +1,11 @@
 package com.easyo.pairalarm.recyclerItem
 
-interface UserGuideFunctions {
+import com.easyo.pairalarm.model.UserGuideContents
 
+interface UserGuideFunctions {
+    val userGuideContents: UserGuideContents
+
+    fun openBackgroundWhiteList()
+
+    fun openBatteryOptimize()
 }

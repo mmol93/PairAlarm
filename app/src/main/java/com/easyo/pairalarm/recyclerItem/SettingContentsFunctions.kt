@@ -2,7 +2,7 @@ package com.easyo.pairalarm.recyclerItem
 
 import com.easyo.pairalarm.model.SettingContents
 
-interface SettingFunctions {
+interface SettingContentsFunctions {
 
     val settingContents: SettingContents
 

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.easyo.pairalarm.BuildConfig
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.dataStore.DataStoreTool
@@ -16,6 +15,7 @@ import com.easyo.pairalarm.ui.activity.WebActivity
 import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
 import com.easyo.pairalarm.util.LICENSE_LINK
+import com.easyo.pairalarm.util.itemBackgroundSetter
 import com.xwray.groupie.databinding.BindableItem
 import com.xwray.groupie.databinding.GroupieViewHolder
 import kotlinx.coroutines.Job
@@ -23,15 +23,15 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class SettingContentItem(
+class SettingContentsItem(
     override val context: Context,
     override val settingContents: SettingContents,
     private val recyclerItemContentsType: RecyclerItemContentsType?,
     override val coroutineContext: CoroutineContext,
     override val job: Job,
-    val showGuideFragment: () -> Unit
+    private val showGuideFragment: () -> Unit
 ) : BindableItem<ItemSettingBinding>(settingContents.hashCode().toLong()), DataStoreTool,
-    SettingFunctions {
+    SettingContentsFunctions {
     private lateinit var settingDetail: String
 
     override fun bind(binding: ItemSettingBinding, position: Int) {
@@ -39,25 +39,31 @@ class SettingContentItem(
         // 레이아웃의 배경 셋팅
         when (recyclerItemContentsType) {
             RecyclerItemContentsType.SINGLE -> {
-                binding.settingItemLayout.background =
-                    ContextCompat.getDrawable(context, R.drawable.item_small_rounded_corner)
-                binding.isLastItem = true
+                binding.isLastItem = binding.settingItemLayout.itemBackgroundSetter(
+                    RecyclerItemContentsType.SINGLE,
+                    context,
+                    true
+                )
             }
             RecyclerItemContentsType.FIRST -> {
-                binding.settingItemLayout.background = ContextCompat.getDrawable(
-                    context, R.drawable.item_setting_uppper_small_rounded_corner
+                binding.isLastItem = binding.settingItemLayout.itemBackgroundSetter(
+                    RecyclerItemContentsType.FIRST,
+                    context,
+                    false
                 )
             }
             RecyclerItemContentsType.LAST -> {
-                binding.settingItemLayout.background = ContextCompat.getDrawable(
-                    context, R.drawable.item_setting_under_small_rounded_corner
+                binding.isLastItem = binding.settingItemLayout.itemBackgroundSetter(
+                    RecyclerItemContentsType.LAST,
+                    context,
+                    true
                 )
-                binding.isLastItem = true
             }
             else -> {
 
             }
         }
+
 
         launch {
             getStoredStringDataWithFlow(settingContents.getTitle(context)).collectLatest {
