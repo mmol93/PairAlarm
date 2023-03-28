@@ -41,13 +41,13 @@ class NextAlarmWorker @AssistedInject constructor(
                 )
             }.first().let {
                 quickAlarmBellIndex =
-                    it[stringPreferencesKey(SettingContents.QUICKALARM_BELL.title)]?.getBellIndex()
+                    it[stringPreferencesKey(SettingContents.QUICKALARM_BELL.getTitle(applicationContext))]?.getBellIndex()
                         ?: BellType.WALKING.title.getBellIndex()
                 quickAlarmModeIndex =
-                    it[stringPreferencesKey(SettingContents.QUICKALARM_MODE.title)]?.getModeIndex()
+                    it[stringPreferencesKey(SettingContents.QUICKALARM_MODE.getTitle(applicationContext))]?.getModeIndex()
                         ?: AlarmMode.NORMAL.mode.getModeIndex()
                 quickAlarmVibrationIndex =
-                    it[stringPreferencesKey(SettingContents.QUICKALARM_MUTE.title)]?.getVibrationIndex()
+                    it[stringPreferencesKey(SettingContents.QUICKALARM_VIBRATE.getTitle(applicationContext))]?.getVibrationIndex()
                         ?: AlarmVibrationOption.SOUND.vibrationOptionName.getVibrationIndex()
             }
 

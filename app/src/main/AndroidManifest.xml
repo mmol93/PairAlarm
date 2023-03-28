@@ -23,9 +23,6 @@
         android:theme="@style/Theme.PairAlarm"
         tools:replace="android:theme">
         <activity
-            android:name=".ui.activity.UserGuideActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.activity.DebugActivity"
             android:exported="false" />
         <activity

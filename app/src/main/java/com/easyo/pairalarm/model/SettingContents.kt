@@ -1,12 +1,18 @@
 package com.easyo.pairalarm.model
 
-enum class SettingContents(val title: String) {
-    QUICKALARM_BELL("QuickAlarm Bell"),
-    QUICKALARM_MODE("QuickAlarm Mode"),
-    QUICKALARM_MUTE("QuickAlarm Mute"),
-    BLANK(""),
-    USER_GUIDE("User Guide"),
-    APP_INFO("App Info")
+import android.content.Context
+import androidx.annotation.StringRes
+import com.easyo.pairalarm.R
+
+enum class SettingContents(@StringRes val titleRes: Int) {
+    QUICKALARM_BELL(R.string.quickAlarm_bell),
+    QUICKALARM_MODE(R.string.quickAlarm_mode),
+    QUICKALARM_VIBRATE(R.string.quickAlarm_vibrate),
+    BLANK(R.string.blank),
+    USER_GUIDE(R.string.user_guide),
+    APP_INFO(R.string.app_info);
+
+    fun getTitle(context: Context) = context.getString(this.titleRes)
 }
 
 // AlarmBell

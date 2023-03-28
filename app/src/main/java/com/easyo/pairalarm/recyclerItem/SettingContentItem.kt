@@ -8,15 +8,13 @@ import androidx.core.content.ContextCompat
 import com.easyo.pairalarm.BuildConfig
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.dataStore.DataStoreTool
-import com.easyo.pairalarm.databinding.SettingItemBinding
+import com.easyo.pairalarm.databinding.ItemSettingBinding
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.model.*
 import com.easyo.pairalarm.ui.activity.DebugActivity
-import com.easyo.pairalarm.ui.activity.UserGuideActivity
 import com.easyo.pairalarm.ui.activity.WebActivity
 import com.easyo.pairalarm.ui.dialog.BellSelectDialogFragment
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
-import com.easyo.pairalarm.ui.fragment.SettingFunctions
 import com.easyo.pairalarm.util.LICENSE_LINK
 import com.xwray.groupie.databinding.BindableItem
 import com.xwray.groupie.databinding.GroupieViewHolder
@@ -31,12 +29,13 @@ class SettingContentItem(
     private val recyclerItemContentsType: RecyclerItemContentsType?,
     override val coroutineContext: CoroutineContext,
     override val job: Job,
-) : BindableItem<SettingItemBinding>(settingContents.hashCode().toLong()), DataStoreTool,
+    val showGuideFragment: () -> Unit
+) : BindableItem<ItemSettingBinding>(settingContents.hashCode().toLong()), DataStoreTool,
     SettingFunctions {
     private lateinit var settingDetail: String
 
-    override fun bind(binding: SettingItemBinding, position: Int) {
-        binding.title = settingContents.title
+    override fun bind(binding: ItemSettingBinding, position: Int) {
+        binding.title = settingContents.getTitle(context)
         // 레이아웃의 배경 셋팅
         when (recyclerItemContentsType) {
             RecyclerItemContentsType.SINGLE -> {
@@ -61,7 +60,7 @@ class SettingContentItem(
         }
 
         launch {
-            getStoredStringDataWithFlow(settingContents.title).collectLatest {
+            getStoredStringDataWithFlow(settingContents.getTitle(context)).collectLatest {
                 binding.settingDetail = it
                 settingDetail = it
             }
@@ -70,17 +69,17 @@ class SettingContentItem(
         binding.root.setOnSingleClickListener {
             when (settingContents) {
                 SettingContents.QUICKALARM_BELL -> {
-                    setQuickAlarmBell(settingContents.title)
+                    setQuickAlarmBell(settingContents.getTitle(context))
                 }
                 SettingContents.QUICKALARM_MODE -> {
-                    setQuickAlarmMode(settingContents.title)
+                    setQuickAlarmMode(settingContents.getTitle(context))
                 }
-                SettingContents.QUICKALARM_MUTE -> {
-                    setQuickAlarmMute(settingContents.title)
+                SettingContents.QUICKALARM_VIBRATE -> {
+                    setQuickAlarmMute(settingContents.getTitle(context))
                 }
                 SettingContents.APP_INFO -> {
                     openAppInfo()
-                    if (BuildConfig.DEBUG){
+                    if (BuildConfig.DEBUG) {
                         binding.root.setOnLongClickListener {
                             val intent = Intent(context, DebugActivity::class.java)
                             context.startActivity(intent)
@@ -96,7 +95,7 @@ class SettingContentItem(
         }
     }
 
-    override fun onViewDetachedFromWindow(viewHolder: GroupieViewHolder<SettingItemBinding>) {
+    override fun onViewDetachedFromWindow(viewHolder: GroupieViewHolder<ItemSettingBinding>) {
         super.onViewDetachedFromWindow(viewHolder)
         job.cancel()
     }
@@ -136,7 +135,7 @@ class SettingContentItem(
     override fun setQuickAlarmMute(key: String) {
         launch {
             // 클릭할 때 마다 다음 모드가 저장되게 한다.
-            when(settingDetail) {
+            when (settingDetail) {
                 AlarmVibrationOption.Vibration.vibrationOptionName -> {
                     saveStringData(key, AlarmVibrationOption.ONCE.vibrationOptionName)
                 }
@@ -161,8 +160,8 @@ class SettingContentItem(
     }
 
     override fun userGuide() {
-        context.startActivity(Intent(context, UserGuideActivity::class.java))
+        showGuideFragment.invoke()
     }
 
-    override fun getLayout(): Int = R.layout.setting_item
+    override fun getLayout(): Int = R.layout.item_setting
 }

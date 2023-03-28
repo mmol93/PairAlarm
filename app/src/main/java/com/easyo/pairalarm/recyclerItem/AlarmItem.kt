@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.database.table.AlarmData
-import com.easyo.pairalarm.databinding.AlarmItemBinding
+import com.easyo.pairalarm.databinding.ItemAlarmBinding
 import com.easyo.pairalarm.extensions.lastClickTime
 import com.easyo.pairalarm.extensions.setOnSingleClickListener
 import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
@@ -19,10 +19,10 @@ class AlarmItem(
     val context: Context,
     val alarmData: AlarmData,
     private val alarmViewModel: AlarmViewModel
-) : BindableItem<AlarmItemBinding>(alarmData.hashCode().toLong()) {
+) : BindableItem<ItemAlarmBinding>(alarmData.hashCode().toLong()) {
 
     @SuppressLint("SetTextI18n")
-    override fun bind(binding: AlarmItemBinding, position: Int) {
+    override fun bind(binding: ItemAlarmBinding, position: Int) {
         binding.alarmData = alarmData
 
         binding.root.setOnSingleClickListener {
@@ -63,6 +63,6 @@ class AlarmItem(
     }
 
     override fun getLayout(): Int {
-        return R.layout.alarm_item
+        return R.layout.item_alarm
     }
 }

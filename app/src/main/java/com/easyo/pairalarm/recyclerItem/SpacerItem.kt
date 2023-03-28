@@ -2,14 +2,14 @@ package com.easyo.pairalarm.recyclerItem
 
 import androidx.annotation.DimenRes
 import com.easyo.pairalarm.R
-import com.easyo.pairalarm.databinding.SpacerItemBinding
+import com.easyo.pairalarm.databinding.ItemSpacerBinding
 import com.easyo.pairalarm.util.BindingAdapter.setMarginBottom
 import com.easyo.pairalarm.util.BindingAdapter.setMarginTop
 import com.xwray.groupie.databinding.BindableItem
 
 class SpacerItem(
     @DimenRes private val space: Int
-) : BindableItem<SpacerItemBinding>(space.hashCode().toLong()) {
+) : BindableItem<ItemSpacerBinding>(space.hashCode().toLong()) {
     companion object {
         /**
          * 4dp
@@ -47,12 +47,12 @@ class SpacerItem(
         fun xxxlarge() = SpacerItem(R.dimen.element_spacing_super_large)
     }
 
-    override fun bind(binding: SpacerItemBinding, position: Int) {
+    override fun bind(binding: ItemSpacerBinding, position: Int) {
         binding.root.resources.getDimensionPixelOffset(space).toFloat().let {
             binding.spacer.setMarginTop(it)
             binding.spacer.setMarginBottom(it)
         }
     }
 
-    override fun getLayout(): Int = R.layout.spacer_item
+    override fun getLayout(): Int = R.layout.item_spacer
 }

@@ -12,6 +12,7 @@ import com.easyo.pairalarm.model.RecyclerItemContentsType
 import com.easyo.pairalarm.model.SettingContents
 import com.easyo.pairalarm.recyclerItem.SettingContentItem
 import com.easyo.pairalarm.recyclerItem.SpacerItem
+import com.easyo.pairalarm.ui.dialog.UserGuideFragment
 import com.xwray.groupie.GroupieAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,7 +31,8 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
 
         binding.settingRecycler.apply {
             adapter = settingRecyclerAdapter
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
 
         setupSettingData(settingItemList)
@@ -46,7 +48,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
                         RecyclerItemContentsType.SINGLE,
                         Dispatchers.Main,
                         job
-                    ).also { settingRecyclerAdapter.add(it) }
+                    ) { showUserGuideFragment() }.also { settingRecyclerAdapter.add(it) }
                 }
             }
             settingItemList.size > 1 -> {
@@ -77,11 +79,25 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         }
     }
 
-    private fun setupItem(data: SettingContents? = null, contentType: RecyclerItemContentsType? = null) {
+    private fun showUserGuideFragment() {
+        val bottomSheet = UserGuideFragment()
+        bottomSheet.show(requireActivity().supportFragmentManager, bottomSheet.tag)
+    }
+
+    private fun setupItem(
+        data: SettingContents? = null,
+        contentType: RecyclerItemContentsType? = null
+    ) {
         if (data == null) {
             SpacerItem.xnormal().also { settingRecyclerAdapter.add(it) }
         } else {
-            SettingContentItem(requireContext(), data, contentType, Dispatchers.Main, job)
+            SettingContentItem(
+                requireContext(),
+                data,
+                contentType,
+                Dispatchers.Main,
+                job
+            ) { showUserGuideFragment() }
                 .also { settingRecyclerAdapter.add(it) }
         }
     }

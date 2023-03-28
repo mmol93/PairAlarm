@@ -1,4 +1,4 @@
-package com.easyo.pairalarm.ui.fragment
+package com.easyo.pairalarm.recyclerItem
 
 import com.easyo.pairalarm.model.SettingContents
 
