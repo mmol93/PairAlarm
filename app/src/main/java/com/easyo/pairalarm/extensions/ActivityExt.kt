@@ -17,13 +17,13 @@ import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
 // 현재 화면이 자동으로 꺼지지 않게 유지 & 잠금화면에 액티비티 띄우기
-fun AppCompatActivity.displayOn() {
+fun AppCompatActivity.keepDisplayOn() {
     window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
         setShowWhenLocked(true)
         setTurnScreenOn(true)
         (getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager).apply {
-            requestDismissKeyguard(this@displayOn, null)
+            requestDismissKeyguard(this@keepDisplayOn, null)
         }
     } else {
         window.addFlags(

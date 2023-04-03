@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ActivityOnAlarmBinding
-import com.easyo.pairalarm.extensions.displayOn
 import com.easyo.pairalarm.extensions.doShortVibrateOnce
+import com.easyo.pairalarm.extensions.keepDisplayOn
 import com.easyo.pairalarm.model.AlarmModeType
 import com.easyo.pairalarm.model.CalculatorProblem
 import com.easyo.pairalarm.service.AlarmForeground
@@ -37,7 +37,7 @@ class OnAlarmActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         // 현재 화면이 자동으로 꺼지지 않게 유지 & 잠금화면에 액티비티 띄우기
-        displayOn()
+        keepDisplayOn()
 
         val alarmCode = intent.getStringExtra(ALARM_CODE_TEXT)
 

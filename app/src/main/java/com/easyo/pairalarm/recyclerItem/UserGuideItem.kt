@@ -1,10 +1,16 @@
 package com.easyo.pairalarm.recyclerItem
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.PowerManager
+import android.provider.Settings
+import android.widget.Toast
 import com.easyo.pairalarm.R
 import com.easyo.pairalarm.databinding.ItemSettingBinding
 import com.easyo.pairalarm.model.RecyclerItemContentsType
 import com.easyo.pairalarm.model.UserGuideContents
+import com.easyo.pairalarm.ui.dialog.SimpleDialog
 import com.easyo.pairalarm.util.itemBackgroundSetter
 import com.xwray.groupie.databinding.BindableItem
 import timber.log.Timber
@@ -13,7 +19,7 @@ class UserGuideItem(
     private val context: Context,
     private val recyclerItemContentsType: RecyclerItemContentsType?,
     override val userGuideContents: UserGuideContents
-): BindableItem<ItemSettingBinding>(userGuideContents.hashCode().toLong()), UserGuideFunctions {
+) : BindableItem<ItemSettingBinding>(userGuideContents.hashCode().toLong()), UserGuideFunctions {
     override fun bind(binding: ItemSettingBinding, position: Int) {
         binding.title = userGuideContents.getTitle(context)
         // 레이아웃의 배경 셋팅
@@ -53,6 +59,19 @@ class UserGuideItem(
                 }
             }
         }
+
+        when (userGuideContents) {
+            UserGuideContents.BACKGROUND_LIMIT -> {
+
+            }
+            UserGuideContents.BATTERY_OPTIMIZE -> {
+                val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+                val isWhiteListing = pm.isIgnoringBatteryOptimizations(context.packageName)
+                binding.settingDetail =
+                    if (isWhiteListing) context.getString(R.string.complete)
+                    else context.getString(R.string.not_set)
+            }
+        }
     }
 
     override fun getLayout(): Int = R.layout.item_setting
@@ -62,6 +81,18 @@ class UserGuideItem(
     }
 
     override fun openBatteryOptimize() {
-        Timber.d("openBatteryOptimize clicked")
+        SimpleDialog.showSimpleDialog(
+            context,
+            context.getString(R.string.battery_optimize),
+            context.getString(R.string.battery_optimize_description),
+            positive = {
+                Toast.makeText(context, context.getText(R.string.toast_set_batter_optimize), Toast.LENGTH_LONG).show()
+                val intent = Intent().apply {
+                    action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                    data = Uri.fromParts("package", context.packageName, null)
+                }
+                context.startActivity(intent)
+            }
+        )
     }
 }
