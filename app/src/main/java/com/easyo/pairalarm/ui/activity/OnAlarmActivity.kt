@@ -1,9 +1,8 @@
 package com.easyo.pairalarm.ui.activity
 
+import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.os.*
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -29,12 +28,18 @@ class OnAlarmActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOnAlarmBinding
     private val alarmViewModel: AlarmViewModel by viewModels()
     lateinit var calculatorProblem: CalculatorProblem
+    private lateinit var vibrator: Vibrator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOnAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.lifecycleOwner = this
+
+        vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vibratorManager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            vibratorManager.defaultVibrator
+        } else getSystemService(VIBRATOR_SERVICE) as Vibrator
 
         // 현재 화면이 자동으로 꺼지지 않게 유지 & 잠금화면에 액티비티 띄우기
         displayOn()
@@ -59,6 +64,7 @@ class OnAlarmActivity : AppCompatActivity() {
                     binding.min.setText(getCurrentMinuteDoubleDigitWithString())
                 }
             }
+
             handler.post(handlerTask)
             lifecycleScope.launch {
                 goesOffAlarmData.first { currentAlarmData ->
@@ -73,6 +79,17 @@ class OnAlarmActivity : AppCompatActivity() {
 
                     if (currentAlarmData.quick) {
                         alarmViewModel.deleteAlarmData(currentAlarmData)
+                    }
+                    when(currentAlarmData.vibration) {
+                        // 한 번만 짧게 진동
+                        1 -> {
+                            vibrator.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE))
+                        }
+                        // 현재 액티비티가 보이지 않을 때까지 실시
+                        2 -> {
+                            // 1초 진동 -> 1초 휴식 -> 반복
+                            vibrator.vibrate(VibrationEffect.createWaveform(longArrayOf(500, 500), 0))
+                        }
                     }
 
                     // 삭제하거나 변경된 알람들을 반영한다(Noti 등)
@@ -107,6 +124,7 @@ class OnAlarmActivity : AppCompatActivity() {
 
             binding.ok.setOnClickListener {
                 handler.removeMessages(0)
+                cancelVibrate()
                 finish()
             }
 
@@ -182,6 +200,19 @@ class OnAlarmActivity : AppCompatActivity() {
         } else {
             showShortToast(this, getString(R.string.on_alarm_error))
             finish()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancelVibrate()
+    }
+
+    private fun cancelVibrate() {
+        runCatching {
+            vibrator.cancel()
+        }.onFailure {
+            Timber.e("진동 취소 에러(아마 진동이 울리지 않고 있는 상태였음)")
         }
     }
 }
