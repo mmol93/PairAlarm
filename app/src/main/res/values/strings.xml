@@ -8,7 +8,8 @@
     <string name="app_info">App Info</string>
 
     <!-- User Guide Contents -->
-    <string name="background_white_list">Register Background White List</string>
+    <string name="notification_permission">Get Notification Permission</string>
+    <string name="notification_permission_description">Please permit notification to show you next alarm.</string>
     <string name="battery_optimize">Set Battery Optimize</string>
     <string name="battery_optimize_description">Please turn off the battery optimize for on time alarm</string>
     <string name="complete">Complete</string>
@@ -118,6 +119,7 @@
     <string name="toast_correct_calculator_answer">Correct answer!!</string>
     <string name="toast_wrong_calculator_answer">Wrong answer. Please put again.</string>
     <string name="toast_set_batter_optimize">You can set battery optimize for this app setting from OS</string>
+    <string name="toast_notification_permission">You can set notification permission from this app setting</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

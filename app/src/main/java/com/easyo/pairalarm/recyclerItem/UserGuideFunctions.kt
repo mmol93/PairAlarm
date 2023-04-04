@@ -5,7 +5,7 @@ import com.easyo.pairalarm.model.UserGuideContents
 interface UserGuideFunctions {
     val userGuideContents: UserGuideContents
 
-    fun openBackgroundWhiteList()
+    fun openNotificationPermissionSetting()
 
     fun openBatteryOptimize()
 }
