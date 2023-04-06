@@ -48,7 +48,6 @@ class AlarmViewModel @Inject constructor(
         onSuccess = {
             // 브로드캐스트에 기존 알람 삭제 및 새로운 알람 추가
             if (alarmData.alarmIsOn) {
-                cancelAlarm(app.applicationContext, alarmData.alarmCode)
                 setAlarmOnBroadcast(
                     app.applicationContext,
                     alarmData.alarmCode.toInt(),

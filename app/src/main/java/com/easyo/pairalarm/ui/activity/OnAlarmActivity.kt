@@ -18,7 +18,7 @@ import com.easyo.pairalarm.util.*
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
@@ -66,19 +66,20 @@ class OnAlarmActivity : AppCompatActivity() {
             }
 
             handler.post(handlerTask)
+
             lifecycleScope.launch {
-                goesOffAlarmData.first { currentAlarmData ->
+                goesOffAlarmData.firstOrNull { currentGoesOffAlarmData ->
                     Timber.d("goes off alarmData in OnAlarmActivity: $alarmCode")
 
                     binding.hour.setText(getCurrentHourDoubleDigitWithString())
                     binding.min.setText(getCurrentMinuteDoubleDigitWithString())
                     calculatorProblem = alarmViewModel.getRandomNumberForCalculator()
                     binding.calculatorProblem = calculatorProblem
-                    binding.showCalculatorProblem = currentAlarmData.mode == AlarmModeType.CALCULATE.mode
-                    binding.alarmName.text = currentAlarmData.name
+                    binding.showCalculatorProblem = currentGoesOffAlarmData.mode == AlarmModeType.CALCULATE.mode
+                    binding.alarmName.text = currentGoesOffAlarmData.name
 
-                    if (currentAlarmData.quick) {
-                        alarmViewModel.deleteAlarmData(currentAlarmData)
+                    if (currentGoesOffAlarmData.quick) {
+                        alarmViewModel.deleteAlarmData(currentGoesOffAlarmData)
                     }
                     when(currentAlarmData.vibration) {
                         // 한 번만 짧게 진동
@@ -95,7 +96,10 @@ class OnAlarmActivity : AppCompatActivity() {
                     // 삭제하거나 변경된 알람들을 반영한다(Noti 등)
                     val serviceIntent = Intent(applicationContext, AlarmForeground::class.java)
                     startForegroundService(serviceIntent)
-                    true
+                    false
+                } ?: run {
+                    val serviceIntent = Intent(applicationContext, AlarmForeground::class.java)
+                    startForegroundService(serviceIntent)
                 }
             }
 

@@ -31,7 +31,9 @@ class NextAlarmWorker @AssistedInject constructor(
     private var quickAlarmModeIndex: Int = 0
     private var quickAlarmVibrationIndex: Int = 0
     override suspend fun doWork(): Result {
+        // Noti에 있는 액션 버튼 클릭으로 호출된건지 확인
         val actionButtonPosition = inputData.getInt(ACTION_BUTTON, 0)
+
         if (actionButtonPosition != 0) {
             applicationContext.dataStore.data.catch { exception ->
                 Timber.e(exception.message)
@@ -108,12 +110,12 @@ class NextAlarmWorker @AssistedInject constructor(
 
     private suspend fun resetAlarmNotification() {
         alarmRepository.getAllAlarm().first().let { alarmDataList ->
-            val transformedNextAlarm = getNextAlarm(alarmDataList)
-            if (transformedNextAlarm.isNullOrEmpty()) {
+            val nextAlarmText = getNextAlarm(alarmDataList)
+            if (nextAlarmText.isNullOrEmpty()) {
                 cancelAlarmNotification(applicationContext)
             } else {
                 Timber.d("resetAlarmNotification called")
-                makeAlarmNotification(applicationContext, transformedNextAlarm.toString())
+                makeAlarmNotification(applicationContext, nextAlarmText.toString())
             }
             // 모든 알람의 브로드캐스트를 새롭게 지정
             resetAllAlarms(applicationContext, alarmDataList)
