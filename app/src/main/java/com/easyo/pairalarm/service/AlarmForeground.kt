@@ -28,8 +28,6 @@ class AlarmForeground : Service() {
             ).build()
         )
 
-//        resetAllAlarms(applicationContext)
-
         val alarmTimeWorkRequest: WorkRequest =
             PeriodicWorkRequest.Builder(NextAlarmWorker::class.java, 4, TimeUnit.HOURS).build()
 

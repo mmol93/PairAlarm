@@ -27,7 +27,10 @@ import com.easyo.pairalarm.service.AlarmForeground
 import com.easyo.pairalarm.ui.activity.NormalAlarmSetActivity
 import com.easyo.pairalarm.ui.activity.SimpleAlarmSetActivity
 import com.easyo.pairalarm.ui.dialog.SimpleDialog
-import com.easyo.pairalarm.util.*
+import com.easyo.pairalarm.util.NEXT_ALARM_NOTIFICATION_TEXT
+import com.easyo.pairalarm.util.cancelAlarmNotification
+import com.easyo.pairalarm.util.getNextAlarm
+import com.easyo.pairalarm.util.showShortToast
 import com.easyo.pairalarm.viewModel.AlarmViewModel
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -122,7 +125,6 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         // Groupie - RecyclerView 데이터 입력
         viewLifecycleOwner.lifecycleScope.launch {
             alarmViewModel.getAllAlarmData().collect { alarmDataList ->
-
                 Timber.d("AlarmData: $alarmDataList")
                 alarmDataList.map { AlarmItem(requireContext(), it, alarmViewModel) }
                     .also { alarmRecyclerAdapter.update(it) }
